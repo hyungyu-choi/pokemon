@@ -102,11 +102,13 @@ class SearchAgent:
     name = 'search'
 
     def __init__(self, seed=None, model_path: str | None = None, library: str | None = None,
-                 determinizations: int = 6, depth: int = 2, fallback=None, prior_weight: float = 0.04):
+                 determinizations: int = 6, depth: int = 2, fallback=None, prior_weight: float = 0.04,
+                 reply_k: int = 4):
         self.advisor = Advisor(model_path=model_path, library=library, seed=seed or 0, threads=1)
         self.determinizations = determinizations
         self.depth = depth
         self.prior_weight = prior_weight
+        self.reply_k = reply_k
         if fallback is None:
             from .heuristic import HeuristicAgent
             fallback = HeuristicAgent(seed)
@@ -120,7 +122,8 @@ class SearchAgent:
         try:
             team = session.battle.getSide(sid).team
             inp = view_to_input(view, team, session.battle.format.id)
-            recs = self.advisor.recommend(inp, determinizations=self.determinizations, depth=self.depth)
+            recs = self.advisor.recommend(inp, determinizations=self.determinizations, depth=self.depth,
+                                          reply_k=self.reply_k)
         except Exception:
             recs = []
         legal_set = set(legal)
@@ -160,3 +163,21 @@ def translate_option(option, meaning, request):
             _, _i, target, mega = decode(a)
             out.append(move_action(moves.index(value), target, mega))
     return tuple(out)
+
+
+class SearchFactory:
+    """Picklable factory (for multiprocessing evaluation): ``SearchFactory(model)(seed) -> SearchAgent``."""
+
+    def __init__(self, model_path=None, library=None, determinizations=8, depth=1, reply_k=4):
+        self.model_path, self.library = model_path, library
+        self.determinizations, self.depth, self.reply_k = determinizations, depth, reply_k
+        self.name = 'search'
+
+    def __call__(self, seed=None):
+        fallback = None
+        if self.model_path:
+            from .train import _NNFactory
+            fallback = _NNFactory(self.model_path)(seed)
+        return SearchAgent(seed, model_path=self.model_path, library=self.library,
+                           determinizations=self.determinizations, depth=self.depth, fallback=fallback,
+                           reply_k=self.reply_k)

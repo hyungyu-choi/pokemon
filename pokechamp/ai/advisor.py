@@ -726,14 +726,33 @@ class Advisor:
                     return 0.5 * (value + 1)
         return 0.5 * (math.tanh(2.0 * potential(view)) + 1)
 
-    def _rollout(self, battle: Battle, my_option, depth: int) -> float:
+    def _reply_distribution(self, battle: Battle, top_k: int):
+        """The opponent's most likely replies at the root with their (renormalised) probabilities."""
+        session = RolloutSession(battle)
+        if 'p2' not in session.pending():
+            return [(None, 1.0)]
+        legal = session.legal('p2')
+        if self.model is not None:
+            from .nn_agent import NNAgent
+            probs, _, _ = NNAgent(self.model).evaluate(session.view('p2'), session.request('p2'), legal)
+            probs = [float(p) for p in probs]
+        else:
+            from .heuristic import HeuristicAgent
+            pick = HeuristicAgent(0).choose(session, 'p2', session.view('p2'), legal)
+            probs = [0.7 + 0.3 / len(legal) if o == pick else 0.3 / len(legal) for o in legal]
+        ranked = sorted(zip(legal, probs), key=lambda x: -x[1])[:top_k]
+        total = sum(p for _, p in ranked) or 1.0
+        return [(o, p / total) for o, p in ranked]
+
+    def _rollout(self, battle: Battle, my_option, depth: int, foe_option=None, sample_reply=True) -> float:
         b = clone_battle(battle)
         session = RolloutSession(b)
         me_policy = self._policy(sample=False)
         foe_policy = self._policy(sample=True)
-        # first decision: our candidate vs the opponent's sampled reply
-        foe_legal = session.legal('p2') if 'p2' in session.pending() else None
-        foe_option = foe_policy.choose(session, 'p2', session.view('p2'), foe_legal) if foe_legal else None
+        # first decision: our candidate vs the opponent's reply (given, or sampled from its policy)
+        if foe_option is None and sample_reply:
+            foe_legal = session.legal('p2') if 'p2' in session.pending() else None
+            foe_option = foe_policy.choose(session, 'p2', session.view('p2'), foe_legal) if foe_legal else None
         if not session.apply('p1', my_option):
             return float('nan')
         if foe_option is not None and 'p2' in session.pending():
@@ -756,7 +775,9 @@ class Advisor:
         return self._evaluate_leaf(session)
 
     def recommend(self, inp: AdvisorInput, determinizations: int = 12, depth: int = 3,
-                  log=None) -> list[Recommendation]:
+                  log=None, reply_k: int = 4) -> list[Recommendation]:
+        """Rank our legal actions.  ``reply_k`` > 0 enumerates the opponent's ``reply_k`` most likely
+        replies (expectimax); 0 samples one reply per rollout."""
         prior_sets = SetPrior(inp.formatid, self.library)
         dex = get_dex()
         if log:
@@ -809,10 +830,21 @@ class Advisor:
                     pick = HeuristicAgent(0).choose(RolloutSession(battle), 'p1', view, legal)
                     for opt in legal:
                         priors[opt] = 1.0 if opt == pick else 0.0
+            replies = self._reply_distribution(battle, reply_k) if reply_k else None
             for opt in legal:
                 labels.setdefault(opt, describe_option(battle, 'p1', opt))
                 meanings.setdefault(opt, option_meaning(battle, 'p1', opt))
-                v = self._rollout(battle, opt, depth)
+                if replies is None:
+                    v = self._rollout(battle, opt, depth)
+                else:
+                    # expectimax over the opponent's likely replies (much lower variance than sampling one)
+                    v, wsum = 0.0, 0.0
+                    for reply, pr in replies:
+                        x = self._rollout(battle, opt, depth, foe_option=reply, sample_reply=False)
+                        if x == x:
+                            v += pr * x
+                            wsum += pr
+                    v = v / wsum if wsum else float('nan')
                 if v != v:  # rejected choice
                     continue
                 sums[opt] = sums.get(opt, 0.0) + v
