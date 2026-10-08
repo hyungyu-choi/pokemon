@@ -327,13 +327,15 @@ input[type="number"] { -moz-appearance: textfield; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2.4s; } }
 
-/* --bar-h = height of the sticky "최선의 행동 계산" bar when it is on screen (set by app.js), else 0 */
+/* --bar-h = height of the sticky "최선의 행동 계산" bar when it is on screen or only hidden for the on-screen keyboard
+   (set by app.js), else 0 */
 .toasts {
   position: fixed; right: 20px; bottom: calc(max(var(--bar-h, 0px), env(safe-area-inset-bottom, 0px)) + 16px);
   z-index: 100; display: flex; flex-direction: column; gap: 8px; width: min(92vw, 400px); pointer-events: none;
 }
+/* a tap on the message goes through to the page below (e.g. "기절" / "다음 턴"); only its buttons take taps */
 .toast {
-  pointer-events: auto; display: flex; align-items: flex-start; gap: 10px; justify-content: space-between;
+  pointer-events: none; display: flex; align-items: flex-start; gap: 10px; justify-content: space-between;
   background: var(--toast-bg); color: var(--toast-text); padding: 10px 12px; border-radius: 12px; box-shadow: var(--shadow-lg);
   font-size: 14px; font-weight: 600; animation: pop .18s ease-out;
 }
@@ -342,6 +344,7 @@ body:has(.cb-open) .toasts { display: none; }
 .toast-ok { background: var(--good); color: #fff; }
 .toast-warn { background: var(--warn); color: #1b1300; }
 .toast-msg { flex: 1 1 auto; }
+.toast-act, .toast-x { pointer-events: auto; }
 .toast-x { appearance: none; border: 0; background: transparent; color: inherit; font-size: 18px; line-height: 1; cursor: pointer; padding: 0 2px; }
 .toast-act {
   appearance: none; flex: none; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit;

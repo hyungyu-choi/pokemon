@@ -13,7 +13,9 @@
  *   reload persistence (+ an old saved preset), API error display, help, 새 배틀 reset; a second battle with
  *   Mega Evolution, 취소, speed notes, field effects applied from the recorded moves (Trick Room, weather, screen,
  *   hazard: counts on the next turn) and, on the phone, taps on "기절" / "다음 턴" while a number field still has
- *   the keyboard focus.
+ *   the keyboard focus and a message is on screen; a third battle with weather abilities of the leads (my Drought
+ *   from my set, the opponent's Sand Stream entered in 「상대 포켓몬」 on turn 1, not applied twice when revealed
+ *   again) and the page scrolling up to the matchup while auto-advise calculates after "다음 턴".
  * Console errors, failed requests, external requests and layout problems (horizontal overflow, unlabeled
  * controls, clipped text) are recorded. Screenshots + results.json go to $E2E_OUT.
  * Exit code 1 when any check failed.
@@ -63,6 +65,9 @@ fs.mkdirSync(OUT, { recursive: true });
 for (const f of fs.readdirSync(OUT)) if (f.startsWith(`${PREFIX}_`) && f.endsWith('.png')) fs.rmSync(path.join(OUT, f));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const TEAM_TXT = fs.readFileSync(path.join(ROOT, 'examples', 'team_singles.txt'), 'utf8');
+// the third battle's team: Torkoal (Drought, Heat Rock) instead of Talonflame
+const TEAM3_TXT = TEAM_TXT.replace(/Talonflame @ Focus Sash[\s\S]*?- Protect\r?\n/,
+  'Torkoal @ Heat Rock\nAbility: Drought\nSPs: 32 HP / 32 SpA / 2 SpD\nQuiet Nature\n- Eruption\n- Earth Power\n- Stealth Rock\n- Protect\n');
 
 // ---------------------------------------------------------------------------
 // results
@@ -823,6 +828,31 @@ async function runViewport(browser, vp) {
   const maxHp = (n) => (setOf(n) ? setOf(n).stats.hp : 100);
   let adviseCount = 0;
   page.on('request', (r) => { if (r.url().endsWith('/api/advise')) adviseCount += 1; });
+  const dismissToasts = async () => {
+    for (let i = 0; i < 4 && (await page.locator('#toasts .toast-x').count()); i++) await page.locator('#toasts .toast-x').first().click();
+  };
+  /** Hold the next /api/advise request until the returned function is called (the page stays "calculating"). */
+  const holdAdvise = async () => {
+    let release;
+    const gate = new Promise((r) => { release = r; });
+    await page.route('**/api/advise', async (route) => { await gate; await route.continue().catch(() => {}); }, { times: 1 });
+    return release;
+  };
+  /** Right after "다음 턴" with auto-advise: the page scrolls up to the matchup while the AI calculates. */
+  const runInView = async (what) => {
+    await page.waitForTimeout(1200); // a smooth scroll takes a few hundred ms
+    const r = await page.evaluate(() => {
+      const m = document.getElementById('matchup').getBoundingClientRect();
+      const sp = document.querySelector('#results-card .running');
+      const s = sp ? sp.getBoundingClientRect() : null;
+      const bar = document.querySelector('.action-bar');
+      const barTop = bar && bar.offsetHeight ? bar.getBoundingClientRect().top : window.innerHeight;
+      return { matchupTop: Math.round(m.top), progress: s && [Math.round(s.top), Math.round(s.bottom)], barTop: Math.round(barTop),
+        scrollY: Math.round(window.scrollY), running: !!document.querySelector('#advise-run[disabled]') };
+    });
+    check(V, r.running && r.progress && r.matchupTop >= 0 && r.matchupTop <= 200 && r.progress[0] >= 0 && r.progress[1] <= r.barTop,
+      `${what}: while the AI calculates, the page has scrolled up to the matchup and the progress line is on screen`, r);
+  };
 
   await step('battle-setup', async () => {
     if (!ctx.brought) throw new Error('no battle started');
@@ -989,8 +1019,13 @@ async function runViewport(browser, vp) {
     if (!P.phone) await click(P, 'label[for="q-auto"]', 'turn off auto advise');
     await shot(P, 'battle_turn_entry', { sel: '#quick-card' });
     const before = adviseCount;
+    const release = P.phone ? await holdAdvise() : null;
     const autoResp = P.phone ? page.waitForResponse((r) => r.url().endsWith('/api/advise'), { timeout: T_AI }) : null;
     await click(P, '#next-turn', '다음 턴');
+    if (release) {
+      await runInView('"다음 턴" with auto-advise');
+      release();
+    }
     await toastSeen(P, /턴 2 기록 완료/, '"다음 턴" confirms the recorded turn');
     const st = await appState(P);
     const b = st.battle;
@@ -1311,6 +1346,10 @@ async function runViewport(browser, vp) {
     check(V, /신경망 즉석 추정/.test(hp), 'help explains that the position win rate is a rough instant estimate', hp);
     const ht = (await page.locator('#panel-help').innerText()).replace(/\s+/g, ' ');
     check(V, /필드 자동 반영/.test(ht) && /트릭룸/.test(ht), 'help explains the automatic field effects', ht.slice(0, 200));
+    check(V, ht.includes('안개제거·고속스핀·정리정돈은') && !ht.includes('정리정돈는'), 'help uses the right particle after 정리정돈 (은, not 는)',
+      (ht.match(/.{0,20}정리정돈.{0,6}/) || [''])[0]);
+    check(V, /1턴의 선봉/.test(ht) && /입력하는 즉시 반영/.test(ht), 'help says a fresh Pokemon\'s weather / terrain ability counts as soon as it is entered',
+      (ht.match(/막 나온 포켓몬.{0,80}/) || [''])[0]);
     await shot(P, 'help');
     await audit(P, 'help tab');
   });
@@ -1667,14 +1706,36 @@ async function runViewport(browser, vp) {
         await page.touchscreen.tap(r.x, r.y);
         return r;
       };
-      const dismissToasts = async () => {
-        for (let i = 0; i < 4 && (await page.locator('#toasts .toast-x').count()); i++) await page.locator('#toasts .toast-x').first().click();
+      // a message on screen while typing (here: tapping the active opponent in the roster, a 6 s error) must neither drop
+      // into the bottom band where the bar comes back nor take the tap meant for the button under it
+      const raiseToast = async () => {
+        await dismissToasts();
+        const chip = page.locator(`#foe-roster-${FOE2.indexOf(st.battle.foe.active)}`);
+        await chip.scrollIntoViewIfNeeded();
+        await chip.tap();
+        await page.locator('#toasts .toast-error').waitFor({ timeout: 3000 });
+      };
+      const toastVsTap = async (sel, what) => {
+        const r = await page.evaluate(([s2, h0]) => {
+          const b = document.querySelector(s2).getBoundingClientRect();
+          const x = b.left + b.width / 2;
+          const y = b.top + b.height / 2;
+          const t = document.querySelector('#toasts .toast');
+          const hit = document.elementFromPoint(x, y);
+          return { tap: [Math.round(x), Math.round(y)], toast: t ? [Math.round(t.getBoundingClientRect().top), Math.round(t.getBoundingClientRect().bottom)] : null,
+            limit: window.innerHeight - h0, hit: hit ? (hit.id || hit.className) : '', onTarget: !!(hit && hit.closest(s2)),
+            kb: document.body.classList.contains('kb-open') };
+        }, [sel, barH0]);
+        check(V, r.toast && r.kb && r.onTarget && r.toast[1] <= r.limit + 1,
+          `${what}: with a message on screen while typing, the message stays above the bar's band and the tap point is the button`, r);
       };
       await page.locator('#advise-run:not([disabled])').waitFor({ timeout: T_AI });
       await dismissToasts();
+      const barH0 = await page.evaluate(() => document.querySelector('.action-bar').offsetHeight);
       let st = await appState(P);
       const me = st.battle.me.active;
       const turn0 = st.battle.turn;
+      await raiseToast();
       await page.locator('#q-foe-hp').scrollIntoViewIfNeeded();
       await page.locator('#q-foe-hp').tap();
       await page.keyboard.type('40');
@@ -1685,6 +1746,7 @@ async function runViewport(browser, vp) {
       bs = await barState();
       check(V, bs.focus === 'q-foe-hp' && y > 844 - 80, '"기절" sits in the bottom 80px (where the bar reappears) and the number field still has the focus', { y, ...bs });
       const fy0 = await page.locator('#q-my-faint').evaluate((e) => e.getBoundingClientRect().top);
+      await toastVsTap('#q-my-faint', '"기절"');
       const at = await tapAt('#q-my-faint');
       check(V, at.y > 844 - 80, 'the finger lands in the bottom 80px of the screen', at);
       await page.waitForTimeout(250);
@@ -1694,13 +1756,16 @@ async function runViewport(browser, vp) {
       check(V, st.battle.quick.myHp === 0 && (await page.locator('#q-my-hp').inputValue()) === '0' && st.battle.quick.foeHp === 40,
         'tapping "기절" right after typing the opponent\'s HP records the faint (the tap is not lost to the reappearing bar)', { quick: st.battle.quick });
       await shot(P, 'phone_kb_after_faint_tap');
-      // "다음 턴" near the bottom while the opponent's HP field still has the focus
-      await dismissToasts();
+      // "다음 턴" near the bottom while the opponent's HP field still has the focus (and a message is on screen)
+      await raiseToast();
+      await page.locator('#q-foe-hp').scrollIntoViewIfNeeded();
+      await page.locator('#q-foe-hp').tap();
       await page.locator('#q-foe-hp').fill('35');
       const y2 = await toBottom('#next-turn', 10);
       await page.waitForTimeout(150);
       bs = await barState();
       check(V, bs.focus === 'q-foe-hp' && bs.display === 'none' && y2 > 844 - 80, '"다음 턴" sits in the bottom 80px with the keyboard focus in a number field', { y: y2, ...bs });
+      await toastVsTap('#next-turn', '"다음 턴"');
       await tapAt('#next-turn');
       await toastSeen(P, new RegExp(`턴 ${turn0} 기록 완료`), '"다음 턴" tapped with the keyboard up is recorded');
       st = await appState(P);
@@ -1715,6 +1780,133 @@ async function runViewport(browser, vp) {
       await shot(P, 'phone_kb_after_next_turn');
     });
   }
+
+  // 9) third battle: weather abilities of the leads. Mine (known from my set) and the opponent's (entered in
+  //    「상대 포켓몬」 on turn 1) are on the field for the turn-1 calculation; revealing it again does not apply it twice
+  const FOE3 = ['Hippowdon', 'Dragonite', 'Kingambit', 'Tyranitar', 'Gholdengo', 'Corviknight'];
+  const B3 = ['Torkoal', 'Garchomp', 'Rotom-Wash'];
+  await step('battle3-entry-weather', async () => {
+    if (!TEAM3_TXT.includes('Torkoal')) throw new Error('could not build the battle 3 team from examples/team_singles.txt');
+    if (await page.locator('#advise-run').count()) await page.locator('#advise-run:not([disabled])').waitFor({ timeout: T_AI });
+    await click(P, '#new-battle', '새 배틀 (battle 3)');
+    await click(P, '#new-battle', '새 배틀 (battle 3, confirm)');
+    await toastSeen(P, /새 배틀을 준비/, 'battle 3: new battle prepared');
+    await click(P, '#tab-team');
+    if (!(await page.locator('#d-paste').evaluate((e) => e.open))) await click(P, '#d-paste > summary', 'paste section');
+    await page.fill('#paste-text', TEAM3_TXT);
+    const pr = page.waitForResponse((r) => r.url().endsWith('/api/team/parse'));
+    await click(P, '#paste-parse', '팀 확인 (battle 3 team)');
+    await pr;
+    // the result of the earlier paste is still shown until this one has been rendered
+    await page.locator('#paste-parse:not([disabled])').waitFor({ timeout: 10000 });
+    await page.locator('#d-paste .parse-res .mon-h .d-main', { hasText: mainSp('Torkoal') }).first().waitFor({ timeout: 10000 });
+    check(V, (await page.locator('#d-paste .parse-res .msg-ok').count()) === 1, 'the battle 3 team (Torkoal instead of Talonflame) parses without problems',
+      await page.locator('#d-paste .parse-res').innerText().catch(() => ''));
+    await click(P, page.locator('#d-paste .parse-res').getByRole('button', { name: '이 팀 사용' }), '이 팀 사용 (battle 3 team)');
+    await page.locator('#tab-preview[aria-selected="true"]').waitFor({ timeout: 8000 });
+    for (let i = 0; i < 6; i++) await cbPick(P, `foe-pv-${i}`, FOE3[i].toLowerCase(), { value: FOE3[i] }, { what: `battle 3 opponent ${i + 1}`, rankWarnOnly: true });
+    await blur(P);
+    let st = await appState(P);
+    const team3 = st.team.sets;
+    const hp3 = (n) => (team3.find((s) => s.species === n) || { stats: { hp: 0 } }).stats.hp;
+    check(V, deepEq(st.foeTeam, FOE3) && team3.some((s) => s.species === 'Torkoal' && s.ability === 'Drought' && s.item === 'Heat Rock'),
+      'battle 3: my team with Torkoal (Drought @ Heat Rock) and the opponent entry are set', { foe: st.foeTeam, team: team3.map((s) => s.species) });
+    if (!(await page.locator('#d-manual-pick').evaluate((e) => e.open))) await click(P, '#d-manual-pick > summary');
+    for (const n of B3) await click(P, `#mp-${team3.findIndex((s) => s.species === n)}`, `manual pick ${n}`);
+    await click(P, '#mp-start', '이 선출로 시작 (Torkoal lead)');
+    await toastSeen(P, /배틀을 시작.*필드 자동 반영: 쾌청 8턴/, 'battle 3 start: the message says my lead\'s Drought set the sun (8 turns)');
+    st = await appState(P);
+    check(V, st.battle.me.active === 'Torkoal' && st.battle.field.weather === 'sunnyday' && st.battle.field.weather_turns === 8,
+      'my lead with Drought sets sun (8 turns: its Heat Rock is known from my set)', st.battle.field);
+    // the opponent's lead: its ability is not known yet, so nothing changes
+    await click(P, '#foe-lead-0', 'opponent lead Hippowdon');
+    st = await appState(P);
+    check(V, st.battle.foe.active === 'Hippowdon' && st.battle.foe.mons.Hippowdon.fresh === true && st.battle.field.weather === 'sunnyday',
+      'picking the opponent lead (ability unknown) leaves the field as it is', { foe: st.battle.foe.active, field: st.battle.field });
+    // its Sand Stream entered in 「상대 포켓몬」 on turn 1: the sandstorm is up right away (the later weather wins)
+    await dismissToasts();
+    await cbPick(P, 'foe0-ability', koAb('Sand Stream'), { value: 'Sand Stream' }, { what: 'opponent lead ability (editor)' });
+    await blur(P);
+    await toastSeen(P, /필드 자동 반영: 모래바람 5턴/, 'Sand Stream entered for the turn-1 lead: the notice says sandstorm 5 turns');
+    st = await appState(P);
+    check(V, st.battle.field.weather === 'sandstorm' && st.battle.field.weather_turns === 5 && st.battle.foe.mons.Hippowdon.ability === 'Sand Stream'
+      && (st.battle.fieldLog || {}).label === `상대 ${mainSp('Hippowdon')} 등장 (${koAb('Sand Stream')})`,
+    'the opponent lead\'s Sand Stream entered in 「상대 포켓몬」 on turn 1 puts up a 5-turn sandstorm at once', { field: st.battle.field, log: st.battle.fieldLog });
+    check(V, (await page.locator('#f-weather').inputValue()) === 'sandstorm' && (await page.locator('#f-weather-turns').inputValue()) === '5',
+      'the 필드 card shows sandstorm 5');
+    // the turn-1 calculation sees it
+    await click(P, '#samples-0', '빠름 6');
+    await blur(P);
+    const respP = page.waitForResponse((r) => r.url().endsWith('/api/advise') && r.request().method() === 'POST', { timeout: T_AI });
+    await click(P, '#advise-run', '최선의 행동 계산 (battle 3, turn 1)');
+    const resp = await respP;
+    const res = await resp.json();
+    check(V, resp.status() === 200 && !res.error && (res.recommendations || []).length > 0, 'battle 3 turn-1 advise succeeds', res.error);
+    const errs = validateState(resp.request().postDataJSON().state, {
+      turn: 1, team: team3, brought: B3, myActive: 'Torkoal', maxHp: Object.fromEntries(B3.map((n) => [n, hp3(n)])),
+      mePokemon: { Torkoal: { fresh: true } }, meSide: {}, foeSide: {}, foeTeam: FOE3, foeSeen: ['Hippowdon'], foeActive: 'Hippowdon',
+      foePokemon: { Hippowdon: { ability: 'Sand Stream', fresh: true } },
+      field: { weather: 'sandstorm', weather_turns: 5, terrain: '', terrain_turns: 0 },
+    });
+    check(V, !errs.length, 'turn-1 /api/advise <state> has field.weather "sandstorm" with weather_turns 5 (and Hippowdon\'s ability)', errs.join('\n'));
+    await page.locator('#advise-run:not([disabled])').waitFor({ timeout: T_AI });
+    // turn 1 recorded with Sand Stream revealed again in 이번 턴 기록, auto-advise on: the page scrolls up while it runs
+    await page.locator('#quick-card').scrollIntoViewIfNeeded();
+    await cbPick(P, 'q-foe-ability', koAb('Sand Stream'), { value: 'Sand Stream' }, { what: 'per-turn reveal of the same ability' });
+    await blur(P);
+    st = await appState(P);
+    check(V, st.battle.field.weather === 'sandstorm' && st.battle.field.weather_turns === 5, 'revealing the ability that already took effect changes nothing right away', st.battle.field);
+    await select(P, '#q-my-move', 'Protect');
+    if (!(await page.locator('#q-auto').isChecked())) await click(P, 'label[for="q-auto"]', 'turn auto advise on');
+    await dismissToasts();
+    const release = await holdAdvise();
+    const autoResp = page.waitForResponse((r) => r.url().endsWith('/api/advise'), { timeout: T_AI });
+    await page.locator('#next-turn').scrollIntoViewIfNeeded();
+    await click(P, '#next-turn', '다음 턴 (battle 3, turn 1, auto-advise)');
+    await toastSeen(P, /턴 1 기록 완료/, 'battle 3 turn 1 recorded');
+    const t1 = (await page.locator('#toasts').innerText().catch(() => '')).replace(/\s+/g, ' ');
+    await runInView('battle 3 "다음 턴" with auto-advise');
+    release();
+    await autoResp;
+    await page.locator('#advise-run:not([disabled])').waitFor({ timeout: T_AI });
+    st = await appState(P);
+    check(V, st.battle.turn === 2 && st.battle.field.weather === 'sandstorm' && st.battle.field.weather_turns === 4 && !st.battle.fieldLog && !/모래바람/.test(t1),
+      'revealing the same Sand Stream again in 이번 턴 기록 does not apply it twice (turn 2: sandstorm 4, no field notice)', { field: st.battle.field, log: st.battle.fieldLog, toast: t1 });
+    // turn 2: the opponent faints and sends in Tyranitar (ability unknown)
+    await page.locator('#quick-card').scrollIntoViewIfNeeded();
+    if (await page.locator('#q-auto').isChecked()) await click(P, 'label[for="q-auto"]', 'turn auto advise off');
+    await setNumber(P, '#q-foe-hp', 0);
+    await click(P, '#next-turn', '다음 턴 (battle 3, opponent faints)');
+    await toastSeen(P, /턴 2 기록 완료/, 'battle 3 turn 2 recorded');
+    await click(P, page.locator('#foe-replace button', { hasText: mainSp('Tyranitar') }), 'opponent sends in Tyranitar');
+    await page.locator('#quick-card').scrollIntoViewIfNeeded();
+    await click(P, '#next-turn', '다음 턴 (battle 3, turn 3)');
+    await toastSeen(P, /턴 3 기록 완료/, 'battle 3 turn 3 recorded');
+    // turn 4: say the sandstorm is gone (cleared by hand); Tyranitar came in earlier, so its Sand Stream entered in
+    // 「상대 포켓몬」 now does not change the field ...
+    await page.locator('#field-card').scrollIntoViewIfNeeded();
+    await select(P, '#f-weather', '');
+    await dismissToasts();
+    await cbPick(P, `foe${FOE3.indexOf('Tyranitar')}-ability`, koAb('Sand Stream'), { value: 'Sand Stream' }, { what: 'opponent Tyranitar ability (not fresh)' });
+    await blur(P);
+    st = await appState(P);
+    const notice = await page.locator('#toasts .toast', { hasText: '필드 자동 반영' }).count();
+    check(V, st.battle.turn === 4 && st.battle.foe.mons.Tyranitar.fresh === false && st.battle.foe.mons.Tyranitar.ability === 'Sand Stream'
+      && st.battle.field.weather === '' && !notice, 'the ability of an opponent that came in on an earlier turn does not change the field when entered in 「상대 포켓몬」',
+    { turn: st.battle.turn, fresh: st.battle.foe.mons.Tyranitar.fresh, field: st.battle.field, notice });
+    // ... but revealed in 이번 턴 기록 while no sandstorm is up, it counts although the ability was already known
+    await page.locator('#quick-card').scrollIntoViewIfNeeded();
+    await cbPick(P, 'q-foe-ability', koAb('Sand Stream'), { value: 'Sand Stream' }, { what: 'per-turn reveal (no sandstorm up)' });
+    await blur(P);
+    await click(P, '#next-turn', '다음 턴 (battle 3, turn 4, reveal)');
+    await toastSeen(P, /턴 4 기록 완료.*모래바람 4턴/, 'a reveal of the known Sand Stream applies it when no sandstorm is up');
+    st = await appState(P);
+    check(V, st.battle.turn === 5 && st.battle.field.weather === 'sandstorm' && st.battle.field.weather_turns === 4,
+      'turn 5: the revealed Sand Stream (set during turn 4) shows 4 turns left', st.battle.field);
+    await page.locator('#field-card').scrollIntoViewIfNeeded();
+    await shot(P, 'battle3_entry_weather', { sel: '#field-card' });
+    await audit(P, 'battle 3 (entry weather)');
+  });
 
   // collect page-level findings
   R.timings[`${V} steps`] = T;

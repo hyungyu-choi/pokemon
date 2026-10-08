@@ -616,6 +616,9 @@ function setActive(sideKey, name, fresh, dflt) {
   } else {
     // default for a hand correction: on turn 1 the Pokemon on the field is the lead, which has just come in
     m.fresh = fresh !== undefined ? fresh : dflt !== undefined ? !!dflt : b.turn === 1;
+    // a new stay on the field: its weather / terrain ability has not taken effect yet (see lateEntryEffects)
+    delete m.abilityFx;
+    delete m.midTurn;
   }
   delete m.left;
   // what was entered in "이번 턴 기록" was about the previous Pokemon
@@ -847,9 +850,14 @@ function onTabKey(e) {
   if (el) el.focus();
 }
 
-/** Toasts sit above the sticky "최선의 행동 계산" bar when it is on screen. */
+/**
+ * Toasts sit above the sticky "최선의 행동 계산" bar when it is on screen. While it is hidden for the on-screen keyboard
+ * (body.kb-open, phone) they keep its last height: a toast dropped into the bottom band, where the bar comes back,
+ * would sit right where "기절" / "다음 턴" are tapped to end the typing.
+ */
 function syncBarHeight() {
   const bar = document.querySelector('#panel-battle:not([hidden]) .action-bar');
+  if (bar && !bar.offsetHeight && document.body.classList.contains('kb-open')) return;
   document.documentElement.style.setProperty('--bar-h', `${bar ? bar.offsetHeight : 0}px`);
 }
 
@@ -1426,7 +1434,14 @@ function foeLeadCard() {
     h('p', { class: 'muted small' }, '배틀이 시작되면 상대가 처음 내보낸 포켓몬을 누르세요.'),
     h('div', { class: 'pick-grid' }, b.foe.team.map((n, i) => h('button', {
       type: 'button', class: 'btn pick-btn', id: `foe-lead-${i}`,
-      onclick: () => { setFoeActive(n, b.turn === 1); saveNow(); rerender(); },
+      onclick: () => {
+        setFoeActive(n, b.turn === 1);
+        // its ability may be known already (entered in 「상대 포켓몬」 beforehand): weather / terrain of the lead
+        const fx = lateEntryEffects('foe', n);
+        saveNow();
+        rerender();
+        fieldToast(fx);
+      },
     }, spDual(n), typeChips(typeTypes(n))))));
 }
 
@@ -1442,7 +1457,7 @@ function foeReplaceCard() {
         const fx = entryFieldEffects('foe', n);
         saveNow();
         rerender();
-        if (fx.length) toast(fieldNoticeText(fx), 'info', { label: '필드 확인', fn: showFieldCard });
+        fieldToast(fx);
       },
     }, spDual(n), typeChips(typeTypes(n))))) : h('p', null, '상대의 남은 포켓몬이 없습니다. 승리!'));
 }
@@ -1683,6 +1698,12 @@ const PROTECT_MOVES = new Set(['Protect', 'Detect', "King's Shield", 'Spiky Shie
 const PIVOT_MOVES = new Set(['U-turn', 'Volt Switch', 'Flip Turn', 'Parting Shot', 'Teleport', 'Baton Pass', 'Shed Tail',
   'Chilly Reception']);
 const entryFx = (ab) => !!(ab && (WEATHER_ABILITIES[ab] || TERRAIN_ABILITIES[ab]));
+/** The weather / terrain that ability `ab` sets is up on field `f`. */
+function abilityOnField(f, ab) {
+  const x = WEATHER_ABILITIES[ab] ? ['weather', WEATHER_ABILITIES[ab]]
+    : TERRAIN_ABILITIES[ab] ? ['terrain', TERRAIN_ABILITIES[ab]] : ON_HIT_ABILITIES[ab];
+  return !!x && f[x[0]] === x[1];
+}
 
 const fieldKo = (kind, id) => (((D.raw[kind] || []).find((x) => x.id === id) || {}).ko || id);
 const sideKo = (side) => (side === 'me' ? '내 필드' : '상대 필드');
@@ -1739,9 +1760,13 @@ function turnFieldEvents(b, q, mySet) {
     const inc = entryInfo(side, sw[side], side === 'foe' ? q : null);
     if (entryFx(inc.ability)) ev.push({ t: t + 0.1, side, kind: 'ability', name: inc.ability, item: inc.item });
   }
-  // the opponent's ability revealed this turn without a switch (it came in earlier, or it was hit: Sand Spit)
-  if (!q.foeSwitch && q.foeAbility !== '?' && q.foeAbility !== fm.ability && (entryFx(q.foeAbility) || ON_HIT_ABILITIES[q.foeAbility])) {
-    ev.push({ t: 0.2, side: 'foe', kind: 'ability', name: q.foeAbility, item: q.foeItem !== '?' ? q.foeItem : fm.item });
+  // the opponent's ability revealed this turn without a switch (it came in earlier, or it was hit: Sand Spit). One
+  // already entered in 「상대 포켓몬」 still counts while its weather / terrain is not on the field (it was entered
+  // when it could not take effect any more), but not once it has taken effect since this Pokemon came in.
+  const rv = q.foeAbility;
+  if (!q.foeSwitch && rv !== '?' && (entryFx(rv) || ON_HIT_ABILITIES[rv]) && fm.abilityFx !== rv
+    && (rv !== fm.ability || !abilityOnField(b.field, rv))) {
+    ev.push({ t: 0.2, side: 'foe', kind: 'ability', name: rv, item: q.foeItem !== '?' ? q.foeItem : fm.item });
   }
   // Mega Evolution happens before the moves, and the Mega's ability takes effect (e.g. Mega Charizard Y: Drought)
   if (q.myMega && mySet) {
@@ -1823,6 +1848,8 @@ function applyFieldEvents(b, events, opts) {
     if (ev.kind === 'ability') {
       const a = ev.name;
       const hit = ON_HIT_ABILITIES[a];
+      // remembered for this stay on the field: revealing it again later must not apply it a second time
+      if (entryFx(a)) (side === 'me' ? myMon(cur.me) : foeMon(cur.foe)).abilityFx = a;
       if (WEATHER_ABILITIES[a]) setWeather(WEATHER_ABILITIES[a], ev.item);
       else if (TERRAIN_ABILITIES[a]) setTerrain(TERRAIN_ABILITIES[a], ev.item);
       else if (hit && hit[0] === 'weather') setWeather(hit[1], ev.item);
@@ -1874,16 +1901,39 @@ function applyFieldEvents(b, events, opts) {
   return { notes, fresh };
 }
 
-/** A Pokemon entered between turns (lead, replacement after a faint): its weather / terrain ability. */
-function entryFieldEffects(side, name) {
-  const inc = entryInfo(side, name, null);
+/**
+ * A Pokemon entered between turns (lead, replacement after a faint): its weather / terrain ability (`q`: the
+ * per-turn reveals count, see entryInfo). `endOfTurn`: it came in during the turn just recorded, so what it set has
+ * already lost that turn.
+ */
+function entryFieldEffects(side, name, q, endOfTurn) {
+  const b = S.battle;
+  const inc = entryInfo(side, name, q || null);
   if (!entryFx(inc.ability)) return [];
-  const { notes } = applyFieldEvents(S.battle, [{ side, kind: 'ability', name: inc.ability, item: inc.item }]);
-  if (notes.length) S.battle.fieldLog = { label: `${side === 'me' ? '내' : '상대'} ${spMain(name)} 등장 (${abilMain(inc.ability)})`, notes };
+  const { notes, fresh } = applyFieldEvents(b, [{ side, kind: 'ability', name: inc.ability, item: inc.item }],
+    { start: { [side]: name }, endOfTurn: !!endOfTurn });
+  if (endOfTurn) tickField(b, fresh);
+  if (notes.length) b.fieldLog = { label: `${side === 'me' ? '내' : '상대'} ${spMain(name)} 등장 (${abilMain(inc.ability)})`, notes };
   return notes;
 }
 
+/**
+ * The ability of the Pokemon on the field became known after it came in (「상대 포켓몬」 특성, 특성 공개 in 이번 턴 기록,
+ * or the active Pokemon corrected by hand) while it is still fresh: the turn-1 lead, or it came in this turn. Its
+ * weather / terrain takes effect now, unless that ability already did since it came in. Returns the notes.
+ */
+function lateEntryEffects(side, name, q) {
+  const b = S.battle;
+  const m = side === 'me' ? myMon(name) : foeMon(name);
+  const ab = entryInfo(side, name, q || null).ability;
+  if (b[side].active !== name || !m.fresh || m.fainted || !entryFx(ab) || m.abilityFx === ab) return [];
+  return entryFieldEffects(side, name, q, !!m.midTurn);
+}
+
 const fieldNoticeText = (notes) => `필드 자동 반영: ${notes.join(', ')}`;
+const fieldToast = (notes) => {
+  if (notes.length) toast(fieldNoticeText(notes), 'info', { label: '필드 확인', fn: showFieldCard });
+};
 
 function quickCard() {
   const b = S.battle;
@@ -1956,7 +2006,17 @@ function quickCard() {
   }
   kids.push(h('div', { class: 'q-grid' },
     fld(`상대 ${spMain(foeTarget)} 도구 공개`, new Combobox({ id: 'q-foe-item', options: optItemsReveal, value: q.foeItem, label: `상대 ${spMain(foeTarget)} 도구 공개`, onChange: upd('foeItem') })),
-    fld(`상대 ${spMain(foeTarget)} 특성 공개`, new Combobox({ id: 'q-foe-ability', options: () => optAbilitiesReveal(foeTarget), value: q.foeAbility, label: `상대 ${spMain(foeTarget)} 특성 공개`, onChange: upd('foeAbility') })),
+    fld(`상대 ${spMain(foeTarget)} 특성 공개`, new Combobox({
+      id: 'q-foe-ability', options: () => optAbilitiesReveal(foeTarget), value: q.foeAbility, label: `상대 ${spMain(foeTarget)} 특성 공개`,
+      onChange: (v) => {
+        q.foeAbility = v;
+        // the ability of an opponent that has just come in (turn-1 lead, replacement): its weather / terrain is up
+        // already at this decision (with a switch selected the reveal belongs to the incoming one: 다음 턴 applies it)
+        const fx = q.foeSwitch || v === '?' ? [] : lateEntryEffects('foe', foeA, q);
+        save();
+        if (fx.length) { rerender(); fieldToast(fx); }
+      },
+    })),
     h('div', { class: 'fld' }, h('span', { class: 'lbl' }, '메가진화'),
       h('div', { class: 'row' },
         myMegaOk ? chk('q-my-mega', '내가 메가진화', q.myMega, upd('myMega'), false, `내 ${spMain(meA)}이(가) 메가진화`) : null,
@@ -2066,6 +2126,9 @@ function nextTurn() {
   else fm.fresh = false;
   const me2 = myMon(b.me.active);
   const foe2 = foeMon(b.foe.active);
+  // one that switched in did so during the turn, not between turns (see lateEntryEffects)
+  me2.midTurn = !!q.mySwitch;
+  foe2.midTurn = !!q.foeSwitch;
   if (q.foeItem !== '?') foe2.item = q.foeItem;
   if (q.foeAbility !== '?') foe2.ability = q.foeAbility;
   // 5) HP and status after the turn
@@ -2096,9 +2159,11 @@ function nextTurn() {
   rerender();
   toast(`턴 ${done} 기록 완료 → 턴 ${b.turn}${fx.notes.length ? ` · ${fieldNoticeText(fx.notes)}` : ''}${notes.length ? ` (${notes.join(' ')})` : ''}`,
     notes.length ? 'warn' : 'ok', fx.notes.length ? { label: '필드 확인', fn: showFieldCard } : null);
+  // the calculation starts first: its first re-render (spinner, buttons off) happens right away and keeps the focused
+  // "다음 턴" in place with an instant scroll, which would stop the smooth scroll below if it came after it
+  if (S.autoAdvise && !adviseProblems().length) runAdvise();
   const card1 = document.getElementById(me2.fainted ? 'faint-card' : foe2.fainted ? 'foe-replace' : 'matchup');
   if (card1) card1.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  if (S.autoAdvise && !adviseProblems().length) runAdvise();
 }
 
 /** One turn passes: weather / terrain / rooms / timed side conditions lose a turn (`only`: just these counters). */
@@ -2201,7 +2266,15 @@ function mySideCard() {
     });
     range.addEventListener('change', () => { commit(); refreshMatchup(); });
     const radio = h('input', { type: 'radio', name: 'my-active', id: `${p}-active`, checked: isActive, disabled: m.fainted && !isActive, 'aria-label': `${who} 출전` });
-    radio.addEventListener('change', () => { if (radio.checked) { setMyActive(n); saveNow(); rerender(); } });
+    radio.addEventListener('change', () => {
+      if (!radio.checked) return;
+      setMyActive(n);
+      // e.g. the lead corrected on turn 1: its weather / terrain ability (from my set) takes effect
+      const fx = lateEntryEffects('me', n);
+      saveNow();
+      rerender();
+      fieldToast(fx);
+    });
     const stone = megaStoneOf(set);
     const otherMega = b.me.brought.some((x) => x !== n && myMon(x).mega);
     const activeExtras = isActive && !m.fainted ? [
@@ -2317,7 +2390,13 @@ function foeMonEditor(n) {
   });
   const ability = new Combobox({
     id: `${p}-ability`, options: () => optAbilitiesFoe(n), value: m.ability || '?', label: `상대 ${spMain(n)} 특성`,
-    onChange: (v) => { m.ability = v === '?' ? null : v; save(); },
+    onChange: (v) => {
+      m.ability = v === '?' ? null : v;
+      // e.g. Sand Stream of the turn-1 lead: the sandstorm is up from now on
+      const fx = lateEntryEffects('foe', n);
+      save();
+      if (fx.length) { rerender(); fieldToast(fx); }
+    },
   });
   const myNames = b.me.brought;
   const belief = S.advice && S.advice.res && S.advice.res.beliefs ? S.advice.res.beliefs[n] : null;
@@ -2331,7 +2410,13 @@ function foeMonEditor(n) {
     h('div', { class: 'me-row' },
       isActive ? null : h('button', {
         type: 'button', class: 'btn btn-sm', id: `${p}-setactive`, disabled: m.fainted,
-        onclick: () => { setFoeActive(n, undefined, true); saveNow(); rerender(); },
+        onclick: () => {
+          setFoeActive(n, undefined, true);
+          const fx = lateEntryEffects('foe', n);
+          saveNow();
+          rerender();
+          fieldToast(fx);
+        },
       }, '출전 중으로 설정'),
       h('div', { class: 'fld' }, h('label', { for: `${p}-hp` }, 'HP %'), h('div', { class: 'hp-in' }, range, num, h('span', { class: 'muted' }, '%'))),
       statusSel(`${p}-status`, m, null, `${who} 상태이상`),
@@ -2452,7 +2537,7 @@ function renderHelp() {
     ['배틀 시작', '상대 선봉을 누르면 대면이 설정됩니다. 하단의 "최선의 행동 계산"을 누르면 기술/교체별 예상 승률이 나옵니다. 1위(추천)를 참고해 행동하세요.'],
     ['매 턴 기록', '「이번 턴 기록」에서 상대가 쓴 기술, 먼저 행동한 쪽, 공개된 도구/특성, 턴 종료 후 남은 HP, 교체를 고른 뒤 "다음 턴"을 누르면 자동으로 반영되고 (옵션) 바로 다시 계산합니다.'],
     ['기절했을 때', '내 포켓몬 HP를 0으로 기록하면 "교체 추천" 버튼이 나타나 다음에 내보낼 포켓몬을 알려줍니다. 상대가 쓰러지면 상대가 다음에 내보낸 포켓몬을 누르세요.'],
-    ['필드 자동 반영', '양쪽이 쓴 트릭룸·중력·매직룸·원더룸, 날씨 기술(쾌청·비바라기 등)과 날씨 특성(가뭄·잔비·모래날림·눈퍼뜨리기), 필드 기술과 ○○메이커 특성, 리플렉터·빛의장막·오로라베일·순풍·신비의부적(쓴 쪽 필드), 스텔스록·압정뿌리기·독압정·끈적끈적네트(상대 필드), 안개제거·고속스핀·정리정돈는 「필드」에 자동으로 반영됩니다. 남은 턴은 "다음 결정 때 남은 턴"이라 5턴 효과는 다음 턴에 4로 보입니다 (도구가 알려진 경우 바위·빛의점토·그라운드코트는 8턴). 트릭룸 중에 트릭룸을 다시 쓰면 해제됩니다. 반영한 내용은 알림과 「필드」 카드 위에 표시되니 다르면 고치세요.'],
+    ['필드 자동 반영', '양쪽이 쓴 트릭룸·중력·매직룸·원더룸, 날씨 기술(쾌청·비바라기 등)과 날씨 특성(가뭄·잔비·모래날림·눈퍼뜨리기), 필드 기술과 ○○메이커 특성, 리플렉터·빛의장막·오로라베일·순풍·신비의부적(쓴 쪽 필드), 스텔스록·압정뿌리기·독압정·끈적끈적네트(상대 필드), 안개제거·고속스핀·정리정돈은 「필드」에 자동으로 반영됩니다. 막 나온 포켓몬(1턴의 선봉, 이번 턴에 나온 포켓몬)의 날씨·필드 특성은 「상대 포켓몬」의 특성이나 「이번 턴 기록」의 특성 공개에 입력하는 즉시 반영됩니다. 남은 턴은 "다음 결정 때 남은 턴"이라 5턴 효과는 다음 턴에 4로 보입니다 (도구가 알려진 경우 바위·빛의점토·그라운드코트는 8턴). 트릭룸 중에 트릭룸을 다시 쓰면 해제됩니다. 반영한 내용은 알림과 「필드」 카드 위에 표시되니 다르면 고치세요.'],
     ['세부 수정', '「내 포켓몬」「상대 포켓몬」「필드」 카드에서 능력 변화, 상태이상, 메가진화, 구애 고정, 날씨/필드/벽 남은 턴 등을 언제든지 직접 고칠 수 있습니다. 상대의 도구·특성은 모르면 "모름"으로 두세요 — AI가 가능성을 추정합니다.'],
     ['스피드 관찰', '같은 우선도 기술끼리 상대가 먼저/늦게 행동했다는 정보는 상대 스피드(구애스카프 여부 등) 추정에 쓰입니다. 양쪽이 쓴 기술을 모두 골라야 기록되고, 메가진화·순풍·마비·스피드 랭크 변화·스피드 특성(쓱쓱 등)·구애스카프 상실이 끼면 AI가 잘못 추정하지 않도록 자동으로 기록하지 않습니다.'],
     ['저장', '입력한 내용은 이 브라우저에 자동 저장되어 새로고침해도 유지됩니다. 새 배틀을 시작할 때는 오른쪽 위 "새 배틀"을 누르세요 (팀은 유지). 실수로 초기화했다면 바로 뜨는 알림의 "되돌리기"를 누르세요.'],
