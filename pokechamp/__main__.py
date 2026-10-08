@@ -6,6 +6,7 @@ Commands
   evolve     evolve teams starting from random teams
   coevolve   alternate team evolution and policy training (teams and battle AI improve together)
   advise     recommend the best action for a live battle situation (JSON state file)
+  ui         battle assistant web UI: recommended team, team preview, per-turn advice by menu selection
   validate   check a team (Showdown text format with SPs) against the Champions rules
   randomteam print a random legal team
   difftest   compare the engine against Pokemon Showdown (needs Node.js + a built Showdown)
@@ -131,6 +132,13 @@ def cmd_advise(args):
     print(format_recommendations(recs, args.top))
 
 
+def cmd_ui(args):
+    from .ui.server import serve
+    from .ui.service import AssistantService
+    service = AssistantService(model_path=args.model, library_path=args.library)
+    serve(args.host, args.port, service, open_browser=args.open)
+
+
 def cmd_validate(args):
     from .teambuilder import TeamValidator
     team = _load_team(args.team)
@@ -218,6 +226,14 @@ def main(argv=None):
     p.add_argument('--seed', type=int, default=0)
     p.add_argument('-v', '--verbose', action='store_true')
     p.set_defaults(func=cmd_advise)
+
+    p = sub.add_parser('ui', help='battle assistant web UI (singles): team, team preview and turn advice')
+    p.add_argument('--host', default='127.0.0.1', help='use 0.0.0.0 to open it from a phone on the same Wi-Fi')
+    p.add_argument('--port', type=int, default=8765)
+    p.add_argument('--model', help='policy/value checkpoint (default: models/battle_singles.pt)')
+    p.add_argument('--library', help='evolved team library (default: models/teams_singles.json)')
+    p.add_argument('--open', action='store_true', help='open the browser')
+    p.set_defaults(func=cmd_ui)
 
     p = sub.add_parser('validate', help='validate a team file')
     p.add_argument('team')

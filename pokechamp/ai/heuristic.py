@@ -155,21 +155,31 @@ class HeuristicAgent:
         return scored[0][1]
 
     def team_preview(self, view, request, legal):
+        if not view.foe_side.pokemon:
+            return self.rng.choice(legal)
+        scores = self.preview_scores(view, legal)
+        best, best_v = legal[0], -1e9
+        for option, v in zip(legal, scores):
+            v += self.rng.random() * 0.05
+            if v > best_v:
+                best, best_v = option, v
+        return best
+
+    def preview_scores(self, view, legal) -> list[float]:
+        """Matchup score of every team-preview option (higher = better)."""
         mine = view.my_side.pokemon
         foes = view.foe_side.pokemon
         if not foes:
-            return self.rng.choice(legal)
+            return [0.0] * len(legal)
         m = [[matchup(a, b, view) for b in foes] for a in mine]
-        best, best_v = legal[0], -1e9
         n_lead = view.n_active
+        out = []
         for option in legal:
             # coverage: for each foe, how well do the brought Pokemon handle it
             cover = sum(max(m[i][j] for i in option) for j in range(len(foes)))
             lead = sum(sum(m[i][j] for j in range(len(foes))) for i in option[:n_lead]) / len(foes)
-            v = cover + 0.5 * lead + self.rng.random() * 0.05
-            if v > best_v:
-                best, best_v = option, v
-        return best
+            out.append(cover + 0.5 * lead)
+        return out
 
     # -- per-slot evaluation ---------------------------------------------------
     def slot_value(self, view: BattleView, request, slot: int, a: int) -> float:

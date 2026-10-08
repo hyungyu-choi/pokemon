@@ -174,9 +174,9 @@ def parse_input(data: dict) -> AdvisorInput:
             ms.hp, ms.hp_exact = hp, exact
             ms.status = to_id(md.get('status') or '')
             ms.boosts = {k: int(v) for k, v in (md.get('boosts') or {}).items() if k in BOOST_STATS}
-            if 'item' in md:
+            if md.get('item') is not None:  # missing / null = unknown
                 it = md['item']
-                ms.item = '' if (it in (None, '', 'none', 'consumed', 'knocked off')) else dex.items.get(it).name
+                ms.item = '' if (it in ('', 'none', 'consumed', 'knocked off')) else dex.items.get(it).name
             if md.get('ability'):
                 ms.ability = dex.abilities.get(md['ability']).name
             ms.moves = [dex.moves.get(m).name for m in md.get('moves') or []]
@@ -717,6 +717,7 @@ class Advisor:
         self.library = library
         self.rng = random.Random(seed)
         self._inp = None
+        self.last_info = {}
 
     def _policy(self, sample: bool):
         if self.model is not None:
@@ -812,6 +813,8 @@ class Advisor:
         meanings: dict = {}
         priors: dict = {}
         picked = dex.formats.get(inp.formatid).ruleTable.pickedTeamSize or 6
+        # extra results for user interfaces: value-network estimate and the opponent's likely replies
+        self.last_info = {'value': None, 'foe_replies': {}, 'samples': 0}
         for d in range(determinizations):
             rng = random.Random(self.rng.randrange(1 << 30))
             # opponent team: sample hidden info for all 6
@@ -844,6 +847,7 @@ class Advisor:
                     probs, value, _ = NNAgent(self.model).evaluate(view, req, legal)
                     for opt, p in zip(legal, probs):
                         priors[opt] = float(p)
+                    self.last_info['value'] = 0.5 * (value + 1)
                     if log:
                         log(f"[advisor] value network: win probability {0.5 * (value + 1) * 100:.1f}%")
                 else:
@@ -852,6 +856,11 @@ class Advisor:
                     for opt in legal:
                         priors[opt] = 1.0 if opt == pick else 0.0
             replies = self._reply_distribution(battle, reply_k) if reply_k else None
+            self.last_info['samples'] += 1
+            for reply, pr in (replies or []):
+                if reply is not None:
+                    lab = describe_option(battle, 'p2', reply)
+                    self.last_info['foe_replies'][lab] = self.last_info['foe_replies'].get(lab, 0.0) + pr
             for opt in legal:
                 labels.setdefault(opt, describe_option(battle, 'p1', opt))
                 meanings.setdefault(opt, option_meaning(battle, 'p1', opt))
