@@ -128,3 +128,89 @@ def test_http_routes(http):
     assert code == 400 and 'error' in out
     code, out = _post(http + '/api/team/parse', json.dumps({'text': 'Garchomp\nAbility: Rough Skin\n- Earthquake\n'}).encode())
     assert code == 200 and out['sets'][0]['species'] == 'Garchomp'
+
+
+def test_http_rejects_malformed_bodies(http):
+    for path, body in (('/api/team/parse', b'[1,2]'), ('/api/team/parse', b'{"sets":[1]}'),
+                       ('/api/preview', json.dumps({'my_team': [1, 2, 3, 4, 5, 6], 'foe': ['Garchomp'] * 6}).encode()),
+                       ('/api/advise', b'"text"'), ('/api/advise', json.dumps({'state': [1]}).encode()),
+                       ('/api/advise', json.dumps({'state': {}, 'samples': 1000}).encode()),
+                       ('/api/advise', json.dumps({'state': {}, 'depth': 0}).encode()),
+                       ('/api/advise_switch', json.dumps({'state': {}, 'depth': 4}).encode()),
+                       ('/api/advise_switch', json.dumps({'state': {}, 'depth': 'deep'}).encode()),
+                       ('/api/preview', json.dumps({'my_team': [], 'foe': [], 'sims': 'x'}).encode())):
+        code, out = _post(http + path, body)
+        assert code == 400 and 'error' in out, (path, body, code, out)
+
+
+def test_http_head_and_bad_content_length(http):
+    import socket
+    req = urllib.request.Request(http + '/', method='HEAD')
+    with urllib.request.urlopen(req, timeout=10) as r:
+        assert r.status == 200 and r.read() == b''
+    host, port = http[len('http://'):].split(':')
+    with socket.create_connection((host, int(port)), timeout=5) as s:
+        s.sendall(b'POST /api/advise HTTP/1.0\r\nContent-Type: application/json\r\nContent-Length: -1\r\n\r\n')
+        data = s.recv(4096)
+    assert data.startswith(b'HTTP/1.0 400')  # an empty body: "state" is missing, no hang
+
+
+def test_advise_rejects_unknown_or_impossible_names(service, state):
+    for mutate, needle in (
+            (lambda st: st['foe']['pokemon']['Dragonite'].update(moves=['Not A Move']), 'unknown move'),
+            (lambda st: st['foe']['pokemon']['Dragonite'].update(item='Not An Item'), 'unknown item'),
+            (lambda st: st['foe']['pokemon']['Dragonite'].update(ability='Nope'), 'unknown ability'),
+            (lambda st: st['foe']['pokemon']['Dragonite'].update(moves=['Shadow Ball']), 'cannot learn'),
+            (lambda st: st['me']['pokemon']['Garchomp'].update(locked_move='Body Press'), 'cannot be locked')):
+        st = json.loads(json.dumps(state))
+        mutate(st)
+        with pytest.raises(ValueError, match=needle):
+            service.advise(st, samples=1, depth=1)
+
+
+def test_preview_rejects_duplicate_foe_species(service, state):
+    sets = service.parse_team(state['me']['team'])['sets']
+    with pytest.raises(ValueError, match='same species'):
+        service.team_preview(sets, ['Garchomp'] * 2 + state['foe']['team'][:4], sims=1, top=1)
+
+
+def test_recommended_teams_are_distinct(service):
+    rec = service.recommended_teams()
+    keys = [tuple(sorted((s['species'], s['item']) for s in t['sets'])) for t in rec['teams']]
+    assert len(keys) == len(set(keys))
+
+
+def test_cancel_stops_advise_switch(service, state):
+    st = json.loads(json.dumps(state))
+    st['me']['pokemon']['Garchomp'] = {'fainted': True}
+    calls = []
+    real = service._advise
+
+    def cancelling(*a, **k):
+        res = real(*a, **k)
+        calls.append(res)
+        service.cancel()  # as if the user pressed 취소 during the first candidate
+        return res
+
+    service._advise = cancelling
+    try:
+        res = service.advise_switch(st, samples=1, depth=1)
+    finally:
+        service._advise = real
+    assert res['cancelled'] is True
+    assert len(calls) == 2 and calls[1]['cancelled'] is True  # the 2nd candidate did not run
+    assert len(res['options']) == 1  # only the fully evaluated candidate is listed
+
+
+def test_http_advise_switch_passes_samples_and_depth(http, service, monkeypatch):
+    seen = {}
+
+    def fake(state, samples=8, depth=2):
+        seen.update(samples=samples, depth=depth)
+        return {'options': [], 'elapsed': 0.0, 'cancelled': False}
+
+    monkeypatch.setattr(service, 'advise_switch', fake)
+    code, out = _post(http + '/api/advise_switch', json.dumps({'state': {}, 'samples': 6, 'depth': 1}).encode())
+    assert code == 200 and seen == {'samples': 6, 'depth': 1}, (code, out)
+    code, out = _post(http + '/api/advise_switch', json.dumps({'state': {}}).encode())
+    assert code == 200 and seen == {'samples': 8, 'depth': 2}, (code, out)

@@ -2,16 +2,21 @@
 
 Server: `python -m pokechamp ui --port 8765` (standard library HTTP server, `pokechamp/ui/server.py`;
 logic in `pokechamp/ui/service.py`). The page is `pokechamp/ui/static/index.html`; other static files
-are served from `/static/<file>`. All JSON is UTF-8. Errors: `{"error": "..."}` with HTTP 400/500.
-Format: singles only, `gen9championsbssregmc` (bring 6, pick 3, level 50).
+are served from `/static/<file>` (GET and HEAD). All JSON is UTF-8. POST bodies must be JSON objects (at most 2 MB).
+Errors: `{"error": "..."}` with HTTP 400 (malformed request, unknown name, impossible situation - the message says
+which), 413 (body too large) or 500. Format: singles only, `gen9championsbssregmc` (bring 6, pick 3, level 50).
 
 UI files (plain HTML/CSS/JS, no build step, no external resources): `static/index.html`, `static/app.js`
 (screens, state, <state> builder), `static/combobox.js` (searchable dropdown: Korean / English / initial-consonant
-search), `static/style.css`. The page keeps its state in `localStorage` (key `pokechamp-ui-v1`).
+search), `static/style.css`. The page keeps its state in `localStorage` (key `pokechamp-ui-v1`; the calculation
+preset is `preset`: `fast` | `normal` | `precise` - older saves with `samples` 6 / 12 / 24 are mapped to these).
+Field effects of recorded moves / abilities (Trick Room, weather, terrain, screens, Tailwind, hazards, Defog...) are
+applied to the <state> by the page itself; the server only receives the resulting `field` / `side` counters.
 
-AI requests (`/api/preview`, `/api/advise`, `/api/advise_switch`) are serialized by a lock. A client may abort one
-(the UI's "취소" button); the server still finishes that computation and silently drops the reply, so the next AI
-request waits until it is done.
+AI requests (`/api/preview`, `/api/advise`, `/api/advise_switch`) run one at a time: each new AI request (or
+`POST /api/cancel`) makes the running one stop after its current sample / simulated game; the stopped request still
+answers, with what it has so far and `"cancelled": true`. The UI's "취소" button aborts its fetch and sends
+`POST /api/cancel`, so the server stops computing right away; the next request does not wait for the cancelled one.
 
 ## GET /api/status
 `{"format": "gen9championsbssregmc", "model": "battle_singles.pt" | null, "library": "teams_singles.json" | null, "korean_names": bool}`
@@ -65,33 +70,46 @@ Body `{"text": "<Showdown export with SPs: lines>"}` or `{"sets": [<set>...]}` �
 `problems` empty = legal (species/item clause, learnsets, SP limits, 6 Pokemon).
 
 ## POST /api/preview  (takes ~10-20 s)
-Body `{"my_team": [<set> x6], "foe": ["<species>" x6], "sims": 12}` →
+Body `{"my_team": [<set> x6], "foe": ["<species>" x6, all different], "sims": 12 (1..48)}` →
 ```
 { "options": [ { "order": [0, 2, 5],            // indices into my_team; order[0] = lead
                  "lead": "Garchomp", "names": [...3], "names_ko": [...3],
                  "win_rate": 0.83, "games": 12, "policy": 0.11 | null, "matchup": 7.2, "prior_score": 0.9 } ],
-  "considered": 60, "elapsed": 14.2 }
+  "considered": 60, "elapsed": 14.2, "cancelled": false }
 ```
-Sorted best first.
+Sorted best first. When cancelled, `options` holds the combinations simulated so far (`games` may be < `sims`).
 
-## POST /api/advise  (takes ~3-15 s depending on samples)
-Body `{"state": <state>, "samples": 12, "depth": 2}` →
+## POST /api/advise  (12 samples, 6 legal actions: ~5 s at depth 1, ~8 s at depth 2 on a typical PC)
+Body `{"state": <state>, "samples": 12 (1..64), "depth": 2 (1..3)}` →
+`samples` = determinizations (the opponent's hidden items / abilities / moves / stats sampled each time);
+`depth` = turns simulated after each candidate action before the value network scores the position. Time grows
+with samples × legal actions (and with depth). The UI's presets send 빠름 `{"samples": 6, "depth": 1}` (~2-5 s),
+보통 `{"samples": 12, "depth": 1}` (~4-10 s) and 정밀 `{"samples": 24, "depth": 2}` (~10-30 s).
 ```
-{ "recommendations": [ { "label": "Garchomp: switch to Kingambit", "label_ko": "교체 → 킬가르도",
+{ "recommendations": [ { "label": "Garchomp: switch to Kingambit", "label_ko": "교체 → 대도각참",
                          "win_rate": 0.63, "stderr": 0.03, "policy": 0.96, "samples": 12,
                          "option": [33], "meaning": [["switch", "Kingambit"]] | [["move", "Earthquake"]] } ],
-  "value": 0.73 | null,                       // value network's win probability for the position
+  "value": 0.73 | null,                       // value network's instant estimate for the position (no simulation;
+                                              //  rough - the UI shows it below the simulated win rates)
   "foe_replies": [ {"label": "Dragonite: Extreme Speed", "prob": 0.4} ],   // opponent's likely actions
   "beliefs": { "Dragonite": { "mean_stats": {...}, "speed_10_90": [110, 164], "p_choice_scarf": 0.21,
                               "observations": 1, "max_hp_range": [166, 198] } },
-  "samples": 12, "elapsed": 4.3, "log": [] }
+  "samples": 12, "elapsed": 4.3, "cancelled": false, "log": [] }
 ```
 `recommendations` is sorted by `win_rate` (best first). Labels containing "Mega Evolve + " mean
-"Mega Evolve and use this move" (`label_ko` starts with "메가진화 + ").
+"Mega Evolve and use this move" (`label_ko` starts with "메가진화 + "). `cancelled: true` = stopped early by
+`/api/cancel` or a newer request (fewer samples than asked). An empty `recommendations` list with lines in `log`
+means the situation could not be rebuilt in the simulator.
+
+The state is checked first (400 with the reason): every move / item / ability name must exist, our
+`locked_move` must be one of that Pokemon's moves, and the opponent's revealed `moves` must be learnable by its
+species in this format.
 
 ## POST /api/advise_switch  (our active Pokemon fainted: which one to send in)
-Body `{"state": <state with the fainted Pokemon marked "fainted": true>, "samples": 8}` →
-`{"options": [ {"switch_to": "Rotom-Wash", "switch_to_ko": "", "win_rate": 0.62, "best_next_action": "...", "value": 0.6} ], "elapsed": 10.2}`
+Body `{"state": <state with the fainted Pokemon marked "fainted": true>, "samples": 8 (1..64), "depth": 2 (1..3)}` →
+(the UI sends `{"samples": 6, "depth": 1}`: one advise run per remaining Pokemon, ~3-10 s for two)
+`{"options": [ {"switch_to": "Rotom-Wash", "switch_to_ko": "", "win_rate": 0.62, "best_next_action": "...", "value": 0.6} ], "elapsed": 10.2, "cancelled": false}`
+(one advise run per remaining Pokemon, all in one AI request; when cancelled only fully evaluated candidates are listed).
 
 ## <state> — the battle situation (same format as `examples/advisor_state.json`)
 Use canonical English species/move/item/ability names from `/api/data` everywhere.
@@ -129,12 +147,13 @@ Use canonical English species/move/item/ability names from `/api/data` everywher
     "pokemon": {                                             // only what has been seen
       "Dragonite": {
         "hp": "54%", "status": "", "boosts": {"atk": 1},
-        "item": "Choice Band" | "" (known: none / consumed) -- omit or null = unknown,
+        "item": "Life Orb" | "" (known: none / consumed) -- omit or null = unknown,
         "ability": "Multiscale" -- omit or null = unknown,
         "moves": ["Extreme Speed", "Dragon Dance"],          // revealed moves
-        "mega": false, "fainted": false, "volatiles": [],
-        "faster_than": ["Rotom-Wash"],   // it moved before these Pokemon of ours (same priority)
-        "slower_than": ["Garchomp"]      // these Pokemon of ours moved before it
+        "mega": false,                   // Mega Evolved; give its Mega Stone as "item" to say which Mega
+        "fainted": false, "volatiles": [],
+        "faster_than": ["Rotom-Wash"],   // it moved before these Pokemon of ours (same priority; compared with
+        "slower_than": ["Garchomp"]      //  plain Speed stats, base formes, our Choice Scarf x1.5)
       }
     },
     "side": {...}, "mega_used": false
@@ -146,6 +165,6 @@ Use canonical English species/move/item/ability names from `/api/data` everywher
 ```
 
 ## POST /api/cancel
-Body `{}` → `{"cancelled_generation": n}`. The running `/api/advise` (or `/api/preview`) stops after its current
-sample and returns the partial result (`"cancelled": true` in the advise response). Starting a new advise request
+Body `{}` → `{"cancelled_generation": n}`. The running `/api/advise`, `/api/advise_switch` or `/api/preview` stops
+after its current sample / game and returns its partial result with `"cancelled": true`. Starting a new AI request
 also supersedes a running one.

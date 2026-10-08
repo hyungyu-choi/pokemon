@@ -1,1 +1,45 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>pokechamp</title></head><body>placeholder</body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#11141b" media="(prefers-color-scheme: dark)">
+  <title>배틀 어시스턴트</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">본문으로 건너뛰기</a>
+  <header class="app-header">
+    <div class="hdr-in">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <h1>배틀 어시스턴트</h1>
+          <p class="brand-sub">포켓몬 챔피언스 · 싱글 (6→3 선출, Lv.50)</p>
+        </div>
+      </div>
+      <button type="button" class="btn btn-sm btn-ghost hdr-btn" id="new-battle">새 배틀</button>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="단계"></nav>
+  </header>
+
+  <div id="boot" class="boot" role="status" aria-live="polite">
+    <span class="spin" aria-hidden="true"></span> 게임 데이터를 불러오는 중…
+  </div>
+
+  <main id="main" class="container" hidden>
+    <div id="panel-team" class="panel" role="tabpanel" aria-labelledby="tab-team" hidden></div>
+    <div id="panel-preview" class="panel" role="tabpanel" aria-labelledby="tab-preview" hidden></div>
+    <div id="panel-battle" class="panel" role="tabpanel" aria-labelledby="tab-battle" hidden></div>
+    <div id="panel-help" class="panel" role="tabpanel" aria-labelledby="tab-help" hidden></div>
+  </main>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="/static/combobox.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

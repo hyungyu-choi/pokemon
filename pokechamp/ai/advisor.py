@@ -238,7 +238,7 @@ def parse_input(data: dict) -> AdvisorInput:
         for key in (k, {'trickroom': 'trick_room', 'magicroom': 'magic_room', 'wonderroom': 'wonder_room'}.get(k, k)):
             if fld.get(key):
                 pseudo[k] = int(fld[key])
-    _speed_hint_beliefs(team, foe_mons)
+    _speed_hint_beliefs(team, foe_mons, me_mons)
     return AdvisorInput(
         formatid=fmt, turn=int(data.get('turn') or 1),
         me=SideState(team=team, brought=me_brought, active=me_active, mons=me_mons, conditions=conds(me_d),
@@ -250,11 +250,30 @@ def parse_input(data: dict) -> AdvisorInput:
     )
 
 
-def _speed_hint_beliefs(my_team, foe_mons: dict):
-    """Turn "it moved before / after my X" hints into a posterior over the opponent's Speed."""
+def _speed_hint_beliefs(my_team, foe_mons: dict, my_mons: dict | None = None):
+    """Turn "it moved before / after my X" hints into a posterior over the opponent's Speed.
+
+    Our Speed is taken in our current forme (Mega Evolved or not) and with a Choice Scarf only while we
+    still hold it; boosts/paralysis are assumed neutral at the time of the observation.
+    """
     from ..sim.teams import calc_stats
     from .inference import StatBelief
+    my_mons = my_mons or {}
     by_name = {s.species: s for s in my_team}
+
+    def my_speed_of(mine):
+        ms = my_mons.get(mine.species)
+        species = None
+        item = to_id(mine.get('item') or '')
+        if ms is not None and ms.mega:
+            stone = get_dex().items.get(mine.get('item') or '')
+            if stone.megaStone and stone.megaStone.get(mine.species):
+                species = get_dex().species.get(stone.megaStone[mine.species])
+        if ms is not None and ms.item == '':
+            item = ''
+        spe = calc_stats(mine, species)['spe'] if species is not None else calc_stats(mine)['spe']
+        return spe * (1.5 if item == 'choicescarf' else 1.0)
+
     for ms in foe_mons.values():
         if not (ms.faster_than or ms.slower_than):
             continue
@@ -267,7 +286,7 @@ def _speed_hint_beliefs(my_team, foe_mons: dict):
                                                get_dex().species.get(n).baseSpecies), None)
                 if mine is None:
                     continue
-                my_speed = calc_stats(mine)['spe'] * (1.5 if to_id(mine.get('item') or '') == 'choicescarf' else 1.0)
+                my_speed = my_speed_of(mine)
                 belief.observe_speed(ms.species, 1.0, my_speed, foe_first, False,
                                      scarf_active=ms.item in (None, 'Choice Scarf'))
         ms.belief = belief

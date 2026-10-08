@@ -79,6 +79,85 @@ def _obj_team(sets):
     return [Obj({**_plain_set(s), 'evs': Obj(_plain_set(s)['evs'])}) for s in sets]
 
 
+def _need(cond, msg: str):
+    """Reject malformed request data with a ValueError (-> HTTP 400 with this message)."""
+    if not cond:
+        raise ValueError(msg)
+
+
+def _check_sets(sets, what: str):
+    _need(isinstance(sets, list), f'{what} must be a list of sets')
+    for i, s in enumerate(sets):
+        _need(isinstance(s, dict), f'{what}[{i}] must be an object (a set)')
+        _need(isinstance(s.get('species'), str) and s['species'], f'{what}[{i}].species is missing')
+        _need(isinstance(s.get('moves') or [], list) and all(isinstance(m, str) for m in s.get('moves') or []),
+              f'{what}[{i}].moves must be a list of move names')
+        _need(isinstance(s.get('evs') or {}, dict), f'{what}[{i}].evs must be an object')
+        for k in ('item', 'ability', 'nature', 'name'):
+            _need(s.get(k) is None or isinstance(s.get(k), str), f'{what}[{i}].{k} must be a string')
+
+
+_ITEM_NONE = ('', 'none', 'consumed', 'knocked off')
+
+
+def _check_state_names(state):
+    """Shape of the <state> and every move / item / ability name in it (unknown names -> ValueError)."""
+    dex = get_dex()
+    _need(isinstance(state, dict), '"state" must be a JSON object')
+    for side in ('me', 'foe'):
+        d = state.get(side)
+        _need(isinstance(d, dict), f'state.{side} must be an object')
+        for k in ('active', 'brought'):
+            _need(d.get(k) is None or (isinstance(d[k], list) and all(isinstance(x, str) for x in d[k])),
+                  f'state.{side}.{k} must be a list of species names')
+        _need(isinstance(d.get('side') or {}, dict), f'state.{side}.side must be an object')
+        mons = d.get('pokemon') or {}
+        _need(isinstance(mons, dict), f'state.{side}.pokemon must be an object')
+        for name, md in mons.items():
+            where = f'state.{side}.pokemon["{name}"]'
+            _need(isinstance(md, dict), f'{where} must be an object')
+            it = md.get('item')
+            if it is not None and it not in _ITEM_NONE:
+                _need(isinstance(it, str) and dex.items.get(it).exists, f'unknown item {it!r} ({where}.item)')
+            ab = md.get('ability')
+            if ab:
+                _need(isinstance(ab, str) and dex.abilities.get(ab).exists, f'unknown ability {ab!r} ({where}.ability)')
+            moves = md.get('moves') or []
+            _need(isinstance(moves, list), f'{where}.moves must be a list of move names')
+            for m in moves + ([md['locked_move']] if md.get('locked_move') else []):
+                _need(isinstance(m, str) and dex.moves.get(m).exists, f'unknown move {m!r} ({where})')
+            for k in ('volatiles', 'faster_than', 'slower_than'):
+                _need(isinstance(md.get(k) or [], list), f'{where}.{k} must be a list')
+            _need(isinstance(md.get('boosts') or {}, dict), f'{where}.boosts must be an object')
+    me = state['me']
+    _need(isinstance(me.get('team'), (list, str)), 'state.me.team must be a list of sets or a Showdown export')
+    if isinstance(me['team'], list):
+        _check_sets(me['team'], 'state.me.team')
+    foe_team = state['foe'].get('team')
+    _need(isinstance(foe_team, list) and all(isinstance(x, str) for x in foe_team),
+          'state.foe.team must be a list of species names')
+    _need(isinstance(state.get('field') or {}, dict), 'state.field must be an object')
+
+
+def _check_parsed(inp, formatid: str):
+    """Moves that the described Pokemon cannot have (Choice lock outside the set, unlearnable revealed moves)."""
+    from ..teambuilder.validator import format_legality
+    leg = format_legality(formatid)
+    by_species = {s.species: s for s in inp.me.team}
+    for name, ms in inp.me.mons.items():
+        s = by_species.get(name)
+        if ms.locked_move and s is not None:
+            _need(to_id(ms.locked_move) in {to_id(m) for m in s.moves},
+                  f'{name} cannot be locked into {ms.locked_move}: it is not one of its moves')
+    for name, ms in inp.foe.mons.items():
+        legal = leg.species.get(name)
+        if not legal:
+            continue
+        learnable = {to_id(m) for m in legal['moves']}
+        for m in ms.moves + ([ms.locked_move] if ms.locked_move else []):
+            _need(to_id(m) in learnable, f'the opponent\'s {name} cannot learn {m} in this format')
+
+
 class AssistantService:
     def __init__(self, formatid: str = FORMAT, model_path: str | None = None, library_path: str | None = None,
                  seed: int = 0):
@@ -208,7 +287,9 @@ class AssistantService:
         pop = list(zip(data.get('teams') or [], data.get('fitness') or []))
         candidates = [(t, None, '명예의 전당') for t in hof] + [(t, f, '개체군') for t, f in pop]
         for team, fit, source in candidates:
-            key = json.dumps([sorted(s['moves']) + [s['species'], s['item']] for s in team], sort_keys=True)
+            # teams with the same Pokemon holding the same items are near-duplicates (they differ by a move,
+            # a nature or an ability at most): keep the first = best of each group
+            key = tuple(sorted((s['species'], s.get('item') or '') for s in team))
             if key in seen:
                 continue
             seen.add(key)
@@ -237,8 +318,10 @@ class AssistantService:
     def parse_team(self, text: str | None = None, sets: list | None = None) -> dict:
         from ..teambuilder.validator import TeamValidator
         if text is not None:
+            _need(isinstance(text, str), '"text" must be a string (a Showdown export)')
             team = import_team(text)
         else:
+            _check_sets(sets or [], '"sets"')
             team = _obj_team(sets or [])
         dex = get_dex()
         out = []
@@ -261,10 +344,15 @@ class AssistantService:
         from ..env.actions import team_preview_options
         from ..env.runner import BattleSession, gen5_seed, play_battle
         t0 = time.time()
+        _check_sets(my_team, '"my_team"')
+        _need(isinstance(foe_species, list) and all(isinstance(n, str) for n in foe_species),
+              '"foe" must be a list of 6 species names')
         my_sets = [_plain_set(s) for s in my_team]
         foe_species = [_species_name(n) for n in foe_species]
         if len(my_sets) != 6 or len(foe_species) != 6:
             raise ValueError('need 6 Pokemon on both teams')
+        _need(len(set(foe_species)) == 6, 'the opponent\'s team preview lists the same species twice')
+        gen = self._new_generation()
         rng = random.Random(self.seed + 17)
         prior = SetPrior(self.formatid, self.library_path)
 
@@ -303,24 +391,30 @@ class AssistantService:
         # simulate each shortlisted choice against sampled opponent sets (the opponent picks with the heuristic)
         results = []
         agent_me = self._battle_agent()
-        gen = self._new_generation()
+        cancelled = False
         for prior_score, opt, h, p in shortlist:
-            if self._gen != gen and results:
-                break  # cancelled / superseded: return what has been simulated
-            wins = 0.0
+            wins, games = 0.0, 0
             for k in range(sims):
+                if self._gen != gen:
+                    cancelled = True  # cancelled / superseded: return what has been simulated
+                    break
                 r = random.Random(self.seed * 1000 + k)
                 foe_team = sample_foe_team(r)
                 res = play_battle(_obj_team(my_sets), _obj_team(foe_team), _FixedPreview(opt, agent_me),
                                   HeuristicAgent(k), self.formatid, seed=gen5_seed(r), max_turns=100)
                 wins += 1.0 if res.winner == 'p1' else 0.5 if res.winner is None else 0.0
-            results.append({'order': list(opt), 'lead': my_sets[opt[0]]['species'],
-                            'names': [my_sets[i]['species'] for i in opt],
-                            'names_ko': [_ko('species', my_sets[i]['species']) for i in opt],
-                            'win_rate': wins / sims, 'games': sims, 'policy': p, 'matchup': h,
-                            'prior_score': prior_score})
+                games += 1
+            if games:
+                results.append({'order': list(opt), 'lead': my_sets[opt[0]]['species'],
+                                'names': [my_sets[i]['species'] for i in opt],
+                                'names_ko': [_ko('species', my_sets[i]['species']) for i in opt],
+                                'win_rate': wins / games, 'games': games, 'policy': p, 'matchup': h,
+                                'prior_score': prior_score})
+            if cancelled:
+                break
         results.sort(key=lambda r: (-r['win_rate'], -r['prior_score']))
-        return {'options': results, 'considered': len(options), 'elapsed': round(time.time() - t0, 1)}
+        return {'options': results, 'considered': len(options), 'elapsed': round(time.time() - t0, 1),
+                'cancelled': cancelled}
 
     def _battle_agent(self):
         if self.model_path:
@@ -332,13 +426,24 @@ class AssistantService:
     # ------------------------------------------------------------------
     def advise(self, state: dict, samples: int = 12, depth: int = 2) -> dict:
         """Ranked actions for the described turn (state = advisor JSON, see examples/advisor_state.json)."""
+        _check_state_names(state)
+        return self._advise(state, samples, depth, None)
+
+    def _advise(self, state: dict, samples: int, depth: int, gen: int | None) -> dict:
+        """One advise run; ``gen`` = the AI-request generation it belongs to (None: start a new one once the
+        state has been parsed, so a malformed request does not cancel a running calculation)."""
         from ..ai.advisor import parse_input
         t0 = time.time()
         state = dict(state)
         state.setdefault('format', self.formatid)
         inp = parse_input(state)
+        _check_parsed(inp, self.formatid)
+        if gen is None:
+            gen = self._new_generation()
         log_lines = []
-        gen = self._new_generation()
+        if self._gen != gen:  # superseded before it started
+            return {'recommendations': [], 'value': None, 'foe_replies': [], 'beliefs': {}, 'samples': 0,
+                    'elapsed': 0.0, 'cancelled': True, 'log': []}
         with self._lock:
             self.advisor.cancel_check = lambda: self._gen != gen
             try:
@@ -366,7 +471,12 @@ class AssistantService:
         }
 
     def advise_switch(self, state: dict, samples: int = 8, depth: int = 2) -> dict:
-        """After one of our Pokemon fainted: which teammate to send in (each evaluated as the new active)."""
+        """After one of our Pokemon fainted: which teammate to send in (each evaluated as the new active).
+
+        The whole call is one AI request: /api/cancel (or a newer request) stops it after the current sample,
+        and only fully evaluated candidates are returned (``cancelled`` then is true)."""
+        _check_state_names(state)
+        gen = self._new_generation()
         t0 = time.time()
         me = state['me']
         fainted = set(n for n, m in (me.get('pokemon') or {}).items() if m.get('fainted'))
@@ -374,6 +484,7 @@ class AssistantService:
         if not candidates:
             candidates = [n for n in me.get('brought') or [] if n not in fainted]
         out = []
+        cancelled = False
         for c in candidates:
             st = copy.deepcopy(state)
             st['me']['active'] = [c]
@@ -381,13 +492,16 @@ class AssistantService:
             mons.setdefault(c, {})
             mons[c]['fresh'] = True
             mons[c]['boosts'] = {}
-            res = self.advise(st, samples=samples, depth=depth)
+            res = self._advise(st, samples, depth, gen)
+            if res['cancelled']:
+                cancelled = True  # a partly evaluated candidate is not comparable with the others
+                break
             best = res['recommendations'][0] if res['recommendations'] else None
             out.append({'switch_to': c, 'switch_to_ko': _ko('species', c),
                         'win_rate': best['win_rate'] if best else None,
                         'best_next_action': best['label_ko'] if best else None, 'value': res['value']})
         out.sort(key=lambda x: -(x['win_rate'] or 0))
-        return {'options': out, 'elapsed': round(time.time() - t0, 1)}
+        return {'options': out, 'elapsed': round(time.time() - t0, 1), 'cancelled': cancelled}
 
     # ------------------------------------------------------------------
     def _label_ko(self, meaning, fallback: str) -> str:

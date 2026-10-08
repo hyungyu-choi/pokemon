@@ -2,15 +2,15 @@
 
     python -m pokechamp ui            # then open http://127.0.0.1:8765
 
-JSON API (all POST bodies are JSON; errors come back as ``{"error": "..."}`` with status 400/500):
+JSON API (all POST bodies are JSON objects; errors come back as ``{"error": "..."}`` with status 400/413/500):
 
     GET  /api/status                    model / library / Korean-name availability
     GET  /api/data                      game data for the selection menus
     GET  /api/recommended_teams         teams recommended by the team-building AI
     POST /api/team/parse                {"text": "<Showdown export>"} or {"sets": [...]} -> sets, problems, stats
-    POST /api/preview                   {"my_team": [sets], "foe": [6 species], "sims"?: int}
-    POST /api/advise                    {"state": <advisor state>, "samples"?: int, "depth"?: int}
-    POST /api/advise_switch             {"state": <advisor state>, "samples"?: int}
+    POST /api/preview                   {"my_team": [sets], "foe": [6 species], "sims"?: 1..48}
+    POST /api/advise                    {"state": <advisor state>, "samples"?: 1..64, "depth"?: 1..3}
+    POST /api/advise_switch             {"state": <advisor state>, "samples"?: 1..64, "depth"?: 1..3}
     POST /api/cancel                    stop the running AI calculation (it returns its partial result)
 """
 from __future__ import annotations
@@ -25,6 +25,27 @@ from urllib.parse import urlparse
 from .service import AssistantService
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+MAX_BODY = 2 * 1024 * 1024  # bytes; a <state> is a few KB
+
+
+class BodyTooLarge(ValueError):
+    pass
+
+
+def _int_param(body: dict, key: str, default: int, lo: int, hi: int) -> int:
+    """An optional integer parameter of a request body, checked against its allowed range."""
+    v = body.get(key)
+    if v is None or v == '':
+        return default
+    if isinstance(v, bool) or not isinstance(v, (int, float, str)):
+        raise ValueError(f'"{key}" must be an integer between {lo} and {hi}')
+    try:
+        n = int(v)
+    except (ValueError, OverflowError):  # "abc", NaN, Infinity
+        raise ValueError(f'"{key}" must be an integer between {lo} and {hi}') from None
+    if n != float(v) or not lo <= n <= hi:
+        raise ValueError(f'"{key}" must be an integer between {lo} and {hi} (got {v!r})')
+    return n
 
 
 def make_handler(service: AssistantService):
@@ -43,7 +64,8 @@ def make_handler(service: AssistantService):
                 self.send_header('Content-Length', str(len(body)))
                 self.send_header('Cache-Control', 'no-store')
                 self.end_headers()
-                self.wfile.write(body)
+                if not getattr(self, '_head_only', False):
+                    self.wfile.write(body)
             except (BrokenPipeError, ConnectionResetError):
                 # the browser gave up on the request (e.g. the user pressed "취소" during a long calculation)
                 self.close_connection = True
@@ -52,12 +74,27 @@ def make_handler(service: AssistantService):
             self._send(status, json.dumps(obj, ensure_ascii=False).encode('utf-8'), 'application/json; charset=utf-8')
 
         def _body(self) -> dict:
-            n = int(self.headers.get('Content-Length') or 0)
-            if not n:
+            try:
+                n = int(self.headers.get('Content-Length') or 0)
+            except ValueError:
+                raise ValueError('invalid Content-Length') from None
+            if n <= 0:
                 return {}
-            return json.loads(self.rfile.read(n).decode('utf-8'))
+            if n > MAX_BODY:
+                raise BodyTooLarge(f'request body too large ({n} bytes, limit {MAX_BODY})')
+            body = json.loads(self.rfile.read(n).decode('utf-8'))
+            if not isinstance(body, dict):
+                raise ValueError('the request body must be a JSON object')
+            return body
 
         # -- routes ------------------------------------------------------------
+        def do_HEAD(self):
+            self._head_only = True
+            try:
+                self.do_GET()
+            finally:
+                self._head_only = False
+
         def do_GET(self):
             path = urlparse(self.path).path
             try:
@@ -84,16 +121,21 @@ def make_handler(service: AssistantService):
                     return self._json(200, service.parse_team(body.get('text'), body.get('sets')))
                 if path == '/api/preview':
                     return self._json(200, service.team_preview(body['my_team'], body['foe'],
-                                                                sims=int(body.get('sims') or 12)))
+                                                                sims=_int_param(body, 'sims', 12, 1, 48)))
                 if path == '/api/advise':
-                    return self._json(200, service.advise(body['state'], samples=int(body.get('samples') or 12),
-                                                          depth=int(body.get('depth') or 2)))
+                    return self._json(200, service.advise(body['state'],
+                                                          samples=_int_param(body, 'samples', 12, 1, 64),
+                                                          depth=_int_param(body, 'depth', 2, 1, 3)))
                 if path == '/api/cancel':
                     return self._json(200, service.cancel())
                 if path == '/api/advise_switch':
                     return self._json(200, service.advise_switch(body['state'],
-                                                                 samples=int(body.get('samples') or 8)))
+                                                                 samples=_int_param(body, 'samples', 8, 1, 64),
+                                                                 depth=_int_param(body, 'depth', 2, 1, 3)))
                 return self._json(404, {'error': 'not found'})
+            except BodyTooLarge as exc:
+                self.close_connection = True  # the unread body must not be parsed as the next request
+                return self._json(413, {'error': str(exc)})
             except (KeyError, ValueError, TypeError) as exc:
                 traceback.print_exc()
                 return self._json(400, {'error': f'{type(exc).__name__}: {exc}'})
@@ -103,7 +145,7 @@ def make_handler(service: AssistantService):
 
         def _static(self, rel: str):
             full = os.path.normpath(os.path.join(STATIC_DIR, rel))
-            if not full.startswith(STATIC_DIR) or not os.path.isfile(full):
+            if os.path.commonpath([full, STATIC_DIR]) != STATIC_DIR or not os.path.isfile(full):
                 return self._json(404, {'error': 'not found'})
             ctype = mimetypes.guess_type(full)[0] or 'application/octet-stream'
             if ctype.startswith('text/') or ctype in ('application/javascript',):
