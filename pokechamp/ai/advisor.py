@@ -389,8 +389,9 @@ def _apply_mon_state(battle: Battle, pokemon, ms: MonState | None, is_me: bool):
     elif not ms.status and pokemon.status and pokemon.status != 'fnt':
         pokemon.status = ''
         pokemon.statusState = battle.initEffectState(Obj(id='', target=pokemon))
-    for k, v in ms.boosts.items():
-        pokemon.boosts[k] = max(-6, min(6, v))
+    # boosts are exactly as described (also undoes e.g. Intimidate from the rebuilt battle's start)
+    for k in BOOST_STATS:
+        pokemon.boosts[k] = max(-6, min(6, int(ms.boosts.get(k, 0))))
     if ms.item is not None:
         item = to_id(ms.item)
         if pokemon.item != item:
@@ -441,7 +442,10 @@ def build_battle(inp: AdvisorInput, foe_sets: list, foe_brought: list, seed) -> 
         alive = lambda n: not (mons.get(n) and mons[n].fainted)  # noqa: E731
         lead = [n for n in active][:n_active]
         rest = [n for n in brought if n not in lead]
-        rest.sort(key=lambda n: not alive(n))
+        # leads must be able to battle; the others keep their order
+        if len(lead) < n_active:
+            lead += [n for n in rest if alive(n)][:n_active - len(lead)]
+            rest = [n for n in rest if n not in lead]
         chosen = (lead + rest)[:picked]
         for n in names_all:
             if len(chosen) >= picked:
@@ -568,6 +572,22 @@ class Recommendation:
     stderr: float
     prior: float
     samples: int
+    meaning: tuple | None = None      # per slot: ('move', move name) / ('switch', species) / None
+
+
+def option_meaning(battle: Battle, sid: str, option) -> tuple:
+    req = battle.getSide(sid).activeRequest
+    out = []
+    for slot, a in enumerate(option):
+        if a == PASS:
+            out.append(None)
+            continue
+        kind = decode(a)
+        if kind[0] == 'switch':
+            out.append(('switch', req['side']['pokemon'][kind[1]]['details'].split(',')[0]))
+        else:
+            out.append(('move', req['active'][slot]['moves'][kind[1]]['move']))
+    return tuple(out)
 
 
 def describe_option(battle: Battle, sid: str, option) -> str:
@@ -661,7 +681,7 @@ class Advisor:
                     session.apply_default(sid)
         return self._evaluate_leaf(session)
 
-    def recommend(self, inp: AdvisorInput, determinizations: int = 12, depth: int = 3,
+    def recommend(self, inp: AdvisorInput, determinizations: int = 12, depth: int = 3, prior_weight: float = 0.04,
                   log=None) -> list[Recommendation]:
         prior_sets = SetPrior(inp.formatid, self.library)
         dex = get_dex()
@@ -669,6 +689,7 @@ class Advisor:
         counts: dict = {}
         sq: dict = {}
         labels: dict = {}
+        meanings: dict = {}
         priors: dict = {}
         picked = dex.formats.get(inp.formatid).ruleTable.pickedTeamSize or 6
         for d in range(determinizations):
@@ -705,8 +726,14 @@ class Advisor:
                         priors[opt] = float(p)
                     if log:
                         log(f"[advisor] value network: win probability {0.5 * (value + 1) * 100:.1f}%")
+                else:
+                    from .heuristic import HeuristicAgent
+                    pick = HeuristicAgent(0).choose(RolloutSession(battle), 'p1', view, legal)
+                    for opt in legal:
+                        priors[opt] = 1.0 if opt == pick else 0.0
             for opt in legal:
                 labels.setdefault(opt, describe_option(battle, 'p1', opt))
+                meanings.setdefault(opt, option_meaning(battle, 'p1', opt))
                 v = self._rollout(battle, opt, depth)
                 if v != v:  # rejected choice
                     continue
@@ -722,8 +749,10 @@ class Advisor:
         for opt, n in counts.items():
             mean = sums[opt] / n
             var = max(0.0, sq[opt] / n - mean * mean)
-            out.append(Recommendation(opt, labels[opt], mean, math.sqrt(var / max(1, n)), priors.get(opt, 0.0), n))
-        out.sort(key=lambda r: (-r.win_rate, -r.prior))
+            out.append(Recommendation(opt, labels[opt], mean, math.sqrt(var / max(1, n)), priors.get(opt, 0.0), n,
+                                      meanings.get(opt)))
+        # close calls (within the sampling noise) go to the policy's preferred action
+        out.sort(key=lambda r: -(r.win_rate + prior_weight * r.prior))
         return out
 
 
