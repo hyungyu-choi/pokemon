@@ -15,6 +15,8 @@ behaviours that Python does not have natively:
 """
 from __future__ import annotations
 
+import copy
+
 import math
 from typing import Any
 
@@ -86,7 +88,13 @@ class Obj(dict):
         return type(self)(self)
 
     def __deepcopy__(self, memo):
-        return type(self)({k: deep_clone(v) for k, v in self.items()})
+        # full, identity-preserving copy (used to clone whole battles); deep_clone() is the
+        # JSON-style clone Showdown's code uses
+        new = type(self)()
+        memo[id(self)] = new
+        for k, v in self.items():
+            dict.__setitem__(new, k, copy.deepcopy(v, memo))
+        return new
 
     def __hash__(self):  # identity semantics, like JS objects
         return id(self)

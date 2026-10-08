@@ -1,0 +1,53 @@
+Garchomp @ Choice Scarf
+Ability: Rough Skin
+SPs: 2 HP / 32 Atk / 32 Spe
+Jolly Nature
+- Earthquake
+- Dragon Claw
+- Stone Edge
+- Poison Jab
+
+Rotom-Wash @ Sitrus Berry
+Ability: Levitate
+SPs: 32 HP / 32 Def / 2 SpA
+Bold Nature
+- Hydro Pump
+- Volt Switch
+- Will-O-Wisp
+- Protect
+
+Kingambit @ Black Glasses
+Ability: Defiant
+SPs: 32 HP / 32 Atk / 2 Spe
+Adamant Nature
+- Kowtow Cleave
+- Sucker Punch
+- Iron Head
+- Swords Dance
+
+Gengar @ Gengarite
+Ability: Cursed Body
+SPs: 2 HP / 32 SpA / 32 Spe
+Timid Nature
+- Shadow Ball
+- Sludge Bomb
+- Focus Blast
+- Protect
+
+Talonflame @ Focus Sash
+Ability: Gale Wings
+SPs: 2 HP / 32 Atk / 32 Spe
+Jolly Nature
+- Brave Bird
+- Flare Blitz
+- Tailwind
+- Protect
+
+Azumarill @ Leftovers
+Ability: Huge Power
+SPs: 32 HP / 32 Atk / 2 Spe
+Adamant Nature
+- Aqua Jet
+- Play Rough
+- Liquidation
+- Belly Drum

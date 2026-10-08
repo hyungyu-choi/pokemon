@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import multiprocessing
 import random
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
@@ -87,7 +88,7 @@ def evaluate(factory_a, factory_b, n_games: int = 100, formatid: str = FORMAT_SI
         if k > 0:
             chunks.append((factory_a, factory_b, k, formatid, seed * 1000 + w, team_source))
     total = MatchResult()
-    with ProcessPoolExecutor(max_workers=workers) as ex:
+    with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context('spawn')) as ex:
         for r in ex.map(_play_pairs, chunks):
             total = total + r
     return total
