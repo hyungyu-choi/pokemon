@@ -59,7 +59,6 @@ class PolicyValueNet(nn.Module):
     # ------------------------------------------------------------------
     def encode(self, obs: dict):
         ids, mon, move_ids, move = obs['ids'], obs['mon'], obs['move_ids'], obs['move']
-        B = ids.shape[0]
         mv = torch.cat([self.move_emb(move_ids), move], dim=-1)          # [B,12,4,32+F]
         mv = self.move_mlp(mv)                                           # [B,12,4,64]
         known = (move_ids > 0).float().unsqueeze(-1)

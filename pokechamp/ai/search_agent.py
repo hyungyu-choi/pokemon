@@ -103,7 +103,7 @@ class SearchAgent:
 
     def __init__(self, seed=None, model_path: str | None = None, library: str | None = None,
                  determinizations: int = 6, depth: int = 2, fallback=None, prior_weight: float = 0.04):
-        self.advisor = Advisor(model_path=model_path, library=library, seed=seed or 0)
+        self.advisor = Advisor(model_path=model_path, library=library, seed=seed or 0, threads=1)
         self.determinizations = determinizations
         self.depth = depth
         self.prior_weight = prior_weight

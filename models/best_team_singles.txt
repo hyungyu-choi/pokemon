@@ -1,0 +1,53 @@
+Kleavor @ Shed Shell
+Ability: Sharpness
+SPs: 32 Atk / 2 SpD / 32 Spe
+Jolly Nature
+- Protect
+- Swords Dance
+- Double-Edge
+- Stone Axe
+
+Aggron @ Aggronite
+Ability: Rock Head
+SPs: 1 HP / 24 Atk / 27 Def / 11 SpA / 2 SpD / 1 Spe
+Impish Nature
+- Body Press
+- Scary Face
+- Ice Punch
+- Thunder Punch
+
+Kangaskhan @ Silver Powder
+Ability: Scrappy
+SPs: 32 Atk / 2 Def / 32 Spe
+Jolly Nature
+- Substitute
+- Bulldoze
+- Earthquake
+- Focus Blast
+
+Alcremie-Lemon-Cream @ Electric Seed
+Ability: Sweet Veil
+SPs: 1 HP / 22 Atk / 12 SpD / 31 Spe
+Naive Nature
+- Aromatic Mist
+- Decorate
+- Calm Mind
+- Play Rough
+
+Annihilape @ Red Card
+Ability: Inner Focus
+SPs: 3 Atk / 2 Def / 29 SpA / 32 Spe
+Gentle Nature
+- Low Sweep
+- Counter
+- Spite
+- Fire Punch
+
+Hydreigon @ Rocky Helmet
+Ability: Levitate
+SPs: 32 Atk / 2 SpA / 32 Spe
+Jolly Nature
+- Head Smash
+- Fire Blast
+- Crunch
+- Surf

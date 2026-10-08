@@ -1,0 +1,4338 @@
+{
+ "format": "gen9championsbssregmc",
+ "generation": 40,
+ "teams": [
+  [
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Air Balloon",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Draining Kiss",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Slash",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Bulldoze",
+     "Scary Face",
+     "Ice Punch",
+     "Endeavor"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Facade",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Draining Kiss",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Head Smash",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Gengar",
+    "name": "Gengar",
+    "item": "Expert Belt",
+    "ability": "Cursed Body",
+    "moves": [
+     "Clear Smog",
+     "Knock Off",
+     "Poison Jab",
+     "Thief"
+    ],
+    "nature": "Relaxed",
+    "evs": {
+     "hp": 16,
+     "atk": 4,
+     "def": 2,
+     "spa": 12,
+     "spd": 2,
+     "spe": 30
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Outrage",
+     "Fire Blast",
+     "Crunch",
+     "Head Smash"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Cross Chop",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Impish",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Aromatic Mist",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Impish",
+    "evs": {
+     "hp": 0,
+     "atk": 26,
+     "def": 27,
+     "spa": 12,
+     "spd": 0,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Outrage",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 4,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 28
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Impish",
+    "evs": {
+     "hp": 0,
+     "atk": 26,
+     "def": 27,
+     "spa": 12,
+     "spd": 0,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Encore",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Outrage",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Swarm",
+    "moves": [
+     "Protect",
+     "Stone Edge",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Ice Beam",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 4,
+     "atk": 16,
+     "def": 0,
+     "spa": 14,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Baxcalibur",
+    "name": "Baxcalibur",
+    "item": "Fairy Feather",
+    "ability": "Ice Body",
+    "moves": [
+     "Dragon Tail",
+     "Giga Impact",
+     "Aqua Tail",
+     "Body Press"
+    ],
+    "nature": "Calm",
+    "evs": {
+     "hp": 3,
+     "atk": 28,
+     "def": 30,
+     "spa": 4,
+     "spd": 0,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Draining Kiss",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Dragon Pulse",
+     "Focus Blast",
+     "Iron Defense"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 25,
+     "spa": 11,
+     "spd": 2,
+     "spe": 3
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Ice Beam",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Swarm",
+    "moves": [
+     "Protect",
+     "Stone Edge",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Endeavor"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Draining Kiss",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Shadow Ball",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 28,
+     "def": 0,
+     "spa": 4,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 2,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 25,
+     "spa": 11,
+     "spd": 2,
+     "spe": 3
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Occa Berry",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Chilan Berry",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Shadow Ball",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 2,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 32,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 0
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Squawkabilly-White",
+    "name": "Squawkabilly-White",
+    "item": "Psychic Seed",
+    "ability": "Sheer Force",
+    "moves": [
+     "Tailwind",
+     "Flatter",
+     "Lash Out",
+     "Quick Attack"
+    ],
+    "nature": "Brave",
+    "evs": {
+     "hp": 0,
+     "atk": 9,
+     "def": 21,
+     "spa": 10,
+     "spd": 2,
+     "spe": 24
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Impish",
+    "evs": {
+     "hp": 0,
+     "atk": 26,
+     "def": 27,
+     "spa": 12,
+     "spd": 0,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Shadow Ball",
+     "Counter",
+     "Outrage",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Sitrus Berry",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 27,
+     "def": 17,
+     "spa": 15,
+     "spd": 6,
+     "spe": 0
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Sunny Day"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Seed Bomb"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Swarm",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Gengar",
+    "name": "Gengar",
+    "item": "Expert Belt",
+    "ability": "Cursed Body",
+    "moves": [
+     "Clear Smog",
+     "Knock Off",
+     "Poison Jab",
+     "Thief"
+    ],
+    "nature": "Relaxed",
+    "evs": {
+     "hp": 16,
+     "atk": 4,
+     "def": 2,
+     "spa": 12,
+     "spd": 2,
+     "spe": 30
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Outrage",
+     "Fire Blast",
+     "Crunch",
+     "Head Smash"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 18,
+     "spd": 0,
+     "spe": 16
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Cross Chop",
+     "Spite",
+     "Uproar"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Impish",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Damp Rock",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Impish",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Lash Out"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Aromatic Mist",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 14,
+     "atk": 5,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 16
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 25,
+     "spa": 11,
+     "spd": 2,
+     "spe": 3
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Sunny Day"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Expert Belt",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Charti Berry",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Focus Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Light Ball",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Swarm",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Focus Blast",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 0,
+     "atk": 20,
+     "def": 29,
+     "spa": 7,
+     "spd": 7,
+     "spe": 3
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 2,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Safeguard",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 0,
+     "atk": 23,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Big Root",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Swarm",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Slash",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Focus Blast",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 25,
+     "spa": 11,
+     "spd": 2,
+     "spe": 3
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Earthquake",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 0,
+     "atk": 23,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 32,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 0
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Swarm",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Focus Blast",
+     "Thunder Punch"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Bright Powder",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 2,
+     "atk": 1,
+     "def": 0,
+     "spa": 31,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Muscle Band",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Magic Room",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 0,
+     "atk": 23,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Pain Split",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 32,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 0
+    },
+    "level": 50
+   }
+  ]
+ ],
+ "fitness": [
+  0.782608695652174,
+  0.7631578947368421,
+  0.7368421052631579,
+  0.6739130434782609,
+  0.6578947368421053,
+  0.6190476190476191,
+  0.6176470588235294,
+  0.6052631578947368,
+  0.5952380952380952,
+  0.5925925925925926,
+  0.5882352941176471,
+  0.5625,
+  0.5476190476190477,
+  0.5476190476190477,
+  0.5434782608695652,
+  0.5217391304347826,
+  0.4807692307692308,
+  0.475,
+  0.43333333333333335,
+  0.391304347826087,
+  0.3611111111111111,
+  0.34,
+  0.3076923076923077,
+  0.2
+ ],
+ "hall_of_fame": [
+  [
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Screech",
+     "Steel Wing",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Timid",
+    "evs": {
+     "hp": 17,
+     "atk": 9,
+     "def": 10,
+     "spa": 6,
+     "spd": 9,
+     "spe": 15
+    },
+    "level": 50
+   },
+   {
+    "species": "Pidgeot",
+    "name": "Pidgeot",
+    "item": "Pidgeotite",
+    "ability": "Big Pecks",
+    "moves": [
+     "Heat Wave",
+     "Roost",
+     "Round",
+     "Sleep Talk"
+    ],
+    "nature": "Modest",
+    "evs": {
+     "hp": 0,
+     "atk": 0,
+     "def": 4,
+     "spa": 30,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Giga Impact",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Rock Slide"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 32,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 0
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Screech",
+     "Steel Wing",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 2,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Pidgeot",
+    "name": "Pidgeot",
+    "item": "Pidgeotite",
+    "ability": "Big Pecks",
+    "moves": [
+     "Heat Wave",
+     "Roost",
+     "Round",
+     "Sleep Talk"
+    ],
+    "nature": "Modest",
+    "evs": {
+     "hp": 0,
+     "atk": 0,
+     "def": 4,
+     "spa": 30,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Giga Impact",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Rock Slide"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 32,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 0
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Pidgeot",
+    "name": "Pidgeot",
+    "item": "Pidgeotite",
+    "ability": "Big Pecks",
+    "moves": [
+     "Heat Wave",
+     "Roost",
+     "Round",
+     "Sleep Talk"
+    ],
+    "nature": "Modest",
+    "evs": {
+     "hp": 0,
+     "atk": 0,
+     "def": 4,
+     "spa": 30,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Bug Buzz",
+     "Stone Axe"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 18,
+     "atk": 3,
+     "def": 10,
+     "spa": 8,
+     "spd": 22,
+     "spe": 5
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Outrage",
+     "Fire Blast",
+     "Crunch",
+     "Head Smash"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Hyper Beam",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 32,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 0
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Smart Strike"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Screech",
+     "Steel Wing",
+     "Crunch",
+     "Outrage"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Timid",
+    "evs": {
+     "hp": 17,
+     "atk": 9,
+     "def": 10,
+     "spa": 6,
+     "spd": 9,
+     "spe": 15
+    },
+    "level": 50
+   },
+   {
+    "species": "Pidgeot",
+    "name": "Pidgeot",
+    "item": "Pidgeotite",
+    "ability": "Big Pecks",
+    "moves": [
+     "Heat Wave",
+     "Substitute",
+     "Round",
+     "Sleep Talk"
+    ],
+    "nature": "Modest",
+    "evs": {
+     "hp": 0,
+     "atk": 0,
+     "def": 4,
+     "spa": 30,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Acrobatics",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Giga Impact",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Rock Slide"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Grapploct",
+    "name": "Grapploct",
+    "item": "Magnet",
+    "ability": "Technician",
+    "moves": [
+     "Pain Split",
+     "Reversal",
+     "Brick Break",
+     "Feint"
+    ],
+    "nature": "Timid",
+    "evs": {
+     "hp": 0,
+     "atk": 0,
+     "def": 1,
+     "spa": 32,
+     "spd": 25,
+     "spe": 8
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Relaxed",
+    "evs": {
+     "hp": 17,
+     "atk": 9,
+     "def": 10,
+     "spa": 6,
+     "spd": 9,
+     "spe": 15
+    },
+    "level": 50
+   },
+   {
+    "species": "Excadrill",
+    "name": "Excadrill",
+    "item": "Never-Melt Ice",
+    "ability": "Mold Breaker",
+    "moves": [
+     "Iron Head",
+     "Round",
+     "Horn Drill",
+     "Sand Tomb"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 13,
+     "atk": 8,
+     "def": 11,
+     "spa": 5,
+     "spd": 10,
+     "spe": 19
+    },
+    "level": 50
+   },
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Lunge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Oranguru",
+    "name": "Oranguru",
+    "item": "Smooth Rock",
+    "ability": "Telepathy",
+    "moves": [
+     "Mega Kick",
+     "Giga Impact",
+     "After You",
+     "Instruct"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Rock Slide"
+    ],
+    "nature": "Adamant",
+    "evs": {
+     "hp": 32,
+     "atk": 30,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 2
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Serious",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Sleep Talk",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Defiant",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ],
+  [
+   {
+    "species": "Kleavor",
+    "name": "Kleavor",
+    "item": "Shed Shell",
+    "ability": "Sharpness",
+    "moves": [
+     "Protect",
+     "Swords Dance",
+     "Double-Edge",
+     "Stone Axe"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 0,
+     "spd": 2,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Aggron",
+    "name": "Aggron",
+    "item": "Aggronite",
+    "ability": "Rock Head",
+    "moves": [
+     "Body Press",
+     "Scary Face",
+     "Ice Punch",
+     "Thunder Punch"
+    ],
+    "nature": "Impish",
+    "evs": {
+     "hp": 1,
+     "atk": 24,
+     "def": 27,
+     "spa": 11,
+     "spd": 2,
+     "spe": 1
+    },
+    "level": 50
+   },
+   {
+    "species": "Kangaskhan",
+    "name": "Kangaskhan",
+    "item": "Silver Powder",
+    "ability": "Scrappy",
+    "moves": [
+     "Substitute",
+     "Bulldoze",
+     "Earthquake",
+     "Focus Blast"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 2,
+     "spa": 0,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Alcremie-Lemon-Cream",
+    "name": "Alcremie-Lemon-Cream",
+    "item": "Electric Seed",
+    "ability": "Sweet Veil",
+    "moves": [
+     "Aromatic Mist",
+     "Decorate",
+     "Calm Mind",
+     "Play Rough"
+    ],
+    "nature": "Naive",
+    "evs": {
+     "hp": 1,
+     "atk": 22,
+     "def": 0,
+     "spa": 0,
+     "spd": 12,
+     "spe": 31
+    },
+    "level": 50
+   },
+   {
+    "species": "Annihilape",
+    "name": "Annihilape",
+    "item": "Red Card",
+    "ability": "Inner Focus",
+    "moves": [
+     "Low Sweep",
+     "Counter",
+     "Spite",
+     "Fire Punch"
+    ],
+    "nature": "Gentle",
+    "evs": {
+     "hp": 0,
+     "atk": 3,
+     "def": 2,
+     "spa": 29,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   },
+   {
+    "species": "Hydreigon",
+    "name": "Hydreigon",
+    "item": "Rocky Helmet",
+    "ability": "Levitate",
+    "moves": [
+     "Head Smash",
+     "Fire Blast",
+     "Crunch",
+     "Surf"
+    ],
+    "nature": "Jolly",
+    "evs": {
+     "hp": 0,
+     "atk": 32,
+     "def": 0,
+     "spa": 2,
+     "spd": 0,
+     "spe": 32
+    },
+    "level": 50
+   }
+  ]
+ ],
+ "config": {
+  "formatid": "gen9championsbssregmc",
+  "out": "runs/teams_v2",
+  "population": 24,
+  "generations": 40,
+  "games_per_team": 24,
+  "hall_of_fame": 8,
+  "elite": 6,
+  "random_opponents": 4,
+  "mutation_rate": 0.3,
+  "crossover_rate": 0.3,
+  "workers": 1,
+  "agent": "heuristic",
+  "seed": 2,
+  "max_turns": 120
+ }
+}

@@ -313,7 +313,6 @@ def damage_parts(attacker: PokemonView, defender: PokemonView, move_name: str, v
     move = move_info(move_name)
     if move is None or move.category == 'Status':
         return None
-    a_side = _side_of(attacker, view)
     d_side = _side_of(defender, view)
     a_stats = a_stats or estimated_stats(attacker)
     d_stats = d_stats or estimated_stats(defender)

@@ -1,0 +1,13452 @@
+{
+ "Hydreigon": {
+  "win_rate": 0.553,
+  "games": 4843.0,
+  "move": [
+   [
+    "Rock Tomb",
+    0.683,
+    8.0
+   ],
+   [
+    "Rock Slide",
+    0.609,
+    5.7
+   ],
+   [
+    "Head Smash",
+    0.593,
+    566.7
+   ],
+   [
+    "Breaking Swipe",
+    0.585,
+    61.0
+   ],
+   [
+    "Fire Blast",
+    0.56,
+    4288.7
+   ],
+   [
+    "Surf",
+    0.558,
+    4178.3
+   ],
+   [
+    "Outrage",
+    0.554,
+    3833.3
+   ],
+   [
+    "Crunch",
+    0.554,
+    4488.0
+   ]
+  ],
+  "item": [
+   [
+    "Shuca Berry",
+    0.604,
+    106.7
+   ],
+   [
+    "Poison Barb",
+    0.575,
+    18.0
+   ],
+   [
+    "Muscle Band",
+    0.573,
+    142.3
+   ],
+   [
+    "Smooth Rock",
+    0.557,
+    325.0
+   ],
+   [
+    "Rocky Helmet",
+    0.556,
+    2615.0
+   ],
+   [
+    "Terrain Extender",
+    0.556,
+    7.0
+   ],
+   [
+    "Passho Berry",
+    0.552,
+    1315.3
+   ],
+   [
+    "Charcoal",
+    0.543,
+    167.0
+   ]
+  ],
+  "ability": [
+   [
+    "Levitate",
+    0.553,
+    4843.0
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.614,
+    5.3
+   ],
+   [
+    "Sassy",
+    0.583,
+    6.0
+   ],
+   [
+    "Serious",
+    0.567,
+    827.3
+   ],
+   [
+    "Jolly",
+    0.557,
+    3233.3
+   ],
+   [
+    "Docile",
+    0.548,
+    22.3
+   ],
+   [
+    "Gentle",
+    0.547,
+    12.3
+   ],
+   [
+    "Adamant",
+    0.526,
+    708.3
+   ],
+   [
+    "Mild",
+    0.5,
+    7.0
+   ]
+  ]
+ },
+ "Pidgeot": {
+  "win_rate": 0.543,
+  "games": 4839.3,
+  "move": [
+   [
+    "Sky Attack",
+    0.573,
+    14.0
+   ],
+   [
+    "Hyper Beam",
+    0.557,
+    1710.7
+   ],
+   [
+    "Hurricane",
+    0.553,
+    543.0
+   ],
+   [
+    "Roost",
+    0.55,
+    4385.0
+   ],
+   [
+    "Sleep Talk",
+    0.548,
+    3956.7
+   ],
+   [
+    "Heat Wave",
+    0.546,
+    3921.3
+   ],
+   [
+    "Round",
+    0.541,
+    2971.7
+   ],
+   [
+    "Tailwind",
+    0.536,
+    217.7
+   ]
+  ],
+  "item": [
+   [
+    "Choice Scarf",
+    0.587,
+    5.7
+   ],
+   [
+    "Leppa Berry",
+    0.586,
+    33.0
+   ],
+   [
+    "Pidgeotite",
+    0.549,
+    4475.7
+   ],
+   [
+    "Silver Powder",
+    0.523,
+    12.7
+   ],
+   [
+    "Heat Rock",
+    0.521,
+    6.0
+   ],
+   [
+    "Terrain Extender",
+    0.517,
+    27.7
+   ],
+   [
+    "Metronome",
+    0.514,
+    131.0
+   ],
+   [
+    "Wide Lens",
+    0.492,
+    19.3
+   ]
+  ],
+  "ability": [
+   [
+    "Big Pecks",
+    0.545,
+    4617.0
+   ],
+   [
+    "Tangled Feet",
+    0.518,
+    156.0
+   ],
+   [
+    "Keen Eye",
+    0.473,
+    66.3
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.611,
+    29.7
+   ],
+   [
+    "Modest",
+    0.547,
+    4307.3
+   ],
+   [
+    "Calm",
+    0.542,
+    25.7
+   ],
+   [
+    "Adamant",
+    0.534,
+    32.0
+   ],
+   [
+    "Rash",
+    0.519,
+    399.7
+   ],
+   [
+    "Lonely",
+    0.5,
+    23.3
+   ],
+   [
+    "Naughty",
+    0.442,
+    6.7
+   ],
+   [
+    "Quiet",
+    0.35,
+    8.0
+   ]
+  ]
+ },
+ "Goodra": {
+  "win_rate": 0.553,
+  "games": 3227.0,
+  "move": [
+   [
+    "Acid Armor",
+    0.604,
+    117.0
+   ],
+   [
+    "Weather Ball",
+    0.6,
+    8.0
+   ],
+   [
+    "Fire Punch",
+    0.599,
+    118.0
+   ],
+   [
+    "Sleep Talk",
+    0.592,
+    14.3
+   ],
+   [
+    "Focus Punch",
+    0.587,
+    5.7
+   ],
+   [
+    "Knock Off",
+    0.585,
+    125.0
+   ],
+   [
+    "Iron Tail",
+    0.583,
+    8.0
+   ],
+   [
+    "Dragon Tail",
+    0.568,
+    1163.7
+   ]
+  ],
+  "item": [
+   [
+    "Sharp Beak",
+    0.633,
+    14.3
+   ],
+   [
+    "Rawst Berry",
+    0.598,
+    110.3
+   ],
+   [
+    "Eject Button",
+    0.577,
+    63.0
+   ],
+   [
+    "Psychic Seed",
+    0.565,
+    5.7
+   ],
+   [
+    "Zoom Lens",
+    0.565,
+    5.7
+   ],
+   [
+    "Occa Berry",
+    0.554,
+    2820.7
+   ],
+   [
+    "Binding Band",
+    0.536,
+    21.3
+   ],
+   [
+    "Kebia Berry",
+    0.527,
+    47.3
+   ]
+  ],
+  "ability": [
+   [
+    "Gooey",
+    0.557,
+    1531.0
+   ],
+   [
+    "Hydration",
+    0.55,
+    1675.3
+   ],
+   [
+    "Sap Sipper",
+    0.471,
+    20.7
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.58,
+    12.7
+   ],
+   [
+    "Brave",
+    0.559,
+    1783.0
+   ],
+   [
+    "Jolly",
+    0.551,
+    1134.3
+   ],
+   [
+    "Relaxed",
+    0.532,
+    96.7
+   ],
+   [
+    "Adamant",
+    0.528,
+    136.0
+   ],
+   [
+    "Lonely",
+    0.52,
+    14.7
+   ],
+   [
+    "Calm",
+    0.5,
+    15.0
+   ],
+   [
+    "Gentle",
+    0.489,
+    12.7
+   ]
+  ]
+ },
+ "Oranguru": {
+  "win_rate": 0.544,
+  "games": 3065.3,
+  "move": [
+   [
+    "Energy Ball",
+    0.679,
+    15.7
+   ],
+   [
+    "Extrasensory",
+    0.6,
+    8.0
+   ],
+   [
+    "Yawn",
+    0.591,
+    5.3
+   ],
+   [
+    "Sleep Talk",
+    0.573,
+    39.0
+   ],
+   [
+    "Pain Split",
+    0.57,
+    117.7
+   ],
+   [
+    "Hyper Beam",
+    0.559,
+    1562.0
+   ],
+   [
+    "Instruct",
+    0.546,
+    2851.0
+   ],
+   [
+    "Mega Kick",
+    0.546,
+    2783.7
+   ]
+  ],
+  "item": [
+   [
+    "Chople Berry",
+    0.58,
+    6.3
+   ],
+   [
+    "Smooth Rock",
+    0.549,
+    2806.7
+   ],
+   [
+    "Big Root",
+    0.538,
+    6.7
+   ],
+   [
+    "Rindo Berry",
+    0.534,
+    12.7
+   ],
+   [
+    "Grassy Seed",
+    0.518,
+    7.3
+   ],
+   [
+    "Black Glasses",
+    0.518,
+    73.0
+   ],
+   [
+    "Soft Sand",
+    0.511,
+    28.7
+   ],
+   [
+    "Charti Berry",
+    0.507,
+    20.3
+   ]
+  ],
+  "ability": [
+   [
+    "Symbiosis",
+    0.556,
+    481.3
+   ],
+   [
+    "Telepathy",
+    0.542,
+    2584.0
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.561,
+    1246.7
+   ],
+   [
+    "Adamant",
+    0.536,
+    1696.0
+   ],
+   [
+    "Quirky",
+    0.521,
+    21.3
+   ],
+   [
+    "Modest",
+    0.502,
+    66.0
+   ],
+   [
+    "Jolly",
+    0.5,
+    12.7
+   ],
+   [
+    "Brave",
+    0.479,
+    6.0
+   ],
+   [
+    "Impish",
+    0.406,
+    8.7
+   ],
+   [
+    "Hasty",
+    0.333,
+    8.0
+   ]
+  ]
+ },
+ "Kleavor": {
+  "win_rate": 0.553,
+  "games": 3065.0,
+  "move": [
+   [
+    "Double-Edge",
+    0.625,
+    179.3
+   ],
+   [
+    "Feint",
+    0.59,
+    25.7
+   ],
+   [
+    "Giga Impact",
+    0.565,
+    1217.3
+   ],
+   [
+    "Swords Dance",
+    0.561,
+    2380.3
+   ],
+   [
+    "Aerial Ace",
+    0.561,
+    11.7
+   ],
+   [
+    "Counter",
+    0.558,
+    1301.0
+   ],
+   [
+    "X-Scissor",
+    0.558,
+    55.7
+   ],
+   [
+    "Rock Slide",
+    0.557,
+    344.3
+   ]
+  ],
+  "item": [
+   [
+    "Wide Lens",
+    0.589,
+    7.3
+   ],
+   [
+    "Poison Barb",
+    0.565,
+    16.0
+   ],
+   [
+    "Black Glasses",
+    0.564,
+    1124.7
+   ],
+   [
+    "Fairy Feather",
+    0.56,
+    14.7
+   ],
+   [
+    "Shed Shell",
+    0.554,
+    1693.3
+   ],
+   [
+    "Magnet",
+    0.533,
+    129.7
+   ],
+   [
+    "Twisted Spoon",
+    0.469,
+    19.3
+   ],
+   [
+    "Light Ball",
+    0.464,
+    26.0
+   ]
+  ],
+  "ability": [
+   [
+    "Sharpness",
+    0.557,
+    2951.3
+   ],
+   [
+    "Swarm",
+    0.467,
+    88.0
+   ],
+   [
+    "Sheer Force",
+    0.428,
+    25.7
+   ]
+  ],
+  "nature": [
+   [
+    "Bold",
+    0.588,
+    15.0
+   ],
+   [
+    "Jolly",
+    0.568,
+    1928.0
+   ],
+   [
+    "Lonely",
+    0.536,
+    7.3
+   ],
+   [
+    "Adamant",
+    0.533,
+    1035.7
+   ],
+   [
+    "Brave",
+    0.461,
+    62.7
+   ],
+   [
+    "Hardy",
+    0.403,
+    8.3
+   ],
+   [
+    "Naive",
+    0.4,
+    8.0
+   ]
+  ]
+ },
+ "Aggron": {
+  "win_rate": 0.551,
+  "games": 2760.3,
+  "move": [
+   [
+    "Endeavor",
+    0.591,
+    53.0
+   ],
+   [
+    "Iron Defense",
+    0.591,
+    5.3
+   ],
+   [
+    "Body Press",
+    0.562,
+    2631.7
+   ],
+   [
+    "Thunder Punch",
+    0.559,
+    1953.0
+   ],
+   [
+    "Scary Face",
+    0.556,
+    2453.0
+   ],
+   [
+    "Ice Punch",
+    0.555,
+    2673.0
+   ],
+   [
+    "Focus Blast",
+    0.551,
+    47.0
+   ],
+   [
+    "Curse",
+    0.548,
+    5.0
+   ]
+  ],
+  "item": [
+   [
+    "Aggronite",
+    0.562,
+    2646.0
+   ],
+   [
+    "Coba Berry",
+    0.481,
+    15.3
+   ],
+   [
+    "Mystic Water",
+    0.457,
+    5.7
+   ],
+   [
+    "Mental Herb",
+    0.442,
+    6.7
+   ],
+   [
+    "Yache Berry",
+    0.409,
+    5.3
+   ],
+   [
+    "Babiri Berry",
+    0.393,
+    7.3
+   ],
+   [
+    "Icy Rock",
+    0.36,
+    6.3
+   ],
+   [
+    "Wacan Berry",
+    0.348,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Rock Head",
+    0.554,
+    2634.0
+   ],
+   [
+    "Sturdy",
+    0.519,
+    58.0
+   ],
+   [
+    "Heavy Metal",
+    0.457,
+    68.3
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.693,
+    30.0
+   ],
+   [
+    "Calm",
+    0.587,
+    5.7
+   ],
+   [
+    "Serious",
+    0.559,
+    2127.0
+   ],
+   [
+    "Naive",
+    0.527,
+    28.3
+   ],
+   [
+    "Adamant",
+    0.525,
+    343.7
+   ],
+   [
+    "Jolly",
+    0.512,
+    193.7
+   ],
+   [
+    "Quirky",
+    0.476,
+    19.0
+   ],
+   [
+    "Naughty",
+    0.379,
+    7.7
+   ]
+  ]
+ },
+ "Basculegion-F": {
+  "win_rate": 0.548,
+  "games": 1891.3,
+  "move": [
+   [
+    "Surf",
+    0.555,
+    1785.3
+   ],
+   [
+    "Endure",
+    0.554,
+    1503.0
+   ],
+   [
+    "Flip Turn",
+    0.553,
+    1735.0
+   ],
+   [
+    "Blizzard",
+    0.551,
+    1831.7
+   ],
+   [
+    "Hex",
+    0.536,
+    25.7
+   ],
+   [
+    "Ice Beam",
+    0.534,
+    206.0
+   ],
+   [
+    "Hydro Pump",
+    0.528,
+    27.3
+   ],
+   [
+    "Wave Crash",
+    0.509,
+    222.3
+   ]
+  ],
+  "item": [
+   [
+    "Grassy Seed",
+    0.587,
+    15.3
+   ],
+   [
+    "King's Rock",
+    0.555,
+    1727.7
+   ],
+   [
+    "Damp Rock",
+    0.543,
+    13.7
+   ],
+   [
+    "Miracle Seed",
+    0.533,
+    13.0
+   ],
+   [
+    "Aspear Berry",
+    0.525,
+    17.7
+   ],
+   [
+    "Pecha Berry",
+    0.481,
+    7.0
+   ],
+   [
+    "Chople Berry",
+    0.48,
+    14.3
+   ],
+   [
+    "Charcoal",
+    0.478,
+    51.3
+   ]
+  ],
+  "ability": [
+   [
+    "Adaptability",
+    0.553,
+    1446.3
+   ],
+   [
+    "Mold Breaker",
+    0.54,
+    350.3
+   ],
+   [
+    "Swift Swim",
+    0.497,
+    94.7
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.566,
+    1202.3
+   ],
+   [
+    "Gentle",
+    0.522,
+    590.0
+   ],
+   [
+    "Docile",
+    0.51,
+    50.0
+   ],
+   [
+    "Modest",
+    0.478,
+    29.0
+   ],
+   [
+    "Adamant",
+    0.446,
+    7.3
+   ],
+   [
+    "Bold",
+    0.42,
+    12.7
+   ]
+  ]
+ },
+ "Squawkabilly-Blue": {
+  "win_rate": 0.557,
+  "games": 1676.3,
+  "move": [
+   [
+    "Hurricane",
+    0.6,
+    8.0
+   ],
+   [
+    "Lash Out",
+    0.588,
+    79.0
+   ],
+   [
+    "Giga Impact",
+    0.574,
+    1229.0
+   ],
+   [
+    "Endure",
+    0.568,
+    304.0
+   ],
+   [
+    "Endeavor",
+    0.558,
+    1639.3
+   ],
+   [
+    "Helping Hand",
+    0.558,
+    1588.7
+   ],
+   [
+    "Heat Wave",
+    0.558,
+    1164.7
+   ],
+   [
+    "Uproar",
+    0.539,
+    155.3
+   ]
+  ],
+  "item": [
+   [
+    "Heat Rock",
+    0.596,
+    13.7
+   ],
+   [
+    "Air Balloon",
+    0.583,
+    590.3
+   ],
+   [
+    "Magnet",
+    0.565,
+    379.3
+   ],
+   [
+    "Leek",
+    0.532,
+    18.7
+   ],
+   [
+    "Colbur Berry",
+    0.53,
+    484.7
+   ],
+   [
+    "Grassy Seed",
+    0.529,
+    182.3
+   ],
+   [
+    "Roseli Berry",
+    0.429,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Guts",
+    0.558,
+    1662.7
+   ],
+   [
+    "Intimidate",
+    0.54,
+    6.3
+   ],
+   [
+    "Hustle",
+    0.393,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.56,
+    1634.7
+   ],
+   [
+    "Jolly",
+    0.481,
+    6.7
+   ],
+   [
+    "Adamant",
+    0.46,
+    27.3
+   ],
+   [
+    "Brave",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Kangaskhan": {
+  "win_rate": 0.54,
+  "games": 1613.0,
+  "move": [
+   [
+    "Ice Punch",
+    0.588,
+    15.0
+   ],
+   [
+    "Earthquake",
+    0.546,
+    1442.3
+   ],
+   [
+    "Substitute",
+    0.544,
+    1466.3
+   ],
+   [
+    "Focus Blast",
+    0.544,
+    1584.0
+   ],
+   [
+    "Bulldoze",
+    0.543,
+    1592.7
+   ],
+   [
+    "Ice Beam",
+    0.533,
+    58.0
+   ],
+   [
+    "Double-Edge",
+    0.512,
+    53.7
+   ],
+   [
+    "Crunch",
+    0.501,
+    111.3
+   ]
+  ],
+  "item": [
+   [
+    "Tanga Berry",
+    0.587,
+    5.7
+   ],
+   [
+    "Choice Scarf",
+    0.565,
+    8.3
+   ],
+   [
+    "Wacan Berry",
+    0.548,
+    22.3
+   ],
+   [
+    "Silver Powder",
+    0.543,
+    1527.3
+   ],
+   [
+    "Charti Berry",
+    0.5,
+    18.0
+   ],
+   [
+    "Leftovers",
+    0.481,
+    6.7
+   ],
+   [
+    "Focus Sash",
+    0.44,
+    6.3
+   ],
+   [
+    "Misty Seed",
+    0.417,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Early Bird",
+    0.551,
+    21.0
+   ],
+   [
+    "Scrappy",
+    0.541,
+    1561.7
+   ],
+   [
+    "Inner Focus",
+    0.526,
+    30.3
+   ]
+  ],
+  "nature": [
+   [
+    "Jolly",
+    0.576,
+    482.7
+   ],
+   [
+    "Lax",
+    0.569,
+    7.7
+   ],
+   [
+    "Relaxed",
+    0.542,
+    69.3
+   ],
+   [
+    "Timid",
+    0.525,
+    1027.3
+   ],
+   [
+    "Rash",
+    0.478,
+    5.7
+   ],
+   [
+    "Sassy",
+    0.467,
+    13.3
+   ],
+   [
+    "Adamant",
+    0.463,
+    7.0
+   ]
+  ]
+ },
+ "Scizor": {
+  "win_rate": 0.555,
+  "games": 1278.3,
+  "move": [
+   [
+    "Tailwind",
+    0.604,
+    6.0
+   ],
+   [
+    "Aerial Ace",
+    0.574,
+    7.0
+   ],
+   [
+    "Counter",
+    0.567,
+    8.0
+   ],
+   [
+    "Steel Wing",
+    0.566,
+    279.3
+   ],
+   [
+    "Trailblaze",
+    0.564,
+    864.0
+   ],
+   [
+    "Iron Head",
+    0.563,
+    926.7
+   ],
+   [
+    "Brick Break",
+    0.562,
+    27.3
+   ],
+   [
+    "Lunge",
+    0.557,
+    1266.0
+   ]
+  ],
+  "item": [
+   [
+    "Black Belt",
+    0.603,
+    7.7
+   ],
+   [
+    "Charti Berry",
+    0.57,
+    244.7
+   ],
+   [
+    "Chople Berry",
+    0.57,
+    17.0
+   ],
+   [
+    "Oran Berry",
+    0.555,
+    981.3
+   ],
+   [
+    "Iron Ball",
+    0.45,
+    14.7
+   ],
+   [
+    "Psychic Seed",
+    0.354,
+    6.0
+   ],
+   [
+    "Cheri Berry",
+    0.333,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Light Metal",
+    0.559,
+    1162.0
+   ],
+   [
+    "Swarm",
+    0.53,
+    102.7
+   ],
+   [
+    "Technician",
+    0.362,
+    13.7
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.558,
+    1248.0
+   ],
+   [
+    "Jolly",
+    0.489,
+    12.7
+   ],
+   [
+    "Naive",
+    0.415,
+    11.7
+   ],
+   [
+    "Quirky",
+    0.354,
+    6.0
+   ]
+  ]
+ },
+ "Hippowdon": {
+  "win_rate": 0.536,
+  "games": 916.7,
+  "move": [
+   [
+    "Spit Up",
+    0.562,
+    608.7
+   ],
+   [
+    "Stealth Rock",
+    0.55,
+    8.0
+   ],
+   [
+    "Body Press",
+    0.541,
+    833.0
+   ],
+   [
+    "Curse",
+    0.539,
+    905.0
+   ],
+   [
+    "Rock Tomb",
+    0.536,
+    916.7
+   ],
+   [
+    "Stomping Tantrum",
+    0.531,
+    41.0
+   ],
+   [
+    "Earth Power",
+    0.512,
+    211.0
+   ],
+   [
+    "Hyper Voice",
+    0.492,
+    77.7
+   ]
+  ],
+  "item": [
+   [
+    "Metal Coat",
+    0.615,
+    11.0
+   ],
+   [
+    "Yache Berry",
+    0.546,
+    829.0
+   ],
+   [
+    "Light Clay",
+    0.49,
+    15.0
+   ],
+   [
+    "Leek",
+    0.478,
+    20.7
+   ],
+   [
+    "Pecha Berry",
+    0.423,
+    15.3
+   ],
+   [
+    "Charti Berry",
+    0.378,
+    13.0
+   ],
+   [
+    "Leftovers",
+    0.364,
+    5.3
+   ],
+   [
+    "Wacan Berry",
+    0.321,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sand Stream",
+    0.54,
+    860.3
+   ],
+   [
+    "Sand Force",
+    0.477,
+    56.3
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.543,
+    859.0
+   ],
+   [
+    "Bashful",
+    0.532,
+    8.3
+   ],
+   [
+    "Adamant",
+    0.523,
+    12.7
+   ],
+   [
+    "Jolly",
+    0.397,
+    36.7
+   ]
+  ]
+ },
+ "Leafeon": {
+  "win_rate": 0.528,
+  "games": 708.0,
+  "move": [
+   [
+    "Leaf Storm",
+    0.545,
+    12.7
+   ],
+   [
+    "Focus Energy",
+    0.538,
+    659.3
+   ],
+   [
+    "Aerial Ace",
+    0.537,
+    579.7
+   ],
+   [
+    "Shadow Ball",
+    0.535,
+    682.7
+   ],
+   [
+    "Round",
+    0.535,
+    680.7
+   ],
+   [
+    "Double-Edge",
+    0.475,
+    139.7
+   ],
+   [
+    "Weather Ball",
+    0.444,
+    7.0
+   ],
+   [
+    "Charm",
+    0.444,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Zoom Lens",
+    0.541,
+    640.3
+   ],
+   [
+    "Scope Lens",
+    0.444,
+    7.0
+   ],
+   [
+    "Light Clay",
+    0.435,
+    47.0
+   ],
+   [
+    "Electric Seed",
+    0.383,
+    8.0
+   ],
+   [
+    "Heat Rock",
+    0.326,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Chlorophyll",
+    0.532,
+    695.0
+   ],
+   [
+    "Leaf Guard",
+    0.367,
+    13.0
+   ]
+  ],
+  "nature": [
+   [
+    "Sassy",
+    0.594,
+    63.7
+   ],
+   [
+    "Timid",
+    0.586,
+    7.7
+   ],
+   [
+    "Quirky",
+    0.529,
+    594.7
+   ],
+   [
+    "Bashful",
+    0.444,
+    7.0
+   ],
+   [
+    "Modest",
+    0.415,
+    29.3
+   ],
+   [
+    "Bold",
+    0.326,
+    5.7
+   ]
+  ]
+ },
+ "Vivillon-Sun": {
+  "win_rate": 0.556,
+  "games": 439.3,
+  "move": [
+   [
+    "Whirlwind",
+    0.589,
+    372.3
+   ],
+   [
+    "Facade",
+    0.572,
+    409.7
+   ],
+   [
+    "Air Slash",
+    0.566,
+    416.7
+   ],
+   [
+    "Rain Dance",
+    0.565,
+    417.0
+   ],
+   [
+    "Hurricane",
+    0.483,
+    7.7
+   ],
+   [
+    "Rage Powder",
+    0.483,
+    7.7
+   ],
+   [
+    "Bug Buzz",
+    0.434,
+    18.3
+   ],
+   [
+    "Weather Ball",
+    0.423,
+    15.3
+   ]
+  ],
+  "item": [
+   [
+    "Colbur Berry",
+    0.683,
+    8.0
+   ],
+   [
+    "Mystic Water",
+    0.561,
+    411.0
+   ],
+   [
+    "Iron Ball",
+    0.455,
+    5.3
+   ],
+   [
+    "Psychic Seed",
+    0.4,
+    8.0
+   ],
+   [
+    "Babiri Berry",
+    0.37,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Compound Eyes",
+    0.575,
+    357.7
+   ],
+   [
+    "Shield Dust",
+    0.5,
+    66.7
+   ],
+   [
+    "Friend Guard",
+    0.373,
+    15.0
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.57,
+    352.7
+   ],
+   [
+    "Adamant",
+    0.525,
+    71.7
+   ],
+   [
+    "Calm",
+    0.4,
+    8.0
+   ],
+   [
+    "Naughty",
+    0.37,
+    7.0
+   ]
+  ]
+ },
+ "Alcremie-Rainbow-Swirl": {
+  "win_rate": 0.47,
+  "games": 439.0,
+  "move": [
+   [
+    "Psychic",
+    0.481,
+    6.7
+   ],
+   [
+    "Endeavor",
+    0.481,
+    6.7
+   ],
+   [
+    "Psych Up",
+    0.479,
+    14.0
+   ],
+   [
+    "Sleep Talk",
+    0.478,
+    404.0
+   ],
+   [
+    "Rest",
+    0.474,
+    395.7
+   ],
+   [
+    "Misty Explosion",
+    0.474,
+    409.7
+   ],
+   [
+    "Facade",
+    0.473,
+    418.0
+   ],
+   [
+    "Baby-Doll Eyes",
+    0.464,
+    12.0
+   ]
+  ],
+  "item": [
+   [
+    "Black Glasses",
+    0.481,
+    6.7
+   ],
+   [
+    "Icy Rock",
+    0.48,
+    397.0
+   ],
+   [
+    "Smooth Rock",
+    0.452,
+    8.3
+   ],
+   [
+    "Occa Berry",
+    0.444,
+    7.0
+   ],
+   [
+    "Babiri Berry",
+    0.432,
+    5.3
+   ],
+   [
+    "Mental Herb",
+    0.375,
+    7.3
+   ],
+   [
+    "Red Card",
+    0.232,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Aroma Veil",
+    0.473,
+    424.7
+   ],
+   [
+    "Sweet Veil",
+    0.398,
+    14.3
+   ]
+  ],
+  "nature": [
+   [
+    "Jolly",
+    0.481,
+    6.7
+   ],
+   [
+    "Naughty",
+    0.474,
+    387.0
+   ],
+   [
+    "Adamant",
+    0.466,
+    22.7
+   ],
+   [
+    "Naive",
+    0.452,
+    8.3
+   ],
+   [
+    "Rash",
+    0.444,
+    7.0
+   ],
+   [
+    "Serious",
+    0.375,
+    7.3
+   ]
+  ]
+ },
+ "Indeedee": {
+  "win_rate": 0.545,
+  "games": 429.7,
+  "move": [
+   [
+    "Extrasensory",
+    0.615,
+    11.0
+   ],
+   [
+    "Protect",
+    0.556,
+    414.0
+   ],
+   [
+    "Sleep Talk",
+    0.552,
+    421.3
+   ],
+   [
+    "Wonder Room",
+    0.552,
+    421.3
+   ],
+   [
+    "Terrain Pulse",
+    0.549,
+    410.3
+   ],
+   [
+    "Power Split",
+    0.339,
+    7.3
+   ],
+   [
+    "After You",
+    0.274,
+    8.3
+   ],
+   [
+    "Expanding Force",
+    0.274,
+    8.3
+   ]
+  ],
+  "item": [
+   [
+    "Shuca Berry",
+    0.618,
+    27.7
+   ],
+   [
+    "Leppa Berry",
+    0.55,
+    386.0
+   ],
+   [
+    "Passho Berry",
+    0.397,
+    7.7
+   ],
+   [
+    "Eject Button",
+    0.274,
+    8.3
+   ]
+  ],
+  "ability": [
+   [
+    "Psychic Surge",
+    0.586,
+    7.7
+   ],
+   [
+    "Synchronize",
+    0.555,
+    406.3
+   ],
+   [
+    "Inner Focus",
+    0.292,
+    15.7
+   ]
+  ],
+  "nature": [
+   [
+    "Lonely",
+    0.563,
+    319.0
+   ],
+   [
+    "Rash",
+    0.519,
+    68.0
+   ],
+   [
+    "Careful",
+    0.505,
+    34.3
+   ],
+   [
+    "Hardy",
+    0.274,
+    8.3
+   ]
+  ]
+ },
+ "Alcremie-Lemon-Cream": {
+  "win_rate": 0.595,
+  "games": 427.3,
+  "move": [
+   [
+    "Aromatic Mist",
+    0.732,
+    7.3
+   ],
+   [
+    "Draining Kiss",
+    0.708,
+    6.0
+   ],
+   [
+    "Helping Hand",
+    0.609,
+    42.3
+   ],
+   [
+    "Calm Mind",
+    0.605,
+    330.0
+   ],
+   [
+    "Dazzling Gleam",
+    0.6,
+    6.3
+   ],
+   [
+    "Play Rough",
+    0.595,
+    427.3
+   ],
+   [
+    "Decorate",
+    0.593,
+    421.3
+   ],
+   [
+    "Sleep Talk",
+    0.592,
+    420.0
+   ]
+  ],
+  "item": [
+   [
+    "Electric Seed",
+    0.603,
+    404.3
+   ],
+   [
+    "Occa Berry",
+    0.466,
+    7.7
+   ],
+   [
+    "Mental Herb",
+    0.462,
+    15.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sweet Veil",
+    0.595,
+    427.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.604,
+    395.0
+   ],
+   [
+    "Adamant",
+    0.585,
+    15.7
+   ],
+   [
+    "Jolly",
+    0.402,
+    16.7
+   ]
+  ]
+ },
+ "Annihilape": {
+  "win_rate": 0.591,
+  "games": 389.7,
+  "move": [
+   [
+    "Outrage",
+    0.688,
+    6.0
+   ],
+   [
+    "Counter",
+    0.598,
+    360.3
+   ],
+   [
+    "Fire Punch",
+    0.598,
+    351.7
+   ],
+   [
+    "Sunny Day",
+    0.596,
+    6.7
+   ],
+   [
+    "Low Sweep",
+    0.593,
+    382.3
+   ],
+   [
+    "Spite",
+    0.591,
+    376.3
+   ],
+   [
+    "Shadow Ball",
+    0.578,
+    8.7
+   ],
+   [
+    "Cross Chop",
+    0.568,
+    5.3
+   ]
+  ],
+  "item": [
+   [
+    "Red Card",
+    0.595,
+    375.0
+   ],
+   [
+    "Bright Powder",
+    0.518,
+    7.3
+   ],
+   [
+    "Yache Berry",
+    0.482,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Defiant",
+    0.622,
+    39.0
+   ],
+   [
+    "Inner Focus",
+    0.589,
+    343.3
+   ],
+   [
+    "Vital Spirit",
+    0.482,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Gentle",
+    0.593,
+    382.3
+   ],
+   [
+    "Careful",
+    0.482,
+    7.3
+   ]
+  ]
+ },
+ "Simisage": {
+  "win_rate": 0.523,
+  "games": 350.3,
+  "move": [
+   [
+    "Fling",
+    0.532,
+    8.3
+   ],
+   [
+    "Rock Slide",
+    0.53,
+    228.3
+   ],
+   [
+    "Taunt",
+    0.524,
+    330.3
+   ],
+   [
+    "Grass Knot",
+    0.523,
+    350.3
+   ],
+   [
+    "Protect",
+    0.523,
+    342.0
+   ],
+   [
+    "Endure",
+    0.509,
+    122.0
+   ],
+   [
+    "Seed Bomb",
+    0.508,
+    20.0
+   ]
+  ],
+  "item": [
+   [
+    "Mystic Water",
+    0.535,
+    295.0
+   ],
+   [
+    "Oran Berry",
+    0.462,
+    55.3
+   ]
+  ],
+  "ability": [
+   [
+    "Overgrow",
+    0.53,
+    344.0
+   ],
+   [
+    "Gluttony",
+    0.24,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Careful",
+    0.537,
+    283.0
+   ],
+   [
+    "Modest",
+    0.479,
+    61.0
+   ],
+   [
+    "Adamant",
+    0.38,
+    6.3
+   ]
+  ]
+ },
+ "Vaporeon": {
+  "win_rate": 0.482,
+  "games": 311.3,
+  "move": [
+   [
+    "Wish",
+    0.545,
+    5.3
+   ],
+   [
+    "Ice Beam",
+    0.5,
+    291.3
+   ],
+   [
+    "Hydro Pump",
+    0.49,
+    281.7
+   ],
+   [
+    "Sleep Talk",
+    0.488,
+    283.7
+   ],
+   [
+    "Hyper Beam",
+    0.481,
+    306.0
+   ],
+   [
+    "Body Slam",
+    0.48,
+    14.7
+   ],
+   [
+    "Yawn",
+    0.421,
+    27.7
+   ],
+   [
+    "Last Resort",
+    0.393,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Eject Button",
+    0.603,
+    27.0
+   ],
+   [
+    "King's Rock",
+    0.479,
+    14.0
+   ],
+   [
+    "Light Ball",
+    0.469,
+    270.3
+   ]
+  ],
+  "ability": [
+   [
+    "Water Absorb",
+    0.485,
+    304.0
+   ],
+   [
+    "Hydration",
+    0.393,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Bold",
+    0.56,
+    6.3
+   ],
+   [
+    "Naive",
+    0.489,
+    282.7
+   ],
+   [
+    "Modest",
+    0.37,
+    22.3
+   ]
+  ]
+ },
+ "Toxtricity-Low-Key": {
+  "win_rate": 0.553,
+  "games": 300.0,
+  "move": [
+   [
+    "Gunk Shot",
+    0.56,
+    288.3
+   ],
+   [
+    "Giga Impact",
+    0.553,
+    300.0
+   ],
+   [
+    "Trailblaze",
+    0.553,
+    300.0
+   ],
+   [
+    "Drain Punch",
+    0.553,
+    300.0
+   ],
+   [
+    "Psychic Noise",
+    0.475,
+    4.7
+   ],
+   [
+    "Snore",
+    0.37,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Terrain Extender",
+    0.575,
+    109.3
+   ],
+   [
+    "Scope Lens",
+    0.54,
+    190.7
+   ]
+  ],
+  "ability": [
+   [
+    "Punk Rock",
+    0.553,
+    300.0
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.558,
+    292.3
+   ],
+   [
+    "Jolly",
+    0.397,
+    7.7
+   ]
+  ]
+ },
+ "Watchog": {
+  "win_rate": 0.511,
+  "games": 283.7,
+  "move": [
+   [
+    "Trailblaze",
+    0.517,
+    276.7
+   ],
+   [
+    "Flamethrower",
+    0.514,
+    276.7
+   ],
+   [
+    "Iron Tail",
+    0.511,
+    283.7
+   ],
+   [
+    "Bullet Seed",
+    0.511,
+    283.7
+   ],
+   [
+    "Substitute",
+    0.426,
+    7.0
+   ],
+   [
+    "Gunk Shot",
+    0.333,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Wacan Berry",
+    0.587,
+    5.7
+   ],
+   [
+    "Eject Button",
+    0.514,
+    258.3
+   ],
+   [
+    "Scope Lens",
+    0.467,
+    13.3
+   ],
+   [
+    "Coba Berry",
+    0.42,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Keen Eye",
+    0.532,
+    8.3
+   ],
+   [
+    "Analytic",
+    0.51,
+    275.3
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.512,
+    275.7
+   ],
+   [
+    "Bashful",
+    0.483,
+    8.0
+   ]
+  ]
+ },
+ "Dedenne": {
+  "win_rate": 0.519,
+  "games": 259.7,
+  "move": [
+   [
+    "Grass Knot",
+    0.564,
+    136.3
+   ],
+   [
+    "Electric Terrain",
+    0.532,
+    186.0
+   ],
+   [
+    "Volt Switch",
+    0.529,
+    220.7
+   ],
+   [
+    "Fling",
+    0.527,
+    242.3
+   ],
+   [
+    "Thunder",
+    0.506,
+    27.0
+   ],
+   [
+    "Rest",
+    0.5,
+    5.3
+   ],
+   [
+    "U-turn",
+    0.491,
+    154.3
+   ],
+   [
+    "Electro Ball",
+    0.489,
+    13.3
+   ]
+  ],
+  "item": [
+   [
+    "Light Ball",
+    0.527,
+    242.3
+   ],
+   [
+    "Psychic Seed",
+    0.5,
+    5.3
+   ],
+   [
+    "Air Balloon",
+    0.46,
+    6.3
+   ],
+   [
+    "Life Orb",
+    0.326,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Plus",
+    0.52,
+    254.3
+   ],
+   [
+    "Cheek Pouch",
+    0.5,
+    5.3
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.527,
+    242.3
+   ],
+   [
+    "Bold",
+    0.5,
+    5.3
+   ],
+   [
+    "Docile",
+    0.46,
+    6.3
+   ],
+   [
+    "Adamant",
+    0.326,
+    5.7
+   ]
+  ]
+ },
+ "Arcanine": {
+  "win_rate": 0.558,
+  "games": 252.3,
+  "move": [
+   [
+    "Overheat",
+    0.58,
+    107.0
+   ],
+   [
+    "Flame Charge",
+    0.577,
+    230.3
+   ],
+   [
+    "Outrage",
+    0.57,
+    237.3
+   ],
+   [
+    "Fire Blast",
+    0.567,
+    243.7
+   ],
+   [
+    "Thrash",
+    0.553,
+    121.3
+   ],
+   [
+    "Raging Fury",
+    0.488,
+    12.3
+   ],
+   [
+    "Curse",
+    0.487,
+    24.0
+   ],
+   [
+    "Flare Blitz",
+    0.357,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Misty Seed",
+    0.567,
+    243.7
+   ],
+   [
+    "Poison Barb",
+    0.344,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.609,
+    5.7
+   ],
+   [
+    "Justified",
+    0.565,
+    238.0
+   ],
+   [
+    "Flash Fire",
+    0.344,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.569,
+    237.0
+   ],
+   [
+    "Jolly",
+    0.5,
+    6.7
+   ],
+   [
+    "Gentle",
+    0.344,
+    8.7
+   ]
+  ]
+ },
+ "Primarina": {
+  "win_rate": 0.589,
+  "games": 251.7,
+  "move": [
+   [
+    "Calm Mind",
+    0.626,
+    33.7
+   ],
+   [
+    "Aqua Jet",
+    0.589,
+    236.3
+   ],
+   [
+    "Shadow Ball",
+    0.589,
+    251.7
+   ],
+   [
+    "Flip Turn",
+    0.589,
+    251.7
+   ],
+   [
+    "Waterfall",
+    0.582,
+    218.0
+   ],
+   [
+    "Play Rough",
+    0.577,
+    15.3
+   ]
+  ],
+  "item": [
+   [
+    "Yache Berry",
+    0.589,
+    251.7
+   ]
+  ],
+  "ability": [
+   [
+    "Liquid Voice",
+    0.589,
+    199.0
+   ],
+   [
+    "Torrent",
+    0.585,
+    52.7
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.589,
+    251.7
+   ]
+  ]
+ },
+ "Greninja": {
+  "win_rate": 0.589,
+  "games": 249.3,
+  "move": [
+   [
+    "Mud Shot",
+    0.663,
+    12.3
+   ],
+   [
+    "Taunt",
+    0.658,
+    22.3
+   ],
+   [
+    "Role Play",
+    0.589,
+    249.3
+   ],
+   [
+    "Low Kick",
+    0.589,
+    249.3
+   ],
+   [
+    "Dive",
+    0.584,
+    237.0
+   ],
+   [
+    "Night Slash",
+    0.581,
+    219.3
+   ],
+   [
+    "Surf",
+    0.552,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Greninjite",
+    0.589,
+    249.3
+   ]
+  ],
+  "ability": [
+   [
+    "Protean",
+    0.589,
+    249.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.596,
+    182.3
+   ],
+   [
+    "Adamant",
+    0.568,
+    67.0
+   ]
+  ]
+ },
+ "Rillaboom": {
+  "win_rate": 0.553,
+  "games": 223.0,
+  "move": [
+   [
+    "U-turn",
+    0.571,
+    9.7
+   ],
+   [
+    "Protect",
+    0.562,
+    192.3
+   ],
+   [
+    "Grassy Glide",
+    0.555,
+    196.7
+   ],
+   [
+    "Sunny Day",
+    0.553,
+    223.0
+   ],
+   [
+    "Low Kick",
+    0.553,
+    223.0
+   ],
+   [
+    "Thief",
+    0.535,
+    26.3
+   ],
+   [
+    "Giga Impact",
+    0.457,
+    21.0
+   ]
+  ],
+  "item": [
+   [
+    "Rawst Berry",
+    0.567,
+    212.0
+   ],
+   [
+    "Air Balloon",
+    0.333,
+    5.0
+   ],
+   [
+    "Eject Button",
+    0.333,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Grassy Surge",
+    0.553,
+    223.0
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.553,
+    223.0
+   ]
+  ]
+ },
+ "Victreebel": {
+  "win_rate": 0.56,
+  "games": 178.3,
+  "move": [
+   [
+    "Gastro Acid",
+    0.679,
+    15.7
+   ],
+   [
+    "Growth",
+    0.679,
+    15.7
+   ],
+   [
+    "Sleep Powder",
+    0.679,
+    15.7
+   ],
+   [
+    "Sucker Punch",
+    0.679,
+    15.7
+   ],
+   [
+    "Facade",
+    0.561,
+    150.3
+   ],
+   [
+    "Seed Bomb",
+    0.561,
+    150.3
+   ],
+   [
+    "Body Slam",
+    0.561,
+    136.7
+   ],
+   [
+    "Thief",
+    0.561,
+    150.3
+   ]
+  ],
+  "item": [
+   [
+    "Aspear Berry",
+    0.679,
+    15.7
+   ],
+   [
+    "Sharp Beak",
+    0.561,
+    143.0
+   ],
+   [
+    "Black Belt",
+    0.554,
+    7.3
+   ],
+   [
+    "Spell Tag",
+    0.46,
+    6.3
+   ],
+   [
+    "Chesto Berry",
+    0.333,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Gluttony",
+    0.567,
+    38.0
+   ],
+   [
+    "Chlorophyll",
+    0.557,
+    140.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.679,
+    15.7
+   ],
+   [
+    "Hardy",
+    0.561,
+    142.7
+   ],
+   [
+    "Adamant",
+    0.552,
+    7.7
+   ],
+   [
+    "Docile",
+    0.46,
+    6.3
+   ],
+   [
+    "Quiet",
+    0.333,
+    6.0
+   ]
+  ]
+ },
+ "Gourgeist": {
+  "win_rate": 0.534,
+  "games": 155.7,
+  "move": [
+   [
+    "Destiny Bond",
+    0.593,
+    12.3
+   ],
+   [
+    "Protect",
+    0.558,
+    6.7
+   ],
+   [
+    "Safeguard",
+    0.539,
+    142.7
+   ],
+   [
+    "Energy Ball",
+    0.539,
+    142.7
+   ],
+   [
+    "Sunny Day",
+    0.537,
+    136.0
+   ],
+   [
+    "Seed Bomb",
+    0.533,
+    130.3
+   ],
+   [
+    "Rock Slide",
+    0.522,
+    5.7
+   ],
+   [
+    "Endure",
+    0.478,
+    13.0
+   ]
+  ],
+  "item": [
+   [
+    "Cheri Berry",
+    0.539,
+    142.7
+   ],
+   [
+    "Dragon Fang",
+    0.478,
+    13.0
+   ]
+  ],
+  "ability": [
+   [
+    "Insomnia",
+    0.561,
+    60.7
+   ],
+   [
+    "Pickup",
+    0.522,
+    82.0
+   ],
+   [
+    "Frisk",
+    0.478,
+    13.0
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.574,
+    13.7
+   ],
+   [
+    "Serious",
+    0.534,
+    129.0
+   ],
+   [
+    "Modest",
+    0.478,
+    13.0
+   ]
+  ]
+ },
+ "Starmie": {
+  "win_rate": 0.513,
+  "games": 144.7,
+  "move": [
+   [
+    "Icy Wind",
+    0.596,
+    6.7
+   ],
+   [
+    "Water Pulse",
+    0.596,
+    6.7
+   ],
+   [
+    "Dive",
+    0.596,
+    6.7
+   ],
+   [
+    "Snore",
+    0.596,
+    6.7
+   ],
+   [
+    "Substitute",
+    0.567,
+    8.0
+   ],
+   [
+    "Charge Beam",
+    0.516,
+    132.3
+   ],
+   [
+    "Protect",
+    0.507,
+    138.0
+   ],
+   [
+    "Rapid Spin",
+    0.507,
+    138.0
+   ]
+  ],
+  "item": [
+   [
+    "Zoom Lens",
+    0.596,
+    6.7
+   ],
+   [
+    "Muscle Band",
+    0.507,
+    138.0
+   ]
+  ],
+  "ability": [
+   [
+    "Natural Cure",
+    0.596,
+    6.7
+   ],
+   [
+    "Illuminate",
+    0.507,
+    138.0
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.596,
+    6.7
+   ],
+   [
+    "Bold",
+    0.52,
+    96.7
+   ],
+   [
+    "Jolly",
+    0.477,
+    41.3
+   ]
+  ]
+ },
+ "Mimikyu": {
+  "win_rate": 0.586,
+  "games": 138.7,
+  "move": [
+   [
+    "Giga Drain",
+    0.586,
+    138.7
+   ],
+   [
+    "Phantom Force",
+    0.586,
+    138.7
+   ],
+   [
+    "Dazzling Gleam",
+    0.586,
+    138.7
+   ],
+   [
+    "Psychic",
+    0.586,
+    138.7
+   ]
+  ],
+  "item": [
+   [
+    "Shell Bell",
+    0.586,
+    138.7
+   ]
+  ],
+  "ability": [
+   [
+    "Disguise",
+    0.586,
+    138.7
+   ]
+  ],
+  "nature": [
+   [
+    "Gentle",
+    0.595,
+    131.3
+   ],
+   [
+    "Timid",
+    0.446,
+    7.3
+   ]
+  ]
+ },
+ "Dragapult": {
+  "win_rate": 0.525,
+  "games": 125.0,
+  "move": [
+   [
+    "Protect",
+    0.582,
+    38.7
+   ],
+   [
+    "Bite",
+    0.573,
+    103.7
+   ],
+   [
+    "Dragon Darts",
+    0.573,
+    103.7
+   ],
+   [
+    "Infestation",
+    0.573,
+    103.7
+   ],
+   [
+    "Reflect",
+    0.565,
+    65.0
+   ],
+   [
+    "Hyper Beam",
+    0.464,
+    7.3
+   ],
+   [
+    "Double Team",
+    0.436,
+    13.7
+   ],
+   [
+    "Outrage",
+    0.436,
+    13.7
+   ]
+  ],
+  "item": [
+   [
+    "Roseli Berry",
+    0.573,
+    103.7
+   ],
+   [
+    "Wise Glasses",
+    0.436,
+    13.7
+   ],
+   [
+    "Colbur Berry",
+    0.138,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Infiltrator",
+    0.573,
+    103.7
+   ],
+   [
+    "Clear Body",
+    0.436,
+    13.7
+   ],
+   [
+    "Cursed Body",
+    0.138,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Rash",
+    0.603,
+    80.7
+   ],
+   [
+    "Adamant",
+    0.467,
+    23.0
+   ],
+   [
+    "Bashful",
+    0.436,
+    13.7
+   ],
+   [
+    "Timid",
+    0.138,
+    7.7
+   ]
+  ]
+ },
+ "Tyrantrum": {
+  "win_rate": 0.449,
+  "games": 111.3,
+  "move": [
+   [
+    "Attract",
+    0.463,
+    7.0
+   ],
+   [
+    "Substitute",
+    0.45,
+    98.0
+   ],
+   [
+    "Rock Polish",
+    0.449,
+    111.3
+   ],
+   [
+    "Endure",
+    0.449,
+    111.3
+   ],
+   [
+    "Rock Blast",
+    0.448,
+    104.3
+   ],
+   [
+    "High Horsepower",
+    0.446,
+    13.3
+   ]
+  ],
+  "item": [
+   [
+    "Oran Berry",
+    0.532,
+    35.0
+   ],
+   [
+    "Persim Berry",
+    0.411,
+    76.3
+   ]
+  ],
+  "ability": [
+   [
+    "Strong Jaw",
+    0.449,
+    111.3
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.471,
+    15.0
+   ],
+   [
+    "Lonely",
+    0.446,
+    96.3
+   ]
+  ]
+ },
+ "Audino": {
+  "win_rate": 0.434,
+  "games": 109.7,
+  "move": [
+   [
+    "Giga Impact",
+    0.481,
+    6.7
+   ],
+   [
+    "Psychic",
+    0.475,
+    71.3
+   ],
+   [
+    "Dig",
+    0.46,
+    6.3
+   ],
+   [
+    "Light Screen",
+    0.46,
+    6.3
+   ],
+   [
+    "Facade",
+    0.443,
+    97.7
+   ],
+   [
+    "Wish",
+    0.443,
+    97.7
+   ],
+   [
+    "Shadow Ball",
+    0.443,
+    97.7
+   ],
+   [
+    "Body Slam",
+    0.436,
+    13.7
+   ]
+  ],
+  "item": [
+   [
+    "Focus Sash",
+    0.503,
+    48.7
+   ],
+   [
+    "Mental Herb",
+    0.386,
+    49.0
+   ],
+   [
+    "Audinite",
+    0.381,
+    12.0
+   ]
+  ],
+  "ability": [
+   [
+    "Klutz",
+    0.46,
+    6.3
+   ],
+   [
+    "Regenerator",
+    0.434,
+    103.3
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.46,
+    6.3
+   ],
+   [
+    "Hasty",
+    0.443,
+    97.7
+   ],
+   [
+    "Sassy",
+    0.326,
+    5.7
+   ]
+  ]
+ },
+ "Mr. Rime": {
+  "win_rate": 0.433,
+  "games": 104.7,
+  "move": [
+   [
+    "Body Slam",
+    0.467,
+    85.0
+   ],
+   [
+    "Fake Tears",
+    0.443,
+    77.3
+   ],
+   [
+    "Screech",
+    0.441,
+    91.0
+   ],
+   [
+    "Round",
+    0.441,
+    91.0
+   ],
+   [
+    "Encore",
+    0.436,
+    13.7
+   ],
+   [
+    "Psychic Terrain",
+    0.394,
+    13.7
+   ],
+   [
+    "Frost Breath",
+    0.394,
+    13.7
+   ],
+   [
+    "Brick Break",
+    0.394,
+    13.7
+   ]
+  ],
+  "item": [
+   [
+    "Chople Berry",
+    0.441,
+    91.0
+   ],
+   [
+    "Chesto Berry",
+    0.394,
+    13.7
+   ]
+  ],
+  "ability": [
+   [
+    "Tangled Feet",
+    0.441,
+    91.0
+   ],
+   [
+    "Ice Body",
+    0.394,
+    13.7
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.449,
+    83.0
+   ],
+   [
+    "Lax",
+    0.394,
+    13.7
+   ],
+   [
+    "Adamant",
+    0.383,
+    8.0
+   ]
+  ]
+ },
+ "Simipour": {
+  "win_rate": 0.437,
+  "games": 104.0,
+  "move": [
+   [
+    "Brick Break",
+    0.485,
+    55.0
+   ],
+   [
+    "Waterfall",
+    0.446,
+    13.3
+   ],
+   [
+    "Dive",
+    0.444,
+    84.3
+   ],
+   [
+    "Icy Wind",
+    0.443,
+    97.7
+   ],
+   [
+    "Rock Tomb",
+    0.443,
+    97.7
+   ],
+   [
+    "Substitute",
+    0.386,
+    49.0
+   ],
+   [
+    "Acrobatics",
+    0.38,
+    6.3
+   ],
+   [
+    "Endure",
+    0.38,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Wacan Berry",
+    0.481,
+    6.7
+   ],
+   [
+    "Payapa Berry",
+    0.451,
+    83.7
+   ],
+   [
+    "Twisted Spoon",
+    0.38,
+    6.3
+   ],
+   [
+    "Shed Shell",
+    0.357,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Torrent",
+    0.437,
+    104.0
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.443,
+    97.7
+   ],
+   [
+    "Impish",
+    0.38,
+    6.3
+   ]
+  ]
+ },
+ "Vileplume": {
+  "win_rate": 0.525,
+  "games": 103.0,
+  "move": [
+   [
+    "Flail",
+    0.619,
+    27.3
+   ],
+   [
+    "Bullet Seed",
+    0.584,
+    71.0
+   ],
+   [
+    "Protect",
+    0.569,
+    41.3
+   ],
+   [
+    "Endure",
+    0.554,
+    84.0
+   ],
+   [
+    "Weather Ball",
+    0.539,
+    36.7
+   ],
+   [
+    "Giga Impact",
+    0.521,
+    6.0
+   ],
+   [
+    "Substitute",
+    0.521,
+    6.0
+   ],
+   [
+    "Trailblaze",
+    0.521,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "King's Rock",
+    0.556,
+    78.0
+   ],
+   [
+    "Chesto Berry",
+    0.521,
+    6.0
+   ],
+   [
+    "Eject Button",
+    0.405,
+    19.0
+   ]
+  ],
+  "ability": [
+   [
+    "Effect Spore",
+    0.556,
+    78.0
+   ],
+   [
+    "Chlorophyll",
+    0.432,
+    25.0
+   ]
+  ],
+  "nature": [
+   [
+    "Relaxed",
+    0.567,
+    72.3
+   ],
+   [
+    "Docile",
+    0.521,
+    6.0
+   ],
+   [
+    "Jolly",
+    0.435,
+    5.7
+   ],
+   [
+    "Hardy",
+    0.405,
+    19.0
+   ]
+  ]
+ },
+ "Aromatisse": {
+  "win_rate": 0.561,
+  "games": 90.7,
+  "move": [
+   [
+    "Psyshock",
+    0.592,
+    83.0
+   ],
+   [
+    "Flail",
+    0.592,
+    83.0
+   ],
+   [
+    "Sleep Talk",
+    0.592,
+    83.0
+   ],
+   [
+    "Attract",
+    0.592,
+    83.0
+   ],
+   [
+    "Energy Ball",
+    0.276,
+    7.7
+   ],
+   [
+    "Encore",
+    0.276,
+    7.7
+   ],
+   [
+    "Hyper Beam",
+    0.276,
+    7.7
+   ],
+   [
+    "Wish",
+    0.276,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Chesto Berry",
+    0.592,
+    83.0
+   ],
+   [
+    "Sharp Beak",
+    0.276,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Aroma Veil",
+    0.561,
+    90.7
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.592,
+    83.0
+   ],
+   [
+    "Impish",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Conkeldurr": {
+  "win_rate": 0.456,
+  "games": 78.3,
+  "move": [
+   [
+    "Dynamic Punch",
+    0.611,
+    7.0
+   ],
+   [
+    "Low Sweep",
+    0.518,
+    53.3
+   ],
+   [
+    "Taunt",
+    0.476,
+    59.3
+   ],
+   [
+    "Hyper Beam",
+    0.476,
+    59.3
+   ],
+   [
+    "Ice Punch",
+    0.439,
+    71.3
+   ],
+   [
+    "Thunder Punch",
+    0.405,
+    19.0
+   ],
+   [
+    "Bulk Up",
+    0.405,
+    19.0
+   ],
+   [
+    "Thief",
+    0.405,
+    19.0
+   ]
+  ],
+  "item": [
+   [
+    "Expert Belt",
+    0.5,
+    53.0
+   ],
+   [
+    "Wise Glasses",
+    0.405,
+    19.0
+   ],
+   [
+    "Leek",
+    0.32,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Iron Fist",
+    0.476,
+    59.3
+   ],
+   [
+    "Guts",
+    0.405,
+    19.0
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.476,
+    59.3
+   ],
+   [
+    "Brave",
+    0.405,
+    19.0
+   ]
+  ]
+ },
+ "Excadrill": {
+  "win_rate": 0.489,
+  "games": 76.3,
+  "move": [
+   [
+    "Iron Head",
+    0.524,
+    25.3
+   ],
+   [
+    "Round",
+    0.513,
+    62.7
+   ],
+   [
+    "Horn Drill",
+    0.513,
+    62.7
+   ],
+   [
+    "Sand Tomb",
+    0.513,
+    62.7
+   ],
+   [
+    "Earth Power",
+    0.472,
+    51.0
+   ],
+   [
+    "Sandstorm",
+    0.394,
+    13.7
+   ],
+   [
+    "Dig",
+    0.394,
+    13.7
+   ],
+   [
+    "Aerial Ace",
+    0.394,
+    13.7
+   ]
+  ],
+  "item": [
+   [
+    "Never-Melt Ice",
+    0.513,
+    62.7
+   ],
+   [
+    "Wise Glasses",
+    0.394,
+    13.7
+   ]
+  ],
+  "ability": [
+   [
+    "Mold Breaker",
+    0.518,
+    44.3
+   ],
+   [
+    "Sand Rush",
+    0.5,
+    18.3
+   ],
+   [
+    "Sand Force",
+    0.394,
+    13.7
+   ]
+  ],
+  "nature": [
+   [
+    "Serious",
+    0.513,
+    62.7
+   ],
+   [
+    "Bold",
+    0.394,
+    13.7
+   ]
+  ]
+ },
+ "Tinkaton": {
+  "win_rate": 0.487,
+  "games": 75.0,
+  "move": [
+   [
+    "Stone Edge",
+    0.658,
+    22.3
+   ],
+   [
+    "Thief",
+    0.658,
+    22.3
+   ],
+   [
+    "Sweet Kiss",
+    0.658,
+    22.3
+   ],
+   [
+    "Stealth Rock",
+    0.517,
+    68.7
+   ],
+   [
+    "Substitute",
+    0.445,
+    46.3
+   ],
+   [
+    "Encore",
+    0.445,
+    46.3
+   ],
+   [
+    "Quash",
+    0.445,
+    46.3
+   ],
+   [
+    "Reflect",
+    0.24,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Light Ball",
+    0.658,
+    22.3
+   ],
+   [
+    "Roseli Berry",
+    0.496,
+    37.3
+   ],
+   [
+    "Leftovers",
+    0.273,
+    9.0
+   ],
+   [
+    "Leek",
+    0.24,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Mold Breaker",
+    0.554,
+    28.7
+   ],
+   [
+    "Pickpocket",
+    0.445,
+    46.3
+   ]
+  ],
+  "nature": [
+   [
+    "Bold",
+    0.658,
+    22.3
+   ],
+   [
+    "Relaxed",
+    0.445,
+    46.3
+   ],
+   [
+    "Brave",
+    0.24,
+    6.3
+   ]
+  ]
+ },
+ "Mudsdale": {
+  "win_rate": 0.404,
+  "games": 67.3,
+  "move": [
+   [
+    "Mega Kick",
+    0.452,
+    53.7
+   ],
+   [
+    "Facade",
+    0.426,
+    54.7
+   ],
+   [
+    "Close Combat",
+    0.426,
+    54.7
+   ],
+   [
+    "Fissure",
+    0.426,
+    54.7
+   ],
+   [
+    "Endeavor",
+    0.409,
+    5.3
+   ],
+   [
+    "Endure",
+    0.409,
+    5.3
+   ],
+   [
+    "Hyper Beam",
+    0.409,
+    5.3
+   ],
+   [
+    "Heavy Slam",
+    0.304,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Leppa Berry",
+    0.426,
+    54.7
+   ],
+   [
+    "Rindo Berry",
+    0.409,
+    5.3
+   ],
+   [
+    "Damp Rock",
+    0.304,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Stamina",
+    0.426,
+    54.7
+   ],
+   [
+    "Own Tempo",
+    0.409,
+    5.3
+   ],
+   [
+    "Inner Focus",
+    0.304,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.426,
+    54.7
+   ],
+   [
+    "Naive",
+    0.409,
+    5.3
+   ],
+   [
+    "Mild",
+    0.304,
+    7.3
+   ]
+  ]
+ },
+ "Swalot": {
+  "win_rate": 0.476,
+  "games": 61.0,
+  "move": [
+   [
+    "Knock Off",
+    0.519,
+    52.0
+   ],
+   [
+    "Amnesia",
+    0.476,
+    61.0
+   ],
+   [
+    "Yawn",
+    0.476,
+    61.0
+   ],
+   [
+    "Double-Edge",
+    0.476,
+    61.0
+   ],
+   [
+    "Self-Destruct",
+    0.273,
+    9.0
+   ]
+  ],
+  "item": [
+   [
+    "Dragon Fang",
+    0.539,
+    19.3
+   ],
+   [
+    "Lum Berry",
+    0.447,
+    41.7
+   ]
+  ],
+  "ability": [
+   [
+    "Sticky Hold",
+    0.476,
+    61.0
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.537,
+    7.0
+   ],
+   [
+    "Bold",
+    0.467,
+    54.0
+   ]
+  ]
+ },
+ "Scovillain": {
+  "win_rate": 0.476,
+  "games": 61.0,
+  "move": [
+   [
+    "Overheat",
+    0.539,
+    19.3
+   ],
+   [
+    "Helping Hand",
+    0.509,
+    54.0
+   ],
+   [
+    "Fire Fang",
+    0.476,
+    61.0
+   ],
+   [
+    "Will-O-Wisp",
+    0.476,
+    61.0
+   ],
+   [
+    "Energy Ball",
+    0.447,
+    41.7
+   ],
+   [
+    "Rage Powder",
+    0.278,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Scovillainite",
+    0.476,
+    61.0
+   ]
+  ],
+  "ability": [
+   [
+    "Chlorophyll",
+    0.476,
+    61.0
+   ]
+  ],
+  "nature": [
+   [
+    "Gentle",
+    0.476,
+    61.0
+   ]
+  ]
+ },
+ "Perrserker": {
+  "win_rate": 0.447,
+  "games": 55.0,
+  "move": [
+   [
+    "Thrash",
+    0.483,
+    7.7
+   ],
+   [
+    "Facade",
+    0.461,
+    36.0
+   ],
+   [
+    "Steel Beam",
+    0.46,
+    6.3
+   ],
+   [
+    "Thunderbolt",
+    0.459,
+    42.3
+   ],
+   [
+    "Endure",
+    0.455,
+    34.7
+   ],
+   [
+    "Thunder Wave",
+    0.447,
+    55.0
+   ],
+   [
+    "Brick Break",
+    0.42,
+    12.7
+   ],
+   [
+    "Iron Head",
+    0.42,
+    12.7
+   ]
+  ],
+  "item": [
+   [
+    "Quick Claw",
+    0.459,
+    42.3
+   ],
+   [
+    "Poison Barb",
+    0.42,
+    12.7
+   ]
+  ],
+  "ability": [
+   [
+    "Tough Claws",
+    0.447,
+    55.0
+   ]
+  ],
+  "nature": [
+   [
+    "Hasty",
+    0.459,
+    42.3
+   ],
+   [
+    "Bashful",
+    0.42,
+    12.7
+   ]
+  ]
+ },
+ "Crabominable": {
+  "win_rate": 0.472,
+  "games": 52.3,
+  "move": [
+   [
+    "Mach Punch",
+    0.514,
+    45.0
+   ],
+   [
+    "Swagger",
+    0.472,
+    52.3
+   ],
+   [
+    "Iron Defense",
+    0.472,
+    52.3
+   ],
+   [
+    "Brick Break",
+    0.472,
+    52.3
+   ],
+   [
+    "Focus Blast",
+    0.268,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Crabominite",
+    0.472,
+    52.3
+   ]
+  ],
+  "ability": [
+   [
+    "Iron Fist",
+    0.472,
+    52.3
+   ]
+  ],
+  "nature": [
+   [
+    "Jolly",
+    0.48,
+    6.3
+   ],
+   [
+    "Rash",
+    0.472,
+    46.0
+   ]
+  ]
+ },
+ "Ninetales-Alola": {
+  "win_rate": 0.5,
+  "games": 51.0,
+  "move": [
+   [
+    "Blizzard",
+    0.587,
+    5.7
+   ],
+   [
+    "Avalanche",
+    0.585,
+    35.3
+   ],
+   [
+    "Rain Dance",
+    0.585,
+    35.3
+   ],
+   [
+    "Snore",
+    0.579,
+    29.7
+   ],
+   [
+    "Dig",
+    0.5,
+    51.0
+   ],
+   [
+    "Baby-Doll Eyes",
+    0.321,
+    15.7
+   ],
+   [
+    "Hypnosis",
+    0.321,
+    15.7
+   ],
+   [
+    "Triple Axel",
+    0.321,
+    15.7
+   ]
+  ],
+  "item": [
+   [
+    "Mental Herb",
+    0.585,
+    35.3
+   ],
+   [
+    "Light Ball",
+    0.321,
+    15.7
+   ]
+  ],
+  "ability": [
+   [
+    "Snow Warning",
+    0.5,
+    51.0
+   ]
+  ],
+  "nature": [
+   [
+    "Hasty",
+    0.585,
+    35.3
+   ],
+   [
+    "Naive",
+    0.321,
+    15.7
+   ]
+  ]
+ },
+ "Alcremie-Ruby-Cream": {
+  "win_rate": 0.477,
+  "games": 48.0,
+  "move": [
+   [
+    "Entrainment",
+    0.586,
+    7.7
+   ],
+   [
+    "Mystical Fire",
+    0.541,
+    35.0
+   ],
+   [
+    "Sleep Talk",
+    0.541,
+    35.0
+   ],
+   [
+    "Dazzling Gleam",
+    0.541,
+    35.0
+   ],
+   [
+    "Sweet Kiss",
+    0.523,
+    27.3
+   ],
+   [
+    "Attract",
+    0.404,
+    6.7
+   ],
+   [
+    "Drain Punch",
+    0.404,
+    6.7
+   ],
+   [
+    "Fling",
+    0.404,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Life Orb",
+    0.541,
+    35.0
+   ],
+   [
+    "Scope Lens",
+    0.404,
+    6.7
+   ],
+   [
+    "Icy Rock",
+    0.28,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sweet Veil",
+    0.541,
+    35.0
+   ],
+   [
+    "Aroma Veil",
+    0.322,
+    13.0
+   ]
+  ],
+  "nature": [
+   [
+    "Sassy",
+    0.541,
+    35.0
+   ],
+   [
+    "Naughty",
+    0.404,
+    6.7
+   ],
+   [
+    "Calm",
+    0.28,
+    6.3
+   ]
+  ]
+ },
+ "Glimmora": {
+  "win_rate": 0.441,
+  "games": 46.0,
+  "move": [
+   [
+    "Rock Tomb",
+    0.458,
+    6.0
+   ],
+   [
+    "Energy Ball",
+    0.458,
+    6.0
+   ],
+   [
+    "Meteor Beam",
+    0.458,
+    6.0
+   ],
+   [
+    "Sludge Bomb",
+    0.458,
+    6.0
+   ],
+   [
+    "Sleep Talk",
+    0.44,
+    40.0
+   ],
+   [
+    "Substitute",
+    0.44,
+    40.0
+   ],
+   [
+    "Rain Dance",
+    0.44,
+    40.0
+   ],
+   [
+    "Mortal Spin",
+    0.44,
+    40.0
+   ]
+  ],
+  "item": [
+   [
+    "Electric Seed",
+    0.458,
+    6.0
+   ],
+   [
+    "Glimmoranite",
+    0.44,
+    40.0
+   ]
+  ],
+  "ability": [
+   [
+    "Corrosion",
+    0.458,
+    6.0
+   ],
+   [
+    "Toxic Debris",
+    0.44,
+    40.0
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.5,
+    31.0
+   ],
+   [
+    "Serious",
+    0.458,
+    6.0
+   ],
+   [
+    "Adamant",
+    0.273,
+    9.0
+   ]
+  ]
+ },
+ "Charizard": {
+  "win_rate": 0.519,
+  "games": 43.0,
+  "move": [
+   [
+    "Thunder Punch",
+    0.525,
+    38.3
+   ],
+   [
+    "Flare Blitz",
+    0.519,
+    43.0
+   ],
+   [
+    "Ancient Power",
+    0.519,
+    43.0
+   ],
+   [
+    "Fire Spin",
+    0.519,
+    43.0
+   ],
+   [
+    "Flame Charge",
+    0.475,
+    4.7
+   ]
+  ],
+  "item": [
+   [
+    "Wise Glasses",
+    0.571,
+    9.7
+   ],
+   [
+    "Charizardite X",
+    0.5,
+    33.3
+   ]
+  ],
+  "ability": [
+   [
+    "Blaze",
+    0.519,
+    43.0
+   ]
+  ],
+  "nature": [
+   [
+    "Modest",
+    0.543,
+    13.7
+   ],
+   [
+    "Jolly",
+    0.505,
+    29.3
+   ]
+  ]
+ },
+ "Rotom-Heat": {
+  "win_rate": 0.511,
+  "games": 41.7,
+  "move": [
+   [
+    "Sunny Day",
+    0.541,
+    22.7
+   ],
+   [
+    "Trick",
+    0.541,
+    22.7
+   ],
+   [
+    "Overheat",
+    0.541,
+    22.7
+   ],
+   [
+    "Facade",
+    0.511,
+    41.7
+   ],
+   [
+    "Electric Terrain",
+    0.476,
+    19.0
+   ],
+   [
+    "Light Screen",
+    0.476,
+    19.0
+   ],
+   [
+    "Endure",
+    0.476,
+    19.0
+   ]
+  ],
+  "item": [
+   [
+    "Charti Berry",
+    0.541,
+    22.7
+   ],
+   [
+    "Soft Sand",
+    0.476,
+    19.0
+   ]
+  ],
+  "ability": [
+   [
+    "Levitate",
+    0.511,
+    41.7
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.541,
+    22.7
+   ],
+   [
+    "Lonely",
+    0.476,
+    19.0
+   ]
+  ]
+ },
+ "Furfrou-Pharaoh": {
+  "win_rate": 0.551,
+  "games": 40.7,
+  "move": [
+   [
+    "Baby-Doll Eyes",
+    0.619,
+    12.0
+   ],
+   [
+    "Substitute",
+    0.619,
+    12.0
+   ],
+   [
+    "Helping Hand",
+    0.619,
+    12.0
+   ],
+   [
+    "Cotton Guard",
+    0.612,
+    20.3
+   ],
+   [
+    "Attract",
+    0.551,
+    21.0
+   ],
+   [
+    "Facade",
+    0.551,
+    21.0
+   ],
+   [
+    "Endeavor",
+    0.523,
+    12.7
+   ],
+   [
+    "Snarl",
+    0.516,
+    28.7
+   ]
+  ],
+  "item": [
+   [
+    "Spell Tag",
+    0.619,
+    12.0
+   ],
+   [
+    "Fairy Feather",
+    0.551,
+    21.0
+   ],
+   [
+    "Bright Powder",
+    0.431,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Fur Coat",
+    0.551,
+    40.7
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.619,
+    12.0
+   ],
+   [
+    "Serious",
+    0.562,
+    14.0
+   ],
+   [
+    "Adamant",
+    0.519,
+    7.0
+   ],
+   [
+    "Bashful",
+    0.431,
+    7.7
+   ]
+  ]
+ },
+ "Salamence": {
+  "win_rate": 0.528,
+  "games": 39.7,
+  "move": [
+   [
+    "Helping Hand",
+    0.548,
+    32.7
+   ],
+   [
+    "Fly",
+    0.548,
+    32.7
+   ],
+   [
+    "Roost",
+    0.548,
+    32.7
+   ],
+   [
+    "Hyper Voice",
+    0.548,
+    32.7
+   ],
+   [
+    "Body Slam",
+    0.444,
+    7.0
+   ],
+   [
+    "Sunny Day",
+    0.444,
+    7.0
+   ],
+   [
+    "Slash",
+    0.444,
+    7.0
+   ],
+   [
+    "Substitute",
+    0.444,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Salamencite",
+    0.548,
+    32.7
+   ],
+   [
+    "Smooth Rock",
+    0.444,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Moxie",
+    0.548,
+    32.7
+   ],
+   [
+    "Intimidate",
+    0.444,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.577,
+    26.0
+   ],
+   [
+    "Careful",
+    0.444,
+    7.0
+   ],
+   [
+    "Naughty",
+    0.442,
+    6.7
+   ]
+  ]
+ },
+ "Luxray": {
+  "win_rate": 0.48,
+  "games": 39.0,
+  "move": [
+   [
+    "Supercell Slam",
+    0.53,
+    9.0
+   ],
+   [
+    "Confuse Ray",
+    0.53,
+    9.0
+   ],
+   [
+    "Giga Impact",
+    0.53,
+    9.0
+   ],
+   [
+    "Roar",
+    0.48,
+    39.0
+   ],
+   [
+    "Crunch",
+    0.464,
+    30.0
+   ],
+   [
+    "Facade",
+    0.464,
+    30.0
+   ],
+   [
+    "Fake Tears",
+    0.464,
+    30.0
+   ]
+  ],
+  "item": [
+   [
+    "Grassy Seed",
+    0.53,
+    9.0
+   ],
+   [
+    "Quick Claw",
+    0.464,
+    30.0
+   ]
+  ],
+  "ability": [
+   [
+    "Guts",
+    0.53,
+    9.0
+   ],
+   [
+    "Intimidate",
+    0.464,
+    30.0
+   ]
+  ],
+  "nature": [
+   [
+    "Sassy",
+    0.53,
+    9.0
+   ],
+   [
+    "Relaxed",
+    0.464,
+    30.0
+   ]
+  ]
+ },
+ "Kingambit": {
+  "win_rate": 0.396,
+  "games": 35.0,
+  "move": [
+   [
+    "Zen Headbutt",
+    0.403,
+    29.0
+   ],
+   [
+    "Thief",
+    0.403,
+    29.0
+   ],
+   [
+    "Thunder Wave",
+    0.403,
+    29.0
+   ],
+   [
+    "Night Slash",
+    0.396,
+    35.0
+   ],
+   [
+    "Low Sweep",
+    0.396,
+    6.0
+   ],
+   [
+    "Brick Break",
+    0.396,
+    6.0
+   ],
+   [
+    "Fling",
+    0.396,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Bright Powder",
+    0.403,
+    29.0
+   ],
+   [
+    "Coba Berry",
+    0.396,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Supreme Overlord",
+    0.396,
+    35.0
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.53,
+    9.0
+   ],
+   [
+    "Relaxed",
+    0.396,
+    6.0
+   ],
+   [
+    "Gentle",
+    0.348,
+    20.0
+   ]
+  ]
+ },
+ "Meowstic-F": {
+  "win_rate": 0.505,
+  "games": 34.0,
+  "move": [
+   [
+    "Calm Mind",
+    0.505,
+    34.0
+   ],
+   [
+    "Nasty Plot",
+    0.505,
+    34.0
+   ],
+   [
+    "Facade",
+    0.505,
+    34.0
+   ],
+   [
+    "Psych Up",
+    0.505,
+    34.0
+   ]
+  ],
+  "item": [
+   [
+    "Charcoal",
+    0.505,
+    34.0
+   ]
+  ],
+  "ability": [
+   [
+    "Keen Eye",
+    0.505,
+    34.0
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.505,
+    34.0
+   ]
+  ]
+ },
+ "Florges-White": {
+  "win_rate": 0.533,
+  "games": 33.3,
+  "move": [
+   [
+    "Petal Dance",
+    0.548,
+    5.0
+   ],
+   [
+    "Misty Terrain",
+    0.548,
+    5.0
+   ],
+   [
+    "Wish",
+    0.548,
+    5.0
+   ],
+   [
+    "Charm",
+    0.548,
+    5.0
+   ],
+   [
+    "Round",
+    0.527,
+    28.3
+   ],
+   [
+    "Solar Beam",
+    0.527,
+    28.3
+   ],
+   [
+    "Tearful Look",
+    0.527,
+    28.3
+   ],
+   [
+    "Safeguard",
+    0.527,
+    28.3
+   ]
+  ],
+  "item": [
+   [
+    "Roseli Berry",
+    0.548,
+    5.0
+   ],
+   [
+    "Miracle Seed",
+    0.527,
+    28.3
+   ]
+  ],
+  "ability": [
+   [
+    "Symbiosis",
+    0.548,
+    5.0
+   ],
+   [
+    "Flower Veil",
+    0.527,
+    28.3
+   ]
+  ],
+  "nature": [
+   [
+    "Gentle",
+    0.548,
+    5.0
+   ],
+   [
+    "Mild",
+    0.527,
+    28.3
+   ]
+  ]
+ },
+ "Azumarill": {
+  "win_rate": 0.419,
+  "games": 33.0,
+  "move": [
+   [
+    "Snore",
+    0.436,
+    13.7
+   ],
+   [
+    "Misty Terrain",
+    0.436,
+    13.7
+   ],
+   [
+    "Rest",
+    0.436,
+    13.7
+   ],
+   [
+    "Protect",
+    0.436,
+    13.7
+   ],
+   [
+    "Copycat",
+    0.414,
+    19.3
+   ],
+   [
+    "Brutal Swing",
+    0.414,
+    19.3
+   ],
+   [
+    "Dig",
+    0.414,
+    19.3
+   ],
+   [
+    "Knock Off",
+    0.414,
+    19.3
+   ]
+  ],
+  "item": [
+   [
+    "Life Orb",
+    0.436,
+    13.7
+   ],
+   [
+    "Pecha Berry",
+    0.414,
+    19.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sap Sipper",
+    0.436,
+    13.7
+   ],
+   [
+    "Thick Fat",
+    0.414,
+    19.3
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.436,
+    13.7
+   ],
+   [
+    "Adamant",
+    0.414,
+    19.3
+   ]
+  ]
+ },
+ "Castform": {
+  "win_rate": 0.296,
+  "games": 30.7,
+  "move": [
+   [
+    "Hurricane",
+    0.349,
+    15.7
+   ],
+   [
+    "Substitute",
+    0.349,
+    15.7
+   ],
+   [
+    "Ice Beam",
+    0.349,
+    15.7
+   ],
+   [
+    "Scald",
+    0.349,
+    15.7
+   ],
+   [
+    "Amnesia",
+    0.304,
+    7.3
+   ],
+   [
+    "Future Sight",
+    0.304,
+    7.3
+   ],
+   [
+    "Solar Beam",
+    0.304,
+    7.3
+   ],
+   [
+    "Guard Swap",
+    0.276,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Metal Coat",
+    0.349,
+    15.7
+   ],
+   [
+    "Oran Berry",
+    0.304,
+    7.3
+   ],
+   [
+    "Yache Berry",
+    0.276,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Forecast",
+    0.296,
+    30.7
+   ]
+  ],
+  "nature": [
+   [
+    "Modest",
+    0.349,
+    15.7
+   ],
+   [
+    "Docile",
+    0.304,
+    7.3
+   ],
+   [
+    "Relaxed",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Vivillon-Modern": {
+  "win_rate": 0.403,
+  "games": 29.0,
+  "move": [
+   [
+    "Light Screen",
+    0.403,
+    29.0
+   ],
+   [
+    "Endure",
+    0.403,
+    29.0
+   ],
+   [
+    "Psychic",
+    0.403,
+    29.0
+   ],
+   [
+    "Rage Powder",
+    0.403,
+    29.0
+   ]
+  ],
+  "item": [
+   [
+    "Metal Coat",
+    0.403,
+    29.0
+   ]
+  ],
+  "ability": [
+   [
+    "Shield Dust",
+    0.403,
+    29.0
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.403,
+    29.0
+   ]
+  ]
+ },
+ "Falinks": {
+  "win_rate": 0.434,
+  "games": 28.3,
+  "move": [
+   [
+    "Knock Off",
+    0.51,
+    15.0
+   ],
+   [
+    "Double Hit",
+    0.51,
+    15.0
+   ],
+   [
+    "Brick Break",
+    0.51,
+    15.0
+   ],
+   [
+    "Megahorn",
+    0.51,
+    15.0
+   ],
+   [
+    "Agility",
+    0.458,
+    6.0
+   ],
+   [
+    "Hyper Beam",
+    0.458,
+    6.0
+   ],
+   [
+    "Round",
+    0.458,
+    6.0
+   ],
+   [
+    "Zen Headbutt",
+    0.458,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Roseli Berry",
+    0.51,
+    15.0
+   ],
+   [
+    "Persim Berry",
+    0.458,
+    6.0
+   ],
+   [
+    "Falinksite",
+    0.304,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Defiant",
+    0.51,
+    15.0
+   ],
+   [
+    "Battle Armor",
+    0.359,
+    13.3
+   ]
+  ],
+  "nature": [
+   [
+    "Serious",
+    0.51,
+    15.0
+   ],
+   [
+    "Modest",
+    0.458,
+    6.0
+   ],
+   [
+    "Naive",
+    0.304,
+    7.3
+   ]
+  ]
+ },
+ "Vivillon-Icy Snow": {
+  "win_rate": 0.322,
+  "games": 28.0,
+  "move": [
+   [
+    "Round",
+    0.394,
+    13.7
+   ],
+   [
+    "Rest",
+    0.394,
+    13.7
+   ],
+   [
+    "Whirlwind",
+    0.394,
+    13.7
+   ],
+   [
+    "Tailwind",
+    0.394,
+    13.7
+   ],
+   [
+    "Sleep Talk",
+    0.327,
+    6.7
+   ],
+   [
+    "Light Screen",
+    0.327,
+    6.7
+   ],
+   [
+    "Acrobatics",
+    0.327,
+    6.7
+   ],
+   [
+    "Safeguard",
+    0.276,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Sitrus Berry",
+    0.394,
+    13.7
+   ],
+   [
+    "Muscle Band",
+    0.327,
+    6.7
+   ],
+   [
+    "Mystic Water",
+    0.276,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Shield Dust",
+    0.358,
+    20.3
+   ],
+   [
+    "Compound Eyes",
+    0.276,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.394,
+    13.7
+   ],
+   [
+    "Lax",
+    0.327,
+    6.7
+   ],
+   [
+    "Adamant",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Ditto": {
+  "win_rate": 0.567,
+  "games": 27.7,
+  "move": [
+   [
+    "Transform",
+    0.567,
+    27.7
+   ]
+  ],
+  "item": [
+   [
+    "Choice Scarf",
+    0.567,
+    27.7
+   ]
+  ],
+  "ability": [
+   [
+    "Imposter",
+    0.567,
+    27.7
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.567,
+    27.7
+   ]
+  ]
+ },
+ "Staraptor": {
+  "win_rate": 0.381,
+  "games": 27.3,
+  "move": [
+   [
+    "Tailwind",
+    0.482,
+    7.3
+   ],
+   [
+    "U-turn",
+    0.381,
+    27.3
+   ],
+   [
+    "Aerial Ace",
+    0.381,
+    27.3
+   ],
+   [
+    "Blaze Kick",
+    0.381,
+    27.3
+   ],
+   [
+    "Rest",
+    0.348,
+    20.0
+   ]
+  ],
+  "item": [
+   [
+    "Babiri Berry",
+    0.381,
+    27.3
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.381,
+    27.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.381,
+    27.3
+   ]
+  ]
+ },
+ "Altaria": {
+  "win_rate": 0.381,
+  "games": 27.3,
+  "move": [
+   [
+    "Dragon Pulse",
+    0.381,
+    27.3
+   ],
+   [
+    "Bulldoze",
+    0.381,
+    27.3
+   ],
+   [
+    "Dragon Cheer",
+    0.381,
+    27.3
+   ],
+   [
+    "Brave Bird",
+    0.381,
+    27.3
+   ]
+  ],
+  "item": [
+   [
+    "Wacan Berry",
+    0.381,
+    27.3
+   ]
+  ],
+  "ability": [
+   [
+    "Cloud Nine",
+    0.381,
+    27.3
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.381,
+    27.3
+   ]
+  ]
+ },
+ "Scolipede": {
+  "win_rate": 0.454,
+  "games": 27.0,
+  "move": [
+   [
+    "Substitute",
+    0.53,
+    9.0
+   ],
+   [
+    "Hyper Beam",
+    0.53,
+    9.0
+   ],
+   [
+    "Pin Missile",
+    0.53,
+    9.0
+   ],
+   [
+    "Bite",
+    0.53,
+    9.0
+   ],
+   [
+    "Smart Strike",
+    0.44,
+    6.3
+   ],
+   [
+    "Protect",
+    0.44,
+    6.3
+   ],
+   [
+    "Iron Defense",
+    0.44,
+    6.3
+   ],
+   [
+    "Dig",
+    0.44,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Cheri Berry",
+    0.53,
+    9.0
+   ],
+   [
+    "Scolipite",
+    0.417,
+    18.0
+   ]
+  ],
+  "ability": [
+   [
+    "Poison Point",
+    0.53,
+    9.0
+   ],
+   [
+    "Swarm",
+    0.44,
+    6.3
+   ],
+   [
+    "Speed Boost",
+    0.415,
+    11.7
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.53,
+    9.0
+   ],
+   [
+    "Lonely",
+    0.44,
+    6.3
+   ],
+   [
+    "Rash",
+    0.415,
+    11.7
+   ]
+  ]
+ },
+ "Lucario": {
+  "win_rate": 0.376,
+  "games": 26.3,
+  "move": [
+   [
+    "Bulldoze",
+    0.405,
+    19.0
+   ],
+   [
+    "Low Kick",
+    0.405,
+    19.0
+   ],
+   [
+    "Aura Sphere",
+    0.405,
+    19.0
+   ],
+   [
+    "Shadow Claw",
+    0.405,
+    19.0
+   ],
+   [
+    "Life Dew",
+    0.339,
+    7.3
+   ],
+   [
+    "Flash Cannon",
+    0.339,
+    7.3
+   ],
+   [
+    "Sleep Talk",
+    0.339,
+    7.3
+   ],
+   [
+    "Upper Hand",
+    0.339,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Light Ball",
+    0.405,
+    19.0
+   ],
+   [
+    "Normal Gem",
+    0.339,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Steadfast",
+    0.405,
+    19.0
+   ],
+   [
+    "Inner Focus",
+    0.339,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.405,
+    19.0
+   ],
+   [
+    "Adamant",
+    0.339,
+    7.3
+   ]
+  ]
+ },
+ "Furfrou-Kabuki": {
+  "win_rate": 0.418,
+  "games": 26.3,
+  "move": [
+   [
+    "Fire Fang",
+    0.444,
+    7.0
+   ],
+   [
+    "Ice Fang",
+    0.444,
+    7.0
+   ],
+   [
+    "Baby-Doll Eyes",
+    0.444,
+    7.0
+   ],
+   [
+    "Endure",
+    0.444,
+    7.0
+   ],
+   [
+    "Hyper Voice",
+    0.414,
+    19.3
+   ],
+   [
+    "Thunder Fang",
+    0.414,
+    19.3
+   ],
+   [
+    "Snore",
+    0.414,
+    19.3
+   ],
+   [
+    "Iron Tail",
+    0.414,
+    19.3
+   ]
+  ],
+  "item": [
+   [
+    "Normal Gem",
+    0.444,
+    7.0
+   ],
+   [
+    "Shed Shell",
+    0.414,
+    19.3
+   ]
+  ],
+  "ability": [
+   [
+    "Fur Coat",
+    0.418,
+    26.3
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.444,
+    7.0
+   ],
+   [
+    "Serious",
+    0.414,
+    19.3
+   ]
+  ]
+ },
+ "Vivillon-Polar": {
+  "win_rate": 0.542,
+  "games": 26.0,
+  "move": [
+   [
+    "Sleep Talk",
+    0.611,
+    7.0
+   ],
+   [
+    "Light Screen",
+    0.611,
+    7.0
+   ],
+   [
+    "Safeguard",
+    0.611,
+    7.0
+   ],
+   [
+    "Solar Beam",
+    0.598,
+    13.3
+   ],
+   [
+    "Bug Bite",
+    0.56,
+    6.3
+   ],
+   [
+    "Tailwind",
+    0.512,
+    12.3
+   ],
+   [
+    "Sleep Powder",
+    0.508,
+    19.0
+   ],
+   [
+    "Draining Kiss",
+    0.5,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Magnet",
+    0.611,
+    7.0
+   ],
+   [
+    "Wise Glasses",
+    0.56,
+    6.3
+   ],
+   [
+    "Grassy Seed",
+    0.5,
+    6.7
+   ],
+   [
+    "Tanga Berry",
+    0.458,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Friend Guard",
+    0.564,
+    13.7
+   ],
+   [
+    "Shield Dust",
+    0.56,
+    6.3
+   ],
+   [
+    "Compound Eyes",
+    0.458,
+    6.0
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.611,
+    7.0
+   ],
+   [
+    "Brave",
+    0.56,
+    6.3
+   ],
+   [
+    "Impish",
+    0.5,
+    6.7
+   ],
+   [
+    "Hasty",
+    0.458,
+    6.0
+   ]
+  ]
+ },
+ "Emolga": {
+  "win_rate": 0.339,
+  "games": 26.0,
+  "move": [
+   [
+    "Defog",
+    0.396,
+    6.0
+   ],
+   [
+    "Thunder",
+    0.396,
+    6.0
+   ],
+   [
+    "Tickle",
+    0.396,
+    6.0
+   ],
+   [
+    "U-turn",
+    0.395,
+    12.3
+   ],
+   [
+    "Eerie Impulse",
+    0.395,
+    12.3
+   ],
+   [
+    "Charge",
+    0.395,
+    12.3
+   ],
+   [
+    "Encore",
+    0.385,
+    18.3
+   ],
+   [
+    "Charge Beam",
+    0.276,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Persim Berry",
+    0.396,
+    6.0
+   ],
+   [
+    "Pecha Berry",
+    0.395,
+    12.3
+   ],
+   [
+    "Terrain Extender",
+    0.276,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Static",
+    0.385,
+    18.3
+   ],
+   [
+    "Motor Drive",
+    0.276,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.396,
+    6.0
+   ],
+   [
+    "Quiet",
+    0.395,
+    12.3
+   ],
+   [
+    "Jolly",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Machamp": {
+  "win_rate": 0.416,
+  "games": 25.7,
+  "move": [
+   [
+    "Bulldoze",
+    0.44,
+    6.3
+   ],
+   [
+    "Payback",
+    0.44,
+    6.3
+   ],
+   [
+    "Superpower",
+    0.44,
+    6.3
+   ],
+   [
+    "Light Screen",
+    0.44,
+    6.3
+   ],
+   [
+    "Thief",
+    0.414,
+    19.3
+   ],
+   [
+    "Body Slam",
+    0.414,
+    19.3
+   ],
+   [
+    "Reversal",
+    0.414,
+    19.3
+   ],
+   [
+    "Protect",
+    0.414,
+    19.3
+   ]
+  ],
+  "item": [
+   [
+    "Kebia Berry",
+    0.44,
+    6.3
+   ],
+   [
+    "Kasib Berry",
+    0.414,
+    19.3
+   ]
+  ],
+  "ability": [
+   [
+    "Guts",
+    0.44,
+    6.3
+   ],
+   [
+    "Steadfast",
+    0.414,
+    19.3
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.44,
+    6.3
+   ],
+   [
+    "Quirky",
+    0.414,
+    19.3
+   ]
+  ]
+ },
+ "Grapploct": {
+  "win_rate": 0.524,
+  "games": 25.3,
+  "move": [
+   [
+    "Pain Split",
+    0.524,
+    25.3
+   ],
+   [
+    "Reversal",
+    0.524,
+    25.3
+   ],
+   [
+    "Brick Break",
+    0.524,
+    25.3
+   ],
+   [
+    "Feint",
+    0.524,
+    25.3
+   ]
+  ],
+  "item": [
+   [
+    "Magnet",
+    0.613,
+    18.7
+   ],
+   [
+    "Poison Barb",
+    0.308,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Technician",
+    0.524,
+    25.3
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.524,
+    25.3
+   ]
+  ]
+ },
+ "Alcremie-Mint-Cream": {
+  "win_rate": 0.475,
+  "games": 25.0,
+  "move": [
+   [
+    "Imprison",
+    0.567,
+    18.0
+   ],
+   [
+    "Entrainment",
+    0.475,
+    25.0
+   ],
+   [
+    "Endeavor",
+    0.475,
+    25.0
+   ],
+   [
+    "Helping Hand",
+    0.475,
+    25.0
+   ],
+   [
+    "Hyper Beam",
+    0.278,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Occa Berry",
+    0.475,
+    25.0
+   ]
+  ],
+  "ability": [
+   [
+    "Aroma Veil",
+    0.475,
+    25.0
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.475,
+    25.0
+   ]
+  ]
+ },
+ "Musharna": {
+  "win_rate": 0.392,
+  "games": 24.3,
+  "move": [
+   [
+    "Healing Wish",
+    0.484,
+    8.7
+   ],
+   [
+    "Moonblast",
+    0.484,
+    8.7
+   ],
+   [
+    "Guard Swap",
+    0.484,
+    8.7
+   ],
+   [
+    "Thunder Wave",
+    0.484,
+    8.7
+   ],
+   [
+    "Hyper Beam",
+    0.349,
+    15.7
+   ],
+   [
+    "Power Swap",
+    0.349,
+    15.7
+   ],
+   [
+    "Trick",
+    0.349,
+    15.7
+   ],
+   [
+    "Protect",
+    0.349,
+    15.7
+   ]
+  ],
+  "item": [
+   [
+    "Rawst Berry",
+    0.484,
+    8.7
+   ],
+   [
+    "Pecha Berry",
+    0.349,
+    15.7
+   ]
+  ],
+  "ability": [
+   [
+    "Synchronize",
+    0.392,
+    24.3
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.484,
+    8.7
+   ],
+   [
+    "Modest",
+    0.349,
+    15.7
+   ]
+  ]
+ },
+ "Bastiodon": {
+  "win_rate": 0.487,
+  "games": 23.0,
+  "move": [
+   [
+    "Sandstorm",
+    0.558,
+    6.7
+   ],
+   [
+    "Snore",
+    0.558,
+    6.7
+   ],
+   [
+    "Scary Face",
+    0.558,
+    6.7
+   ],
+   [
+    "Rock Tomb",
+    0.519,
+    15.3
+   ],
+   [
+    "Stone Edge",
+    0.484,
+    8.7
+   ],
+   [
+    "Heavy Slam",
+    0.484,
+    8.7
+   ],
+   [
+    "Hard Press",
+    0.484,
+    8.7
+   ],
+   [
+    "Foul Play",
+    0.431,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Light Clay",
+    0.558,
+    6.7
+   ],
+   [
+    "Normal Gem",
+    0.484,
+    8.7
+   ],
+   [
+    "Dragon Fang",
+    0.431,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Soundproof",
+    0.558,
+    6.7
+   ],
+   [
+    "Sturdy",
+    0.455,
+    16.3
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.558,
+    6.7
+   ],
+   [
+    "Brave",
+    0.484,
+    8.7
+   ],
+   [
+    "Impish",
+    0.431,
+    7.7
+   ]
+  ]
+ },
+ "Quaquaval": {
+  "win_rate": 0.404,
+  "games": 22.3,
+  "move": [
+   [
+    "Acrobatics",
+    0.404,
+    22.3
+   ],
+   [
+    "Counter",
+    0.404,
+    22.3
+   ],
+   [
+    "Aerial Ace",
+    0.404,
+    22.3
+   ],
+   [
+    "Giga Impact",
+    0.404,
+    22.3
+   ]
+  ],
+  "item": [
+   [
+    "Never-Melt Ice",
+    0.404,
+    22.3
+   ]
+  ],
+  "ability": [
+   [
+    "Torrent",
+    0.404,
+    22.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.404,
+    22.3
+   ]
+  ]
+ },
+ "Vivillon-Tundra": {
+  "win_rate": 0.548,
+  "games": 22.3,
+  "move": [
+   [
+    "Air Cutter",
+    0.548,
+    22.3
+   ],
+   [
+    "Rain Dance",
+    0.548,
+    22.3
+   ],
+   [
+    "Tailwind",
+    0.548,
+    22.3
+   ],
+   [
+    "Sleep Talk",
+    0.548,
+    22.3
+   ]
+  ],
+  "item": [
+   [
+    "Focus Band",
+    0.548,
+    22.3
+   ]
+  ],
+  "ability": [
+   [
+    "Compound Eyes",
+    0.548,
+    22.3
+   ]
+  ],
+  "nature": [
+   [
+    "Lonely",
+    0.548,
+    22.3
+   ]
+  ]
+ },
+ "Malamar": {
+  "win_rate": 0.326,
+  "games": 22.0,
+  "move": [
+   [
+    "Light Screen",
+    0.378,
+    14.3
+   ],
+   [
+    "Gravity",
+    0.378,
+    14.3
+   ],
+   [
+    "Expanding Force",
+    0.378,
+    14.3
+   ],
+   [
+    "Liquidation",
+    0.378,
+    14.3
+   ],
+   [
+    "Topsy-Turvy",
+    0.276,
+    7.7
+   ],
+   [
+    "Hypnosis",
+    0.276,
+    7.7
+   ],
+   [
+    "Foul Play",
+    0.276,
+    7.7
+   ],
+   [
+    "Fling",
+    0.276,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Scope Lens",
+    0.378,
+    14.3
+   ],
+   [
+    "Mental Herb",
+    0.276,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Suction Cups",
+    0.326,
+    22.0
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.378,
+    14.3
+   ],
+   [
+    "Lax",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Vivillon-Marine": {
+  "win_rate": 0.493,
+  "games": 22.0,
+  "move": [
+   [
+    "Pounce",
+    0.556,
+    7.0
+   ],
+   [
+    "Protect",
+    0.556,
+    7.0
+   ],
+   [
+    "Bug Buzz",
+    0.556,
+    7.0
+   ],
+   [
+    "Rest",
+    0.556,
+    7.0
+   ],
+   [
+    "Snore",
+    0.461,
+    15.0
+   ],
+   [
+    "Air Cutter",
+    0.461,
+    15.0
+   ],
+   [
+    "Bug Bite",
+    0.461,
+    15.0
+   ],
+   [
+    "Pollen Puff",
+    0.461,
+    15.0
+   ]
+  ],
+  "item": [
+   [
+    "Sitrus Berry",
+    0.556,
+    7.0
+   ],
+   [
+    "Leek",
+    0.461,
+    15.0
+   ]
+  ],
+  "ability": [
+   [
+    "Friend Guard",
+    0.556,
+    7.0
+   ],
+   [
+    "Shield Dust",
+    0.461,
+    15.0
+   ]
+  ],
+  "nature": [
+   [
+    "Careful",
+    0.556,
+    7.0
+   ],
+   [
+    "Relaxed",
+    0.461,
+    15.0
+   ]
+  ]
+ },
+ "Alcremie": {
+  "win_rate": 0.465,
+  "games": 21.7,
+  "move": [
+   [
+    "Protect",
+    0.465,
+    21.7
+   ],
+   [
+    "Giga Drain",
+    0.465,
+    21.7
+   ],
+   [
+    "Round",
+    0.465,
+    21.7
+   ],
+   [
+    "Psych Up",
+    0.465,
+    21.7
+   ]
+  ],
+  "item": [
+   [
+    "Air Balloon",
+    0.465,
+    21.7
+   ]
+  ],
+  "ability": [
+   [
+    "Sweet Veil",
+    0.465,
+    21.7
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.465,
+    21.7
+   ]
+  ]
+ },
+ "Eelektross": {
+  "win_rate": 0.271,
+  "games": 21.3,
+  "move": [
+   [
+    "Lunge",
+    0.32,
+    14.7
+   ],
+   [
+    "Knock Off",
+    0.32,
+    14.7
+   ],
+   [
+    "Crunch",
+    0.32,
+    14.7
+   ],
+   [
+    "Facade",
+    0.32,
+    14.7
+   ],
+   [
+    "Rain Dance",
+    0.231,
+    6.7
+   ],
+   [
+    "Acid Spray",
+    0.231,
+    6.7
+   ],
+   [
+    "Rest",
+    0.231,
+    6.7
+   ],
+   [
+    "Electroweb",
+    0.231,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Hard Stone",
+    0.32,
+    14.7
+   ],
+   [
+    "Eelektrossite",
+    0.231,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Levitate",
+    0.271,
+    21.3
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.32,
+    14.7
+   ],
+   [
+    "Gentle",
+    0.231,
+    6.7
+   ]
+  ]
+ },
+ "Cofagrigus": {
+  "win_rate": 0.486,
+  "games": 21.3,
+  "move": [
+   [
+    "Attract",
+    0.51,
+    15.0
+   ],
+   [
+    "Grass Knot",
+    0.51,
+    15.0
+   ],
+   [
+    "Toxic Spikes",
+    0.51,
+    15.0
+   ],
+   [
+    "Endure",
+    0.51,
+    15.0
+   ],
+   [
+    "Wonder Room",
+    0.44,
+    6.3
+   ],
+   [
+    "Hyper Beam",
+    0.44,
+    6.3
+   ],
+   [
+    "Body Press",
+    0.44,
+    6.3
+   ],
+   [
+    "Guard Split",
+    0.44,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Wise Glasses",
+    0.51,
+    15.0
+   ],
+   [
+    "King's Rock",
+    0.44,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Mummy",
+    0.486,
+    21.3
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.554,
+    7.3
+   ],
+   [
+    "Naughty",
+    0.466,
+    7.7
+   ],
+   [
+    "Brave",
+    0.44,
+    6.3
+   ]
+  ]
+ },
+ "Qwilfish": {
+  "win_rate": 0.64,
+  "games": 20.7,
+  "move": [
+   [
+    "Mud Shot",
+    0.64,
+    20.7
+   ],
+   [
+    "Payback",
+    0.64,
+    20.7
+   ],
+   [
+    "Flail",
+    0.64,
+    20.7
+   ],
+   [
+    "Liquidation",
+    0.64,
+    20.7
+   ]
+  ],
+  "item": [
+   [
+    "Black Belt",
+    0.64,
+    20.7
+   ]
+  ],
+  "ability": [
+   [
+    "Poison Point",
+    0.64,
+    20.7
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.66,
+    13.7
+   ],
+   [
+    "Docile",
+    0.574,
+    7.0
+   ]
+  ]
+ },
+ "Gourgeist-Small": {
+  "win_rate": 0.439,
+  "games": 20.0,
+  "move": [
+   [
+    "Snore",
+    0.439,
+    20.0
+   ],
+   [
+    "Leech Seed",
+    0.439,
+    20.0
+   ],
+   [
+    "Rest",
+    0.439,
+    20.0
+   ],
+   [
+    "Shadow Ball",
+    0.439,
+    20.0
+   ]
+  ],
+  "item": [
+   [
+    "Silver Powder",
+    0.439,
+    20.0
+   ]
+  ],
+  "ability": [
+   [
+    "Frisk",
+    0.439,
+    20.0
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.439,
+    20.0
+   ]
+  ]
+ },
+ "Gyarados": {
+  "win_rate": 0.423,
+  "games": 19.7,
+  "move": [
+   [
+    "Taunt",
+    0.444,
+    7.0
+   ],
+   [
+    "Stone Edge",
+    0.444,
+    7.0
+   ],
+   [
+    "Sandstorm",
+    0.444,
+    7.0
+   ],
+   [
+    "Endure",
+    0.444,
+    7.0
+   ],
+   [
+    "Scale Shot",
+    0.42,
+    12.7
+   ],
+   [
+    "Sunny Day",
+    0.42,
+    12.7
+   ],
+   [
+    "Double-Edge",
+    0.42,
+    12.7
+   ],
+   [
+    "Spite",
+    0.42,
+    12.7
+   ]
+  ],
+  "item": [
+   [
+    "Damp Rock",
+    0.444,
+    7.0
+   ],
+   [
+    "Gyaradosite",
+    0.42,
+    12.7
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.423,
+    19.7
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.444,
+    7.0
+   ],
+   [
+    "Rash",
+    0.42,
+    12.7
+   ]
+  ]
+ },
+ "Abomasnow": {
+  "win_rate": 0.359,
+  "games": 19.3,
+  "move": [
+   [
+    "Bulldoze",
+    0.394,
+    13.7
+   ],
+   [
+    "Sheer Cold",
+    0.394,
+    13.7
+   ],
+   [
+    "Leech Seed",
+    0.394,
+    13.7
+   ],
+   [
+    "Iron Tail",
+    0.394,
+    13.7
+   ],
+   [
+    "Grass Knot",
+    0.326,
+    5.7
+   ],
+   [
+    "Curse",
+    0.326,
+    5.7
+   ],
+   [
+    "Wood Hammer",
+    0.326,
+    5.7
+   ],
+   [
+    "Facade",
+    0.326,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Metronome",
+    0.394,
+    13.7
+   ],
+   [
+    "Rindo Berry",
+    0.326,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Snow Warning",
+    0.359,
+    19.3
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.394,
+    13.7
+   ],
+   [
+    "Gentle",
+    0.326,
+    5.7
+   ]
+  ]
+ },
+ "Palafin": {
+  "win_rate": 0.414,
+  "games": 19.3,
+  "move": [
+   [
+    "Aqua Jet",
+    0.414,
+    19.3
+   ],
+   [
+    "Iron Head",
+    0.414,
+    19.3
+   ],
+   [
+    "Acrobatics",
+    0.414,
+    19.3
+   ],
+   [
+    "Focus Blast",
+    0.414,
+    19.3
+   ]
+  ],
+  "item": [
+   [
+    "Persim Berry",
+    0.414,
+    19.3
+   ]
+  ],
+  "ability": [
+   [
+    "Zero to Hero",
+    0.414,
+    19.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.414,
+    19.3
+   ]
+  ]
+ },
+ "Feraligatr": {
+  "win_rate": 0.414,
+  "games": 19.3,
+  "move": [
+   [
+    "Substitute",
+    0.414,
+    19.3
+   ],
+   [
+    "Focus Blast",
+    0.414,
+    19.3
+   ],
+   [
+    "Aerial Ace",
+    0.414,
+    19.3
+   ],
+   [
+    "Counter",
+    0.414,
+    19.3
+   ]
+  ],
+  "item": [
+   [
+    "Feraligite",
+    0.446,
+    13.3
+   ],
+   [
+    "Chople Berry",
+    0.375,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Torrent",
+    0.414,
+    19.3
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.414,
+    19.3
+   ]
+  ]
+ },
+ "Typhlosion": {
+  "win_rate": 0.414,
+  "games": 19.3,
+  "move": [
+   [
+    "Wild Charge",
+    0.414,
+    19.3
+   ],
+   [
+    "Burn Up",
+    0.414,
+    19.3
+   ],
+   [
+    "Endeavor",
+    0.414,
+    19.3
+   ],
+   [
+    "Burning Jealousy",
+    0.414,
+    19.3
+   ]
+  ],
+  "item": [
+   [
+    "Heat Rock",
+    0.414,
+    19.3
+   ]
+  ],
+  "ability": [
+   [
+    "Blaze",
+    0.414,
+    19.3
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.414,
+    19.3
+   ]
+  ]
+ },
+ "Espeon": {
+  "win_rate": 0.405,
+  "games": 19.0,
+  "move": [
+   [
+    "Psychic Noise",
+    0.405,
+    19.0
+   ],
+   [
+    "Magic Room",
+    0.405,
+    19.0
+   ],
+   [
+    "Stored Power",
+    0.405,
+    19.0
+   ],
+   [
+    "Body Slam",
+    0.405,
+    19.0
+   ]
+  ],
+  "item": [
+   [
+    "Quick Claw",
+    0.405,
+    19.0
+   ]
+  ],
+  "ability": [
+   [
+    "Synchronize",
+    0.405,
+    19.0
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.405,
+    19.0
+   ]
+  ]
+ },
+ "Alcremie-Ruby-Swirl": {
+  "win_rate": 0.405,
+  "games": 19.0,
+  "move": [
+   [
+    "Giga Drain",
+    0.405,
+    19.0
+   ],
+   [
+    "Giga Impact",
+    0.405,
+    19.0
+   ],
+   [
+    "Fake Tears",
+    0.405,
+    19.0
+   ],
+   [
+    "Solar Beam",
+    0.405,
+    19.0
+   ]
+  ],
+  "item": [
+   [
+    "Iron Ball",
+    0.405,
+    19.0
+   ]
+  ],
+  "ability": [
+   [
+    "Aroma Veil",
+    0.405,
+    19.0
+   ]
+  ],
+  "nature": [
+   [
+    "Relaxed",
+    0.405,
+    19.0
+   ]
+  ]
+ },
+ "Skarmory": {
+  "win_rate": 0.405,
+  "games": 19.0,
+  "move": [
+   [
+    "Steel Wing",
+    0.405,
+    19.0
+   ],
+   [
+    "Endure",
+    0.405,
+    19.0
+   ],
+   [
+    "Body Press",
+    0.405,
+    19.0
+   ],
+   [
+    "Giga Impact",
+    0.405,
+    19.0
+   ]
+  ],
+  "item": [
+   [
+    "Coba Berry",
+    0.405,
+    19.0
+   ]
+  ],
+  "ability": [
+   [
+    "Weak Armor",
+    0.479,
+    13.7
+   ],
+   [
+    "Sturdy",
+    0.273,
+    5.3
+   ]
+  ],
+  "nature": [
+   [
+    "Sassy",
+    0.405,
+    19.0
+   ]
+  ]
+ },
+ "Zoroark": {
+  "win_rate": 0.475,
+  "games": 17.7,
+  "move": [
+   [
+    "Psychic",
+    0.475,
+    17.7
+   ],
+   [
+    "Rain Dance",
+    0.475,
+    17.7
+   ],
+   [
+    "Memento",
+    0.475,
+    17.7
+   ],
+   [
+    "Brick Break",
+    0.475,
+    17.7
+   ]
+  ],
+  "item": [
+   [
+    "Poison Barb",
+    0.475,
+    17.7
+   ]
+  ],
+  "ability": [
+   [
+    "Illusion",
+    0.475,
+    17.7
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.475,
+    17.7
+   ]
+  ]
+ },
+ "Vivillon-High Plains": {
+  "win_rate": 0.368,
+  "games": 17.0,
+  "move": [
+   [
+    "Calm Mind",
+    0.431,
+    7.7
+   ],
+   [
+    "Pollen Puff",
+    0.431,
+    7.7
+   ],
+   [
+    "Skitter Smack",
+    0.431,
+    7.7
+   ],
+   [
+    "Solar Beam",
+    0.431,
+    7.7
+   ],
+   [
+    "Sleep Powder",
+    0.338,
+    9.3
+   ],
+   [
+    "Whirlwind",
+    0.338,
+    9.3
+   ],
+   [
+    "Air Cutter",
+    0.338,
+    9.3
+   ],
+   [
+    "Iron Defense",
+    0.338,
+    9.3
+   ]
+  ],
+  "item": [
+   [
+    "Miracle Seed",
+    0.431,
+    7.7
+   ],
+   [
+    "White Herb",
+    0.338,
+    9.3
+   ]
+  ],
+  "ability": [
+   [
+    "Compound Eyes",
+    0.431,
+    7.7
+   ],
+   [
+    "Friend Guard",
+    0.338,
+    9.3
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.368,
+    17.0
+   ]
+  ]
+ },
+ "Sirfetch’d": {
+  "win_rate": 0.455,
+  "games": 16.3,
+  "move": [
+   [
+    "Close Combat",
+    0.455,
+    16.3
+   ],
+   [
+    "Simple Beam",
+    0.455,
+    16.3
+   ],
+   [
+    "Curse",
+    0.455,
+    16.3
+   ],
+   [
+    "Sky Attack",
+    0.455,
+    16.3
+   ]
+  ],
+  "item": [
+   [
+    "Metronome",
+    0.455,
+    16.3
+   ]
+  ],
+  "ability": [
+   [
+    "Scrappy",
+    0.455,
+    16.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.455,
+    16.3
+   ]
+  ]
+ },
+ "Gliscor": {
+  "win_rate": 0.3,
+  "games": 16.3,
+  "move": [
+   [
+    "Crabhammer",
+    0.339,
+    7.3
+   ],
+   [
+    "Gunk Shot",
+    0.339,
+    7.3
+   ],
+   [
+    "Feint",
+    0.339,
+    7.3
+   ],
+   [
+    "Swords Dance",
+    0.339,
+    7.3
+   ],
+   [
+    "Giga Impact",
+    0.303,
+    9.0
+   ],
+   [
+    "Sunny Day",
+    0.303,
+    9.0
+   ],
+   [
+    "Venoshock",
+    0.303,
+    9.0
+   ],
+   [
+    "Stealth Rock",
+    0.303,
+    9.0
+   ]
+  ],
+  "item": [
+   [
+    "Soft Sand",
+    0.339,
+    7.3
+   ],
+   [
+    "Persim Berry",
+    0.303,
+    9.0
+   ]
+  ],
+  "ability": [
+   [
+    "Hyper Cutter",
+    0.3,
+    16.3
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.339,
+    7.3
+   ],
+   [
+    "Gentle",
+    0.303,
+    9.0
+   ]
+  ]
+ },
+ "Garganacl": {
+  "win_rate": 0.455,
+  "games": 16.3,
+  "move": [
+   [
+    "Power Gem",
+    0.484,
+    8.7
+   ],
+   [
+    "Avalanche",
+    0.484,
+    8.7
+   ],
+   [
+    "Smack Down",
+    0.484,
+    8.7
+   ],
+   [
+    "Hyper Beam",
+    0.484,
+    8.7
+   ],
+   [
+    "Curse",
+    0.431,
+    7.7
+   ],
+   [
+    "Fling",
+    0.431,
+    7.7
+   ],
+   [
+    "Zen Headbutt",
+    0.431,
+    7.7
+   ],
+   [
+    "Block",
+    0.431,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "White Herb",
+    0.484,
+    8.7
+   ],
+   [
+    "Smooth Rock",
+    0.431,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Clear Body",
+    0.484,
+    8.7
+   ],
+   [
+    "Purifying Salt",
+    0.431,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Bold",
+    0.484,
+    8.7
+   ],
+   [
+    "Rash",
+    0.431,
+    7.7
+   ]
+  ]
+ },
+ "Ceruledge": {
+  "win_rate": 0.491,
+  "games": 16.0,
+  "move": [
+   [
+    "Reflect",
+    0.53,
+    9.0
+   ],
+   [
+    "Sunny Day",
+    0.53,
+    9.0
+   ],
+   [
+    "Shadow Ball",
+    0.53,
+    9.0
+   ],
+   [
+    "Confuse Ray",
+    0.491,
+    16.0
+   ],
+   [
+    "Curse",
+    0.444,
+    7.0
+   ],
+   [
+    "Sleep Talk",
+    0.444,
+    7.0
+   ],
+   [
+    "Swords Dance",
+    0.444,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Babiri Berry",
+    0.53,
+    9.0
+   ],
+   [
+    "Heat Rock",
+    0.444,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Flash Fire",
+    0.53,
+    9.0
+   ],
+   [
+    "Weak Armor",
+    0.444,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.53,
+    9.0
+   ],
+   [
+    "Jolly",
+    0.444,
+    7.0
+   ]
+  ]
+ },
+ "Wigglytuff": {
+  "win_rate": 0.368,
+  "games": 15.7,
+  "move": [
+   [
+    "Ice Beam",
+    0.44,
+    6.3
+   ],
+   [
+    "Drain Punch",
+    0.44,
+    6.3
+   ],
+   [
+    "Screech",
+    0.44,
+    6.3
+   ],
+   [
+    "Dark Pulse",
+    0.44,
+    6.3
+   ],
+   [
+    "Wish",
+    0.338,
+    9.3
+   ],
+   [
+    "Light Screen",
+    0.338,
+    9.3
+   ],
+   [
+    "Psychic",
+    0.338,
+    9.3
+   ],
+   [
+    "Uproar",
+    0.338,
+    9.3
+   ]
+  ],
+  "item": [
+   [
+    "Charcoal",
+    0.44,
+    6.3
+   ],
+   [
+    "Miracle Seed",
+    0.338,
+    9.3
+   ]
+  ],
+  "ability": [
+   [
+    "Frisk",
+    0.44,
+    6.3
+   ],
+   [
+    "Cute Charm",
+    0.338,
+    9.3
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.44,
+    6.3
+   ],
+   [
+    "Gentle",
+    0.338,
+    9.3
+   ]
+  ]
+ },
+ "Delphox": {
+  "win_rate": 0.538,
+  "games": 15.3,
+  "move": [
+   [
+    "Psychic Terrain",
+    0.538,
+    15.3
+   ],
+   [
+    "Fire Spin",
+    0.538,
+    15.3
+   ],
+   [
+    "Snore",
+    0.538,
+    15.3
+   ],
+   [
+    "Imprison",
+    0.538,
+    15.3
+   ]
+  ],
+  "item": [
+   [
+    "Delphoxite",
+    0.538,
+    15.3
+   ]
+  ],
+  "ability": [
+   [
+    "Magician",
+    0.538,
+    15.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.538,
+    15.3
+   ]
+  ]
+ },
+ "Farfetch’d": {
+  "win_rate": 0.346,
+  "games": 15.3,
+  "move": [
+   [
+    "Acrobatics",
+    0.406,
+    8.7
+   ],
+   [
+    "Helping Hand",
+    0.406,
+    8.7
+   ],
+   [
+    "Dual Wingbeat",
+    0.406,
+    8.7
+   ],
+   [
+    "Night Slash",
+    0.406,
+    8.7
+   ],
+   [
+    "Agility",
+    0.308,
+    6.7
+   ],
+   [
+    "Endure",
+    0.308,
+    6.7
+   ],
+   [
+    "Quick Attack",
+    0.308,
+    6.7
+   ],
+   [
+    "Brave Bird",
+    0.308,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Twisted Spoon",
+    0.406,
+    8.7
+   ],
+   [
+    "Aspear Berry",
+    0.308,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Defiant",
+    0.346,
+    15.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.406,
+    8.7
+   ],
+   [
+    "Hasty",
+    0.308,
+    6.7
+   ]
+  ]
+ },
+ "Avalugg": {
+  "win_rate": 0.317,
+  "games": 15.3,
+  "move": [
+   [
+    "Endure",
+    0.344,
+    8.7
+   ],
+   [
+    "Icicle Spear",
+    0.344,
+    8.7
+   ],
+   [
+    "Sleep Talk",
+    0.344,
+    8.7
+   ],
+   [
+    "Protect",
+    0.327,
+    6.7
+   ],
+   [
+    "Heavy Slam",
+    0.327,
+    6.7
+   ],
+   [
+    "Bulldoze",
+    0.327,
+    6.7
+   ],
+   [
+    "Snore",
+    0.317,
+    15.3
+   ]
+  ],
+  "item": [
+   [
+    "Life Orb",
+    0.344,
+    8.7
+   ],
+   [
+    "Black Glasses",
+    0.327,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Own Tempo",
+    0.344,
+    8.7
+   ],
+   [
+    "Sturdy",
+    0.327,
+    6.7
+   ]
+  ],
+  "nature": [
+   [
+    "Hasty",
+    0.344,
+    8.7
+   ],
+   [
+    "Quiet",
+    0.327,
+    6.7
+   ]
+  ]
+ },
+ "Serperior": {
+  "win_rate": 0.51,
+  "games": 15.0,
+  "move": [
+   [
+    "Sleep Talk",
+    0.51,
+    15.0
+   ],
+   [
+    "Sunny Day",
+    0.51,
+    15.0
+   ],
+   [
+    "Outrage",
+    0.51,
+    15.0
+   ],
+   [
+    "Synthesis",
+    0.51,
+    15.0
+   ]
+  ],
+  "item": [
+   [
+    "Mental Herb",
+    0.51,
+    15.0
+   ]
+  ],
+  "ability": [
+   [
+    "Overgrow",
+    0.51,
+    15.0
+   ]
+  ],
+  "nature": [
+   [
+    "Gentle",
+    0.51,
+    15.0
+   ]
+  ]
+ },
+ "Mawile": {
+  "win_rate": 0.373,
+  "games": 15.0,
+  "move": [
+   [
+    "Rest",
+    0.397,
+    7.7
+   ],
+   [
+    "Sleep Talk",
+    0.397,
+    7.7
+   ],
+   [
+    "Psychic Fangs",
+    0.397,
+    7.7
+   ],
+   [
+    "Ice Beam",
+    0.397,
+    7.7
+   ],
+   [
+    "Sunny Day",
+    0.375,
+    7.3
+   ],
+   [
+    "Helping Hand",
+    0.375,
+    7.3
+   ],
+   [
+    "Iron Head",
+    0.375,
+    7.3
+   ],
+   [
+    "Steel Beam",
+    0.375,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Mental Herb",
+    0.397,
+    7.7
+   ],
+   [
+    "Charti Berry",
+    0.375,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.373,
+    15.0
+   ]
+  ],
+  "nature": [
+   [
+    "Hasty",
+    0.397,
+    7.7
+   ],
+   [
+    "Timid",
+    0.375,
+    7.3
+   ]
+  ]
+ },
+ "Spiritomb": {
+  "win_rate": 0.422,
+  "games": 15.0,
+  "move": [
+   [
+    "Trick",
+    0.464,
+    7.3
+   ],
+   [
+    "Foul Play",
+    0.464,
+    7.3
+   ],
+   [
+    "Phantom Force",
+    0.464,
+    7.3
+   ],
+   [
+    "Wonder Room",
+    0.464,
+    7.3
+   ],
+   [
+    "Rock Tomb",
+    0.397,
+    7.7
+   ],
+   [
+    "Protect",
+    0.397,
+    7.7
+   ],
+   [
+    "Hyper Beam",
+    0.397,
+    7.7
+   ],
+   [
+    "Giga Impact",
+    0.397,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Leek",
+    0.422,
+    15.0
+   ]
+  ],
+  "ability": [
+   [
+    "Infiltrator",
+    0.464,
+    7.3
+   ],
+   [
+    "Pressure",
+    0.397,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.464,
+    7.3
+   ],
+   [
+    "Hardy",
+    0.397,
+    7.7
+   ]
+  ]
+ },
+ "Volcarona": {
+  "win_rate": 0.549,
+  "games": 15.0,
+  "move": [
+   [
+    "Hyper Beam",
+    0.586,
+    7.7
+   ],
+   [
+    "Fire Blast",
+    0.586,
+    7.7
+   ],
+   [
+    "Fly",
+    0.586,
+    7.7
+   ],
+   [
+    "Substitute",
+    0.586,
+    7.7
+   ],
+   [
+    "Solar Beam",
+    0.5,
+    7.3
+   ],
+   [
+    "Calm Mind",
+    0.5,
+    7.3
+   ],
+   [
+    "Flame Charge",
+    0.5,
+    7.3
+   ],
+   [
+    "Heat Wave",
+    0.5,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Twisted Spoon",
+    0.586,
+    7.7
+   ],
+   [
+    "Charti Berry",
+    0.5,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Swarm",
+    0.549,
+    15.0
+   ]
+  ],
+  "nature": [
+   [
+    "Relaxed",
+    0.586,
+    7.7
+   ],
+   [
+    "Bold",
+    0.5,
+    7.3
+   ]
+  ]
+ },
+ "Tsareena": {
+  "win_rate": 0.34,
+  "games": 14.7,
+  "move": [
+   [
+    "Trailblaze",
+    0.357,
+    7.3
+   ],
+   [
+    "Giga Drain",
+    0.357,
+    7.3
+   ],
+   [
+    "Draining Kiss",
+    0.357,
+    7.3
+   ],
+   [
+    "Facade",
+    0.357,
+    7.3
+   ],
+   [
+    "Bounce",
+    0.357,
+    7.3
+   ],
+   [
+    "Synthesis",
+    0.357,
+    7.3
+   ],
+   [
+    "Teeter Dance",
+    0.34,
+    14.7
+   ]
+  ],
+  "item": [
+   [
+    "Persim Berry",
+    0.357,
+    7.3
+   ],
+   [
+    "Chilan Berry",
+    0.357,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Leaf Guard",
+    0.34,
+    14.7
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.357,
+    7.3
+   ],
+   [
+    "Hardy",
+    0.357,
+    7.3
+   ]
+  ]
+ },
+ "Drampa": {
+  "win_rate": 0.357,
+  "games": 14.3,
+  "move": [
+   [
+    "Rest",
+    0.406,
+    8.7
+   ],
+   [
+    "Flamethrower",
+    0.406,
+    8.7
+   ],
+   [
+    "Attract",
+    0.406,
+    8.7
+   ],
+   [
+    "Earthquake",
+    0.406,
+    8.7
+   ],
+   [
+    "Ice Beam",
+    0.326,
+    5.7
+   ],
+   [
+    "Sleep Talk",
+    0.326,
+    5.7
+   ],
+   [
+    "Heat Wave",
+    0.326,
+    5.7
+   ],
+   [
+    "Thunder Wave",
+    0.326,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Kebia Berry",
+    0.406,
+    8.7
+   ],
+   [
+    "Heat Rock",
+    0.326,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Berserk",
+    0.406,
+    8.7
+   ],
+   [
+    "Sap Sipper",
+    0.326,
+    5.7
+   ]
+  ],
+  "nature": [
+   [
+    "Serious",
+    0.406,
+    8.7
+   ],
+   [
+    "Bold",
+    0.326,
+    5.7
+   ]
+  ]
+ },
+ "Toxtricity": {
+  "win_rate": 0.394,
+  "games": 13.7,
+  "move": [
+   [
+    "Rain Dance",
+    0.394,
+    13.7
+   ],
+   [
+    "Endeavor",
+    0.394,
+    13.7
+   ],
+   [
+    "Mega Kick",
+    0.394,
+    13.7
+   ],
+   [
+    "Toxic",
+    0.394,
+    13.7
+   ]
+  ],
+  "item": [
+   [
+    "Rawst Berry",
+    0.394,
+    13.7
+   ]
+  ],
+  "ability": [
+   [
+    "Punk Rock",
+    0.394,
+    13.7
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.394,
+    13.7
+   ]
+  ]
+ },
+ "Gardevoir": {
+  "win_rate": 0.394,
+  "games": 13.7,
+  "move": [
+   [
+    "Confuse Ray",
+    0.481,
+    6.7
+   ],
+   [
+    "Moonblast",
+    0.394,
+    13.7
+   ],
+   [
+    "Guard Swap",
+    0.394,
+    13.7
+   ],
+   [
+    "Sleep Talk",
+    0.394,
+    13.7
+   ],
+   [
+    "Future Sight",
+    0.333,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Misty Seed",
+    0.394,
+    13.7
+   ]
+  ],
+  "ability": [
+   [
+    "Telepathy",
+    0.394,
+    13.7
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.394,
+    13.7
+   ]
+  ]
+ },
+ "Lycanroc-Midnight": {
+  "win_rate": 0.287,
+  "games": 13.7,
+  "move": [
+   [
+    "Lash Out",
+    0.339,
+    7.3
+   ],
+   [
+    "Hyper Voice",
+    0.339,
+    7.3
+   ],
+   [
+    "Sunny Day",
+    0.339,
+    7.3
+   ],
+   [
+    "Iron Defense",
+    0.287,
+    13.7
+   ],
+   [
+    "Facade",
+    0.28,
+    6.3
+   ],
+   [
+    "Outrage",
+    0.28,
+    6.3
+   ],
+   [
+    "Counter",
+    0.28,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Binding Band",
+    0.339,
+    7.3
+   ],
+   [
+    "Light Clay",
+    0.28,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Keen Eye",
+    0.287,
+    13.7
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.339,
+    7.3
+   ],
+   [
+    "Quiet",
+    0.28,
+    6.3
+   ]
+  ]
+ },
+ "Torterra": {
+  "win_rate": 0.435,
+  "games": 13.3,
+  "move": [
+   [
+    "Crunch",
+    0.481,
+    6.7
+   ],
+   [
+    "Headlong Rush",
+    0.481,
+    6.7
+   ],
+   [
+    "Attract",
+    0.481,
+    6.7
+   ],
+   [
+    "Bite",
+    0.481,
+    6.7
+   ],
+   [
+    "Iron Head",
+    0.404,
+    6.7
+   ],
+   [
+    "Sandstorm",
+    0.404,
+    6.7
+   ],
+   [
+    "Spit Up",
+    0.404,
+    6.7
+   ],
+   [
+    "Stealth Rock",
+    0.404,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Sharp Beak",
+    0.481,
+    6.7
+   ],
+   [
+    "Heat Rock",
+    0.404,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Overgrow",
+    0.435,
+    13.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.481,
+    6.7
+   ],
+   [
+    "Lax",
+    0.404,
+    6.7
+   ]
+  ]
+ },
+ "Slowbro-Galar": {
+  "win_rate": 0.348,
+  "games": 13.3,
+  "move": [
+   [
+    "Giga Impact",
+    0.438,
+    6.0
+   ],
+   [
+    "Toxic Spikes",
+    0.438,
+    6.0
+   ],
+   [
+    "Smack Down",
+    0.438,
+    6.0
+   ],
+   [
+    "Acid Spray",
+    0.438,
+    6.0
+   ],
+   [
+    "Dig",
+    0.304,
+    7.3
+   ],
+   [
+    "Light Screen",
+    0.304,
+    7.3
+   ],
+   [
+    "Weather Ball",
+    0.304,
+    7.3
+   ],
+   [
+    "Expanding Force",
+    0.304,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Wacan Berry",
+    0.438,
+    6.0
+   ],
+   [
+    "Hard Stone",
+    0.304,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Regenerator",
+    0.438,
+    6.0
+   ],
+   [
+    "Quick Draw",
+    0.304,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.438,
+    6.0
+   ],
+   [
+    "Calm",
+    0.304,
+    7.3
+   ]
+  ]
+ },
+ "Alcremie-Caramel-Swirl": {
+  "win_rate": 0.359,
+  "games": 13.3,
+  "move": [
+   [
+    "Endeavor",
+    0.458,
+    6.0
+   ],
+   [
+    "Substitute",
+    0.458,
+    6.0
+   ],
+   [
+    "Wonder Room",
+    0.458,
+    6.0
+   ],
+   [
+    "Helping Hand",
+    0.359,
+    13.3
+   ],
+   [
+    "Sleep Talk",
+    0.304,
+    7.3
+   ],
+   [
+    "Pain Split",
+    0.304,
+    7.3
+   ],
+   [
+    "Fake Tears",
+    0.304,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Chilan Berry",
+    0.458,
+    6.0
+   ],
+   [
+    "Chople Berry",
+    0.304,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Aroma Veil",
+    0.359,
+    13.3
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.458,
+    6.0
+   ],
+   [
+    "Lax",
+    0.304,
+    7.3
+   ]
+  ]
+ },
+ "Rotom-Frost": {
+  "win_rate": 0.456,
+  "games": 13.0,
+  "move": [
+   [
+    "Hex",
+    0.481,
+    6.7
+   ],
+   [
+    "Electro Ball",
+    0.481,
+    6.7
+   ],
+   [
+    "Discharge",
+    0.481,
+    6.7
+   ],
+   [
+    "Helping Hand",
+    0.481,
+    6.7
+   ],
+   [
+    "Electric Terrain",
+    0.44,
+    6.3
+   ],
+   [
+    "Rest",
+    0.44,
+    6.3
+   ],
+   [
+    "Sunny Day",
+    0.44,
+    6.3
+   ],
+   [
+    "Trick",
+    0.44,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Leek",
+    0.481,
+    6.7
+   ],
+   [
+    "Silk Scarf",
+    0.44,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Levitate",
+    0.456,
+    13.0
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.481,
+    6.7
+   ],
+   [
+    "Careful",
+    0.44,
+    6.3
+   ]
+  ]
+ },
+ "Raichu-Alola": {
+  "win_rate": 0.3,
+  "games": 13.0,
+  "move": [
+   [
+    "Flail",
+    0.44,
+    6.3
+   ],
+   [
+    "Reflect",
+    0.44,
+    6.3
+   ],
+   [
+    "Dazzling Gleam",
+    0.44,
+    6.3
+   ],
+   [
+    "Nuzzle",
+    0.3,
+    13.0
+   ],
+   [
+    "Speed Swap",
+    0.212,
+    6.7
+   ],
+   [
+    "Play Rough",
+    0.212,
+    6.7
+   ],
+   [
+    "Wish",
+    0.212,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Metronome",
+    0.44,
+    6.3
+   ],
+   [
+    "Spell Tag",
+    0.212,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Surge Surfer",
+    0.3,
+    13.0
+   ]
+  ],
+  "nature": [
+   [
+    "Relaxed",
+    0.44,
+    6.3
+   ],
+   [
+    "Impish",
+    0.212,
+    6.7
+   ]
+  ]
+ },
+ "Rhyperior": {
+  "win_rate": 0.33,
+  "games": 12.7,
+  "move": [
+   [
+    "Giga Impact",
+    0.37,
+    7.0
+   ],
+   [
+    "Body Slam",
+    0.37,
+    7.0
+   ],
+   [
+    "Blizzard",
+    0.37,
+    7.0
+   ],
+   [
+    "Metal Burst",
+    0.37,
+    7.0
+   ],
+   [
+    "Rain Dance",
+    0.326,
+    5.7
+   ],
+   [
+    "Hyper Beam",
+    0.326,
+    5.7
+   ],
+   [
+    "Meteor Beam",
+    0.326,
+    5.7
+   ],
+   [
+    "Smart Strike",
+    0.326,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Quick Claw",
+    0.37,
+    7.0
+   ],
+   [
+    "Hard Stone",
+    0.326,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Reckless",
+    0.37,
+    7.0
+   ],
+   [
+    "Solid Rock",
+    0.326,
+    5.7
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.33,
+    12.7
+   ]
+  ]
+ },
+ "Sinistcha": {
+  "win_rate": 0.43,
+  "games": 12.3,
+  "move": [
+   [
+    "Life Dew",
+    0.481,
+    6.7
+   ],
+   [
+    "Iron Defense",
+    0.481,
+    6.7
+   ],
+   [
+    "Protect",
+    0.43,
+    12.3
+   ],
+   [
+    "Rest",
+    0.43,
+    12.3
+   ],
+   [
+    "Uproar",
+    0.391,
+    5.7
+   ],
+   [
+    "Hyper Beam",
+    0.391,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Soft Sand",
+    0.481,
+    6.7
+   ],
+   [
+    "Air Balloon",
+    0.391,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Heatproof",
+    0.481,
+    6.7
+   ],
+   [
+    "Hospitality",
+    0.391,
+    5.7
+   ]
+  ],
+  "nature": [
+   [
+    "Sassy",
+    0.481,
+    6.7
+   ],
+   [
+    "Rash",
+    0.391,
+    5.7
+   ]
+  ]
+ },
+ "Furfrou-Debutante": {
+  "win_rate": 0.605,
+  "games": 12.3,
+  "move": [
+   [
+    "Iron Tail",
+    0.596,
+    6.7
+   ],
+   [
+    "Crunch",
+    0.596,
+    6.7
+   ],
+   [
+    "Thunder Fang",
+    0.596,
+    6.7
+   ],
+   [
+    "Ice Fang",
+    0.596,
+    6.7
+   ],
+   [
+    "Bite",
+    0.587,
+    5.7
+   ],
+   [
+    "Round",
+    0.587,
+    5.7
+   ],
+   [
+    "U-turn",
+    0.587,
+    5.7
+   ],
+   [
+    "Thunder Wave",
+    0.587,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Haban Berry",
+    0.596,
+    6.7
+   ],
+   [
+    "Coba Berry",
+    0.587,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Fur Coat",
+    0.605,
+    12.3
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.596,
+    6.7
+   ],
+   [
+    "Docile",
+    0.587,
+    5.7
+   ]
+  ]
+ },
+ "Maushold-Four": {
+  "win_rate": 0.174,
+  "games": 12.3,
+  "move": [
+   [
+    "Endure",
+    0.217,
+    5.7
+   ],
+   [
+    "Facade",
+    0.217,
+    5.7
+   ],
+   [
+    "Sunny Day",
+    0.217,
+    5.7
+   ],
+   [
+    "U-turn",
+    0.217,
+    5.7
+   ],
+   [
+    "Baby-Doll Eyes",
+    0.212,
+    6.7
+   ],
+   [
+    "Rain Dance",
+    0.212,
+    6.7
+   ],
+   [
+    "Helping Hand",
+    0.212,
+    6.7
+   ],
+   [
+    "Encore",
+    0.212,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Zoom Lens",
+    0.217,
+    5.7
+   ],
+   [
+    "Mental Herb",
+    0.212,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Friend Guard",
+    0.174,
+    12.3
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.217,
+    5.7
+   ],
+   [
+    "Brave",
+    0.212,
+    6.7
+   ]
+  ]
+ },
+ "Aerodactyl": {
+  "win_rate": 0.453,
+  "games": 12.3,
+  "move": [
+   [
+    "Dragon Dance",
+    0.453,
+    12.3
+   ],
+   [
+    "Flamethrower",
+    0.453,
+    12.3
+   ],
+   [
+    "Fire Blast",
+    0.453,
+    12.3
+   ],
+   [
+    "Sky Attack",
+    0.453,
+    12.3
+   ]
+  ],
+  "item": [
+   [
+    "Aerodactylite",
+    0.453,
+    12.3
+   ]
+  ],
+  "ability": [
+   [
+    "Rock Head",
+    0.453,
+    12.3
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.453,
+    12.3
+   ]
+  ]
+ },
+ "Forretress": {
+  "win_rate": 0.453,
+  "games": 12.3,
+  "move": [
+   [
+    "Magnet Rise",
+    0.453,
+    12.3
+   ],
+   [
+    "Steel Beam",
+    0.453,
+    12.3
+   ],
+   [
+    "Lunge",
+    0.453,
+    12.3
+   ],
+   [
+    "Snore",
+    0.453,
+    12.3
+   ]
+  ],
+  "item": [
+   [
+    "Soft Sand",
+    0.453,
+    12.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sturdy",
+    0.453,
+    12.3
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.453,
+    12.3
+   ]
+  ]
+ },
+ "Hawlucha": {
+  "win_rate": 0.395,
+  "games": 12.3,
+  "move": [
+   [
+    "Low Sweep",
+    0.395,
+    12.3
+   ],
+   [
+    "Cross Chop",
+    0.395,
+    12.3
+   ],
+   [
+    "Fire Punch",
+    0.395,
+    12.3
+   ],
+   [
+    "Detect",
+    0.395,
+    12.3
+   ]
+  ],
+  "item": [
+   [
+    "Poison Barb",
+    0.395,
+    12.3
+   ]
+  ],
+  "ability": [
+   [
+    "Mold Breaker",
+    0.395,
+    12.3
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.395,
+    12.3
+   ]
+  ]
+ },
+ "Maushold": {
+  "win_rate": 0.395,
+  "games": 12.3,
+  "move": [
+   [
+    "Sleep Talk",
+    0.395,
+    12.3
+   ],
+   [
+    "Water Pulse",
+    0.395,
+    12.3
+   ],
+   [
+    "After You",
+    0.395,
+    12.3
+   ],
+   [
+    "Copycat",
+    0.395,
+    12.3
+   ]
+  ],
+  "item": [
+   [
+    "Psychic Seed",
+    0.395,
+    12.3
+   ]
+  ],
+  "ability": [
+   [
+    "Friend Guard",
+    0.395,
+    12.3
+   ]
+  ],
+  "nature": [
+   [
+    "Careful",
+    0.395,
+    12.3
+   ]
+  ]
+ },
+ "Runerigus": {
+  "win_rate": 0.523,
+  "games": 12.3,
+  "move": [
+   [
+    "Guard Swap",
+    0.523,
+    12.3
+   ],
+   [
+    "Attract",
+    0.523,
+    12.3
+   ],
+   [
+    "Destiny Bond",
+    0.523,
+    12.3
+   ],
+   [
+    "Guard Split",
+    0.523,
+    12.3
+   ]
+  ],
+  "item": [
+   [
+    "Choice Scarf",
+    0.523,
+    12.3
+   ]
+  ],
+  "ability": [
+   [
+    "Wandering Spirit",
+    0.523,
+    12.3
+   ]
+  ],
+  "nature": [
+   [
+    "Modest",
+    0.523,
+    12.3
+   ]
+  ]
+ },
+ "Swampert": {
+  "win_rate": 0.451,
+  "games": 11.7,
+  "move": [
+   [
+    "Hammer Arm",
+    0.48,
+    6.3
+   ],
+   [
+    "Wide Guard",
+    0.48,
+    6.3
+   ],
+   [
+    "Ice Punch",
+    0.48,
+    6.3
+   ],
+   [
+    "Hydro Cannon",
+    0.48,
+    6.3
+   ],
+   [
+    "High Horsepower",
+    0.432,
+    5.3
+   ],
+   [
+    "Ice Beam",
+    0.432,
+    5.3
+   ],
+   [
+    "Facade",
+    0.432,
+    5.3
+   ],
+   [
+    "Surf",
+    0.432,
+    5.3
+   ]
+  ],
+  "item": [
+   [
+    "Scope Lens",
+    0.48,
+    6.3
+   ],
+   [
+    "Leppa Berry",
+    0.432,
+    5.3
+   ]
+  ],
+  "ability": [
+   [
+    "Torrent",
+    0.48,
+    6.3
+   ],
+   [
+    "Damp",
+    0.432,
+    5.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.48,
+    6.3
+   ],
+   [
+    "Impish",
+    0.432,
+    5.3
+   ]
+  ]
+ },
+ "Gengar": {
+  "win_rate": 0.562,
+  "games": 11.3,
+  "move": [
+   [
+    "Clear Smog",
+    0.562,
+    11.3
+   ],
+   [
+    "Knock Off",
+    0.562,
+    11.3
+   ],
+   [
+    "Poison Jab",
+    0.562,
+    11.3
+   ],
+   [
+    "Thief",
+    0.562,
+    11.3
+   ]
+  ],
+  "item": [
+   [
+    "Expert Belt",
+    0.562,
+    11.3
+   ]
+  ],
+  "ability": [
+   [
+    "Cursed Body",
+    0.562,
+    11.3
+   ]
+  ],
+  "nature": [
+   [
+    "Relaxed",
+    0.562,
+    11.3
+   ]
+  ]
+ },
+ "Lycanroc-Dusk": {
+  "win_rate": 0.338,
+  "games": 9.3,
+  "move": [
+   [
+    "Protect",
+    0.338,
+    9.3
+   ],
+   [
+    "Sandstorm",
+    0.338,
+    9.3
+   ],
+   [
+    "Double Team",
+    0.338,
+    9.3
+   ],
+   [
+    "Snarl",
+    0.338,
+    9.3
+   ]
+  ],
+  "item": [
+   [
+    "Shed Shell",
+    0.338,
+    9.3
+   ]
+  ],
+  "ability": [
+   [
+    "Tough Claws",
+    0.338,
+    9.3
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.338,
+    9.3
+   ]
+  ]
+ },
+ "Clawitzer": {
+  "win_rate": 0.338,
+  "games": 9.3,
+  "move": [
+   [
+    "Smack Down",
+    0.338,
+    9.3
+   ],
+   [
+    "Sludge Wave",
+    0.338,
+    9.3
+   ],
+   [
+    "Rain Dance",
+    0.338,
+    9.3
+   ],
+   [
+    "Dark Pulse",
+    0.338,
+    9.3
+   ]
+  ],
+  "item": [
+   [
+    "Chople Berry",
+    0.338,
+    9.3
+   ]
+  ],
+  "ability": [
+   [
+    "Mega Launcher",
+    0.338,
+    9.3
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.338,
+    9.3
+   ]
+  ]
+ },
+ "Sceptile": {
+  "win_rate": 0.338,
+  "games": 9.3,
+  "move": [
+   [
+    "Dig",
+    0.338,
+    9.3
+   ],
+   [
+    "Leech Seed",
+    0.338,
+    9.3
+   ],
+   [
+    "Solar Beam",
+    0.338,
+    9.3
+   ],
+   [
+    "Screech",
+    0.338,
+    9.3
+   ]
+  ],
+  "item": [
+   [
+    "Quick Claw",
+    0.338,
+    9.3
+   ]
+  ],
+  "ability": [
+   [
+    "Overgrow",
+    0.338,
+    9.3
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.338,
+    9.3
+   ]
+  ]
+ },
+ "Mabosstiff": {
+  "win_rate": 0.338,
+  "games": 9.3,
+  "move": [
+   [
+    "Taunt",
+    0.338,
+    9.3
+   ],
+   [
+    "Crunch",
+    0.338,
+    9.3
+   ],
+   [
+    "Hyper Beam",
+    0.338,
+    9.3
+   ],
+   [
+    "Swagger",
+    0.338,
+    9.3
+   ]
+  ],
+  "item": [
+   [
+    "Life Orb",
+    0.338,
+    9.3
+   ]
+  ],
+  "ability": [
+   [
+    "Guard Dog",
+    0.338,
+    9.3
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.338,
+    9.3
+   ]
+  ]
+ },
+ "Vivillon-Pokeball": {
+  "win_rate": 0.406,
+  "games": 8.7,
+  "move": [
+   [
+    "Acrobatics",
+    0.406,
+    8.7
+   ],
+   [
+    "Rest",
+    0.406,
+    8.7
+   ],
+   [
+    "String Shot",
+    0.406,
+    8.7
+   ],
+   [
+    "Round",
+    0.406,
+    8.7
+   ]
+  ],
+  "item": [
+   [
+    "Leppa Berry",
+    0.406,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Shield Dust",
+    0.406,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.406,
+    8.7
+   ]
+  ]
+ },
+ "Salazzle": {
+  "win_rate": 0.406,
+  "games": 8.7,
+  "move": [
+   [
+    "Leech Life",
+    0.406,
+    8.7
+   ],
+   [
+    "Sweet Scent",
+    0.406,
+    8.7
+   ],
+   [
+    "Dragon Cheer",
+    0.406,
+    8.7
+   ],
+   [
+    "Will-O-Wisp",
+    0.406,
+    8.7
+   ]
+  ],
+  "item": [
+   [
+    "Zoom Lens",
+    0.406,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Corrosion",
+    0.406,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.406,
+    8.7
+   ]
+  ]
+ },
+ "Persian": {
+  "win_rate": 0.406,
+  "games": 8.7,
+  "move": [
+   [
+    "Last Resort",
+    0.406,
+    8.7
+   ],
+   [
+    "Assurance",
+    0.406,
+    8.7
+   ],
+   [
+    "Slash",
+    0.406,
+    8.7
+   ],
+   [
+    "Icy Wind",
+    0.406,
+    8.7
+   ]
+  ],
+  "item": [
+   [
+    "White Herb",
+    0.406,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Technician",
+    0.406,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.406,
+    8.7
+   ]
+  ]
+ },
+ "Vivillon-Sandstorm": {
+  "win_rate": 0.484,
+  "games": 8.7,
+  "move": [
+   [
+    "Pounce",
+    0.484,
+    8.7
+   ],
+   [
+    "Sunny Day",
+    0.484,
+    8.7
+   ],
+   [
+    "Light Screen",
+    0.484,
+    8.7
+   ],
+   [
+    "Energy Ball",
+    0.484,
+    8.7
+   ]
+  ],
+  "item": [
+   [
+    "Bright Powder",
+    0.484,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Friend Guard",
+    0.484,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.484,
+    8.7
+   ]
+  ]
+ },
+ "Sableye": {
+  "win_rate": 0.484,
+  "games": 8.7,
+  "move": [
+   [
+    "Calm Mind",
+    0.484,
+    8.7
+   ],
+   [
+    "Psychic",
+    0.484,
+    8.7
+   ],
+   [
+    "Poltergeist",
+    0.484,
+    8.7
+   ],
+   [
+    "Giga Impact",
+    0.484,
+    8.7
+   ]
+  ],
+  "item": [
+   [
+    "Heat Rock",
+    0.484,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Stall",
+    0.484,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.484,
+    8.7
+   ]
+  ]
+ },
+ "Dragalge": {
+  "win_rate": 0.344,
+  "games": 8.7,
+  "move": [
+   [
+    "Dive",
+    0.344,
+    8.7
+   ],
+   [
+    "Mud-Slap",
+    0.344,
+    8.7
+   ],
+   [
+    "Hydro Pump",
+    0.344,
+    8.7
+   ],
+   [
+    "Thief",
+    0.344,
+    8.7
+   ]
+  ],
+  "item": [
+   [
+    "Dragalgite",
+    0.344,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Poison Touch",
+    0.344,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Sassy",
+    0.344,
+    8.7
+   ]
+  ]
+ },
+ "Whimsicott": {
+  "win_rate": 0.5,
+  "games": 8.7,
+  "move": [
+   [
+    "Sunny Day",
+    0.5,
+    8.7
+   ],
+   [
+    "Encore",
+    0.5,
+    8.7
+   ],
+   [
+    "Trick Room",
+    0.5,
+    8.7
+   ],
+   [
+    "Grass Knot",
+    0.5,
+    8.7
+   ]
+  ],
+  "item": [
+   [
+    "Coba Berry",
+    0.5,
+    8.7
+   ]
+  ],
+  "ability": [
+   [
+    "Prankster",
+    0.5,
+    8.7
+   ]
+  ],
+  "nature": [
+   [
+    "Relaxed",
+    0.5,
+    8.7
+   ]
+  ]
+ },
+ "Florges": {
+  "win_rate": 0.483,
+  "games": 8.0,
+  "move": [
+   [
+    "Grassy Terrain",
+    0.483,
+    8.0
+   ],
+   [
+    "Stored Power",
+    0.483,
+    8.0
+   ],
+   [
+    "Light Screen",
+    0.483,
+    8.0
+   ],
+   [
+    "Charm",
+    0.483,
+    8.0
+   ]
+  ],
+  "item": [
+   [
+    "Damp Rock",
+    0.483,
+    8.0
+   ]
+  ],
+  "ability": [
+   [
+    "Symbiosis",
+    0.483,
+    8.0
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.483,
+    8.0
+   ]
+  ]
+ },
+ "Lopunny": {
+  "win_rate": 0.35,
+  "games": 8.0,
+  "move": [
+   [
+    "Pounce",
+    0.35,
+    8.0
+   ],
+   [
+    "Brutal Swing",
+    0.35,
+    8.0
+   ],
+   [
+    "Hyper Voice",
+    0.35,
+    8.0
+   ],
+   [
+    "Trailblaze",
+    0.35,
+    8.0
+   ]
+  ],
+  "item": [
+   [
+    "Lopunnite",
+    0.35,
+    8.0
+   ]
+  ],
+  "ability": [
+   [
+    "Cute Charm",
+    0.35,
+    8.0
+   ]
+  ],
+  "nature": [
+   [
+    "Lonely",
+    0.35,
+    8.0
+   ]
+  ]
+ },
+ "Scrafty": {
+  "win_rate": 0.55,
+  "games": 8.0,
+  "move": [
+   [
+    "Head Smash",
+    0.55,
+    8.0
+   ],
+   [
+    "Foul Play",
+    0.55,
+    8.0
+   ],
+   [
+    "Iron Tail",
+    0.55,
+    8.0
+   ],
+   [
+    "Double-Edge",
+    0.55,
+    8.0
+   ]
+  ],
+  "item": [
+   [
+    "Scraftinite",
+    0.55,
+    8.0
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.55,
+    8.0
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.55,
+    8.0
+   ]
+  ]
+ },
+ "Squawkabilly-Yellow": {
+  "win_rate": 0.367,
+  "games": 8.0,
+  "move": [
+   [
+    "Tailwind",
+    0.367,
+    8.0
+   ],
+   [
+    "Copycat",
+    0.367,
+    8.0
+   ],
+   [
+    "Hyper Voice",
+    0.367,
+    8.0
+   ],
+   [
+    "Swagger",
+    0.367,
+    8.0
+   ]
+  ],
+  "item": [
+   [
+    "Chilan Berry",
+    0.367,
+    8.0
+   ]
+  ],
+  "ability": [
+   [
+    "Hustle",
+    0.367,
+    8.0
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.367,
+    8.0
+   ]
+  ]
+ },
+ "Ariados": {
+  "win_rate": 0.431,
+  "games": 7.7,
+  "move": [
+   [
+    "Cross Poison",
+    0.431,
+    7.7
+   ],
+   [
+    "Scary Face",
+    0.431,
+    7.7
+   ],
+   [
+    "Body Slam",
+    0.431,
+    7.7
+   ],
+   [
+    "Bug Buzz",
+    0.431,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Roseli Berry",
+    0.431,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Insomnia",
+    0.431,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.431,
+    7.7
+   ]
+  ]
+ },
+ "Araquanid": {
+  "win_rate": 0.431,
+  "games": 7.7,
+  "move": [
+   [
+    "Snore",
+    0.431,
+    7.7
+   ],
+   [
+    "Hyper Beam",
+    0.431,
+    7.7
+   ],
+   [
+    "Water Pulse",
+    0.431,
+    7.7
+   ],
+   [
+    "Lunge",
+    0.431,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Yache Berry",
+    0.431,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Water Bubble",
+    0.431,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Modest",
+    0.431,
+    7.7
+   ]
+  ]
+ },
+ "Appletun": {
+  "win_rate": 0.276,
+  "games": 7.7,
+  "move": [
+   [
+    "Rest",
+    0.276,
+    7.7
+   ],
+   [
+    "Draco Meteor",
+    0.276,
+    7.7
+   ],
+   [
+    "Grass Knot",
+    0.276,
+    7.7
+   ],
+   [
+    "Trailblaze",
+    0.276,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "White Herb",
+    0.276,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Ripen",
+    0.276,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Infernape": {
+  "win_rate": 0.276,
+  "games": 7.7,
+  "move": [
+   [
+    "Encore",
+    0.276,
+    7.7
+   ],
+   [
+    "Smack Down",
+    0.276,
+    7.7
+   ],
+   [
+    "Bulk Up",
+    0.276,
+    7.7
+   ],
+   [
+    "Stealth Rock",
+    0.276,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Payapa Berry",
+    0.276,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Blaze",
+    0.276,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.276,
+    7.7
+   ]
+  ]
+ },
+ "Overqwil": {
+  "win_rate": 0.448,
+  "games": 7.7,
+  "move": [
+   [
+    "Endure",
+    0.448,
+    7.7
+   ],
+   [
+    "Protect",
+    0.448,
+    7.7
+   ],
+   [
+    "Barb Barrage",
+    0.448,
+    7.7
+   ],
+   [
+    "Sludge Wave",
+    0.448,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "White Herb",
+    0.448,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.448,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Serious",
+    0.448,
+    7.7
+   ]
+  ]
+ },
+ "Slowbro": {
+  "win_rate": 0.328,
+  "games": 7.7,
+  "move": [
+   [
+    "Psych Up",
+    0.328,
+    7.7
+   ],
+   [
+    "Future Sight",
+    0.328,
+    7.7
+   ],
+   [
+    "Shadow Ball",
+    0.328,
+    7.7
+   ],
+   [
+    "Foul Play",
+    0.328,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Life Orb",
+    0.328,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Regenerator",
+    0.328,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.328,
+    7.7
+   ]
+  ]
+ },
+ "Steelix": {
+  "win_rate": 0.466,
+  "games": 7.7,
+  "move": [
+   [
+    "Rest",
+    0.466,
+    7.7
+   ],
+   [
+    "Curse",
+    0.466,
+    7.7
+   ],
+   [
+    "Fissure",
+    0.466,
+    7.7
+   ],
+   [
+    "Brutal Swing",
+    0.466,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Steelixite",
+    0.466,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Sheer Force",
+    0.466,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Hasty",
+    0.466,
+    7.7
+   ]
+  ]
+ },
+ "Umbreon": {
+  "win_rate": 0.155,
+  "games": 7.7,
+  "move": [
+   [
+    "Helping Hand",
+    0.155,
+    7.7
+   ],
+   [
+    "Swagger",
+    0.155,
+    7.7
+   ],
+   [
+    "Snarl",
+    0.155,
+    7.7
+   ],
+   [
+    "Skill Swap",
+    0.155,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Passho Berry",
+    0.155,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Inner Focus",
+    0.155,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.155,
+    7.7
+   ]
+  ]
+ },
+ "Weavile": {
+  "win_rate": 0.534,
+  "games": 7.7,
+  "move": [
+   [
+    "Agility",
+    0.534,
+    7.7
+   ],
+   [
+    "Taunt",
+    0.534,
+    7.7
+   ],
+   [
+    "Ice Spinner",
+    0.534,
+    7.7
+   ],
+   [
+    "Sleep Talk",
+    0.534,
+    7.7
+   ]
+  ],
+  "item": [
+   [
+    "Expert Belt",
+    0.534,
+    7.7
+   ]
+  ],
+  "ability": [
+   [
+    "Pressure",
+    0.534,
+    7.7
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.534,
+    7.7
+   ]
+  ]
+ },
+ "Sneasler": {
+  "win_rate": 0.339,
+  "games": 7.3,
+  "move": [
+   [
+    "Giga Impact",
+    0.339,
+    7.3
+   ],
+   [
+    "Aerial Ace",
+    0.339,
+    7.3
+   ],
+   [
+    "Slash",
+    0.339,
+    7.3
+   ],
+   [
+    "Screech",
+    0.339,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Silver Powder",
+    0.339,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Pressure",
+    0.339,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Jolly",
+    0.339,
+    7.3
+   ]
+  ]
+ },
+ "Florges-Blue": {
+  "win_rate": 0.339,
+  "games": 7.3,
+  "move": [
+   [
+    "Copycat",
+    0.339,
+    7.3
+   ],
+   [
+    "Substitute",
+    0.339,
+    7.3
+   ],
+   [
+    "Chilling Water",
+    0.339,
+    7.3
+   ],
+   [
+    "Trailblaze",
+    0.339,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Eject Button",
+    0.339,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Symbiosis",
+    0.339,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Jolly",
+    0.339,
+    7.3
+   ]
+  ]
+ },
+ "Houndoom": {
+  "win_rate": 0.339,
+  "games": 7.3,
+  "move": [
+   [
+    "Rain Dance",
+    0.339,
+    7.3
+   ],
+   [
+    "Giga Impact",
+    0.339,
+    7.3
+   ],
+   [
+    "Mud-Slap",
+    0.339,
+    7.3
+   ],
+   [
+    "Flame Charge",
+    0.339,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Iron Ball",
+    0.339,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Early Bird",
+    0.339,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.339,
+    7.3
+   ]
+  ]
+ },
+ "Farigiraf": {
+  "win_rate": 0.304,
+  "games": 7.3,
+  "move": [
+   [
+    "Double Hit",
+    0.304,
+    7.3
+   ],
+   [
+    "Sunny Day",
+    0.304,
+    7.3
+   ],
+   [
+    "Endure",
+    0.304,
+    7.3
+   ],
+   [
+    "Curse",
+    0.304,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Smooth Rock",
+    0.304,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sap Sipper",
+    0.304,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.304,
+    7.3
+   ]
+  ]
+ },
+ "Pangoro": {
+  "win_rate": 0.304,
+  "games": 7.3,
+  "move": [
+   [
+    "Entrainment",
+    0.304,
+    7.3
+   ],
+   [
+    "Bulk Up",
+    0.304,
+    7.3
+   ],
+   [
+    "Facade",
+    0.304,
+    7.3
+   ],
+   [
+    "Stone Edge",
+    0.304,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Misty Seed",
+    0.304,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Mold Breaker",
+    0.304,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.304,
+    7.3
+   ]
+  ]
+ },
+ "Dragonite": {
+  "win_rate": 0.482,
+  "games": 7.3,
+  "move": [
+   [
+    "Low Kick",
+    0.482,
+    7.3
+   ],
+   [
+    "Aqua Tail",
+    0.482,
+    7.3
+   ],
+   [
+    "Superpower",
+    0.482,
+    7.3
+   ],
+   [
+    "Ice Beam",
+    0.482,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Black Glasses",
+    0.482,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Multiscale",
+    0.482,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.482,
+    7.3
+   ]
+  ]
+ },
+ "Indeedee-F": {
+  "win_rate": 0.482,
+  "games": 7.3,
+  "move": [
+   [
+    "Wish",
+    0.482,
+    7.3
+   ],
+   [
+    "Imprison",
+    0.482,
+    7.3
+   ],
+   [
+    "Follow Me",
+    0.482,
+    7.3
+   ],
+   [
+    "Endure",
+    0.482,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Leek",
+    0.482,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Synchronize",
+    0.482,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.482,
+    7.3
+   ]
+  ]
+ },
+ "Decidueye-Hisui": {
+  "win_rate": 0.321,
+  "games": 7.3,
+  "move": [
+   [
+    "Air Cutter",
+    0.321,
+    7.3
+   ],
+   [
+    "Frenzy Plant",
+    0.321,
+    7.3
+   ],
+   [
+    "Energy Ball",
+    0.321,
+    7.3
+   ],
+   [
+    "Seed Bomb",
+    0.321,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Smooth Rock",
+    0.321,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Scrappy",
+    0.321,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naughty",
+    0.321,
+    7.3
+   ]
+  ]
+ },
+ "Florges-Yellow": {
+  "win_rate": 0.589,
+  "games": 7.3,
+  "move": [
+   [
+    "Pollen Puff",
+    0.589,
+    7.3
+   ],
+   [
+    "Calm Mind",
+    0.589,
+    7.3
+   ],
+   [
+    "Petal Dance",
+    0.589,
+    7.3
+   ],
+   [
+    "Chilling Water",
+    0.589,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Colbur Berry",
+    0.589,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Flower Veil",
+    0.589,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.589,
+    7.3
+   ]
+  ]
+ },
+ "Lycanroc": {
+  "win_rate": 0.464,
+  "games": 7.3,
+  "move": [
+   [
+    "Double-Edge",
+    0.464,
+    7.3
+   ],
+   [
+    "Psychic Fangs",
+    0.464,
+    7.3
+   ],
+   [
+    "Hyper Voice",
+    0.464,
+    7.3
+   ],
+   [
+    "Rest",
+    0.464,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Yache Berry",
+    0.464,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Steadfast",
+    0.464,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Lonely",
+    0.464,
+    7.3
+   ]
+  ]
+ },
+ "Samurott-Hisui": {
+  "win_rate": 0.375,
+  "games": 7.3,
+  "move": [
+   [
+    "Encore",
+    0.375,
+    7.3
+   ],
+   [
+    "Dark Pulse",
+    0.375,
+    7.3
+   ],
+   [
+    "Brick Break",
+    0.375,
+    7.3
+   ],
+   [
+    "Rest",
+    0.375,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Leek",
+    0.375,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sharpness",
+    0.375,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.375,
+    7.3
+   ]
+  ]
+ },
+ "Zoroark-Hisui": {
+  "win_rate": 0.232,
+  "games": 7.3,
+  "move": [
+   [
+    "Will-O-Wisp",
+    0.232,
+    7.3
+   ],
+   [
+    "Fake Tears",
+    0.232,
+    7.3
+   ],
+   [
+    "Protect",
+    0.232,
+    7.3
+   ],
+   [
+    "Facade",
+    0.232,
+    7.3
+   ]
+  ],
+  "item": [
+   [
+    "Silver Powder",
+    0.232,
+    7.3
+   ]
+  ],
+  "ability": [
+   [
+    "Illusion",
+    0.232,
+    7.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.232,
+    7.3
+   ]
+  ]
+ },
+ "Snorlax": {
+  "win_rate": 0.444,
+  "games": 7.0,
+  "move": [
+   [
+    "Facade",
+    0.444,
+    7.0
+   ],
+   [
+    "Endure",
+    0.444,
+    7.0
+   ],
+   [
+    "Attract",
+    0.444,
+    7.0
+   ],
+   [
+    "Body Press",
+    0.444,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Sharp Beak",
+    0.444,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Gluttony",
+    0.444,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Lonely",
+    0.444,
+    7.0
+   ]
+  ]
+ },
+ "Diggersby": {
+  "win_rate": 0.278,
+  "games": 7.0,
+  "move": [
+   [
+    "Giga Impact",
+    0.278,
+    7.0
+   ],
+   [
+    "Swords Dance",
+    0.278,
+    7.0
+   ],
+   [
+    "Body Slam",
+    0.278,
+    7.0
+   ],
+   [
+    "Sludge Bomb",
+    0.278,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Psychic Seed",
+    0.278,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Pickup",
+    0.278,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.278,
+    7.0
+   ]
+  ]
+ },
+ "Garbodor": {
+  "win_rate": 0.519,
+  "games": 7.0,
+  "move": [
+   [
+    "Amnesia",
+    0.519,
+    7.0
+   ],
+   [
+    "Explosion",
+    0.519,
+    7.0
+   ],
+   [
+    "Acid Spray",
+    0.519,
+    7.0
+   ],
+   [
+    "Seed Bomb",
+    0.519,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Shell Bell",
+    0.519,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Stench",
+    0.519,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.519,
+    7.0
+   ]
+  ]
+ },
+ "Grimmsnarl": {
+  "win_rate": 0.463,
+  "games": 7.0,
+  "move": [
+   [
+    "Hyper Beam",
+    0.463,
+    7.0
+   ],
+   [
+    "Thief",
+    0.463,
+    7.0
+   ],
+   [
+    "Fake Tears",
+    0.463,
+    7.0
+   ],
+   [
+    "Trailblaze",
+    0.463,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Rocky Helmet",
+    0.463,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Frisk",
+    0.463,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.463,
+    7.0
+   ]
+  ]
+ },
+ "Tauros-Paldea-Combat": {
+  "win_rate": 0.519,
+  "games": 7.0,
+  "move": [
+   [
+    "High Horsepower",
+    0.519,
+    7.0
+   ],
+   [
+    "Zen Headbutt",
+    0.519,
+    7.0
+   ],
+   [
+    "Uproar",
+    0.519,
+    7.0
+   ],
+   [
+    "Assurance",
+    0.519,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Occa Berry",
+    0.519,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.519,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Modest",
+    0.519,
+    7.0
+   ]
+  ]
+ },
+ "Torkoal": {
+  "win_rate": 0.333,
+  "games": 7.0,
+  "move": [
+   [
+    "Self-Destruct",
+    0.333,
+    7.0
+   ],
+   [
+    "Heat Crash",
+    0.333,
+    7.0
+   ],
+   [
+    "Clear Smog",
+    0.333,
+    7.0
+   ],
+   [
+    "Earth Power",
+    0.333,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Muscle Band",
+    0.333,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Drought",
+    0.333,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Rash",
+    0.333,
+    7.0
+   ]
+  ]
+ },
+ "Typhlosion-Hisui": {
+  "win_rate": 0.574,
+  "games": 7.0,
+  "move": [
+   [
+    "Temper Flare",
+    0.574,
+    7.0
+   ],
+   [
+    "Burn Up",
+    0.574,
+    7.0
+   ],
+   [
+    "Substitute",
+    0.574,
+    7.0
+   ],
+   [
+    "Burning Jealousy",
+    0.574,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Dragon Fang",
+    0.574,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Frisk",
+    0.574,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Gentle",
+    0.574,
+    7.0
+   ]
+  ]
+ },
+ "Wyrdeer": {
+  "win_rate": 0.426,
+  "games": 7.0,
+  "move": [
+   [
+    "Expanding Force",
+    0.426,
+    7.0
+   ],
+   [
+    "Psyshield Bash",
+    0.426,
+    7.0
+   ],
+   [
+    "Earth Power",
+    0.426,
+    7.0
+   ],
+   [
+    "Thrash",
+    0.426,
+    7.0
+   ]
+  ],
+  "item": [
+   [
+    "Mystic Water",
+    0.426,
+    7.0
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.426,
+    7.0
+   ]
+  ],
+  "nature": [
+   [
+    "Hasty",
+    0.426,
+    7.0
+   ]
+  ]
+ },
+ "Meowstic": {
+  "win_rate": 0.558,
+  "games": 6.7,
+  "move": [
+   [
+    "Misty Terrain",
+    0.558,
+    6.7
+   ],
+   [
+    "Imprison",
+    0.558,
+    6.7
+   ],
+   [
+    "Nasty Plot",
+    0.558,
+    6.7
+   ],
+   [
+    "Quick Guard",
+    0.558,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "Chople Berry",
+    0.558,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Prankster",
+    0.558,
+    6.7
+   ]
+  ],
+  "nature": [
+   [
+    "Quiet",
+    0.558,
+    6.7
+   ]
+  ]
+ },
+ "Rotom-Mow": {
+  "win_rate": 0.5,
+  "games": 6.7,
+  "move": [
+   [
+    "Hyper Voice",
+    0.5,
+    6.7
+   ],
+   [
+    "Charge",
+    0.5,
+    6.7
+   ],
+   [
+    "Reflect",
+    0.5,
+    6.7
+   ],
+   [
+    "Confuse Ray",
+    0.5,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "King's Rock",
+    0.5,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Levitate",
+    0.5,
+    6.7
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.5,
+    6.7
+   ]
+  ]
+ },
+ "Toucannon": {
+  "win_rate": 0.481,
+  "games": 6.7,
+  "move": [
+   [
+    "Snore",
+    0.481,
+    6.7
+   ],
+   [
+    "Drill Peck",
+    0.481,
+    6.7
+   ],
+   [
+    "Giga Impact",
+    0.481,
+    6.7
+   ],
+   [
+    "Bullet Seed",
+    0.481,
+    6.7
+   ]
+  ],
+  "item": [
+   [
+    "King's Rock",
+    0.481,
+    6.7
+   ]
+  ],
+  "ability": [
+   [
+    "Skill Link",
+    0.481,
+    6.7
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.481,
+    6.7
+   ]
+  ]
+ },
+ "Vivillon-River": {
+  "win_rate": 0.46,
+  "games": 6.3,
+  "move": [
+   [
+    "Thief",
+    0.46,
+    6.3
+   ],
+   [
+    "Hurricane",
+    0.46,
+    6.3
+   ],
+   [
+    "Poison Powder",
+    0.46,
+    6.3
+   ],
+   [
+    "Substitute",
+    0.46,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Choice Scarf",
+    0.46,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Compound Eyes",
+    0.46,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Modest",
+    0.46,
+    6.3
+   ]
+  ]
+ },
+ "Archaludon": {
+  "win_rate": 0.46,
+  "games": 6.3,
+  "move": [
+   [
+    "Sleep Talk",
+    0.46,
+    6.3
+   ],
+   [
+    "Focus Energy",
+    0.46,
+    6.3
+   ],
+   [
+    "Foul Play",
+    0.46,
+    6.3
+   ],
+   [
+    "Reflect",
+    0.46,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Haban Berry",
+    0.46,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Sturdy",
+    0.46,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Bold",
+    0.46,
+    6.3
+   ]
+  ]
+ },
+ "Espathra": {
+  "win_rate": 0.46,
+  "games": 6.3,
+  "move": [
+   [
+    "Feather Dance",
+    0.46,
+    6.3
+   ],
+   [
+    "Endure",
+    0.46,
+    6.3
+   ],
+   [
+    "Pluck",
+    0.46,
+    6.3
+   ],
+   [
+    "Baby-Doll Eyes",
+    0.46,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Terrain Extender",
+    0.46,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Opportunist",
+    0.46,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.46,
+    6.3
+   ]
+  ]
+ },
+ "Tauros-Paldea-Blaze": {
+  "win_rate": 0.44,
+  "games": 6.3,
+  "move": [
+   [
+    "Wild Charge",
+    0.44,
+    6.3
+   ],
+   [
+    "Curse",
+    0.44,
+    6.3
+   ],
+   [
+    "Uproar",
+    0.44,
+    6.3
+   ],
+   [
+    "Endure",
+    0.44,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Psychic Seed",
+    0.44,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Anger Point",
+    0.44,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Impish",
+    0.44,
+    6.3
+   ]
+  ]
+ },
+ "Incineroar": {
+  "win_rate": 0.44,
+  "games": 6.3,
+  "move": [
+   [
+    "Fire Fang",
+    0.44,
+    6.3
+   ],
+   [
+    "Nasty Plot",
+    0.44,
+    6.3
+   ],
+   [
+    "Endeavor",
+    0.44,
+    6.3
+   ],
+   [
+    "Fling",
+    0.44,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Miracle Seed",
+    0.44,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Blaze",
+    0.44,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Mild",
+    0.44,
+    6.3
+   ]
+  ]
+ },
+ "Baxcalibur": {
+  "win_rate": 0.46,
+  "games": 6.3,
+  "move": [
+   [
+    "Aerial Ace",
+    0.46,
+    6.3
+   ],
+   [
+    "Draco Meteor",
+    0.46,
+    6.3
+   ],
+   [
+    "Icicle Spear",
+    0.46,
+    6.3
+   ],
+   [
+    "Dragon Cheer",
+    0.46,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Silver Powder",
+    0.46,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Thermal Exchange",
+    0.46,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.46,
+    6.3
+   ]
+  ]
+ },
+ "Furfrou-Heart": {
+  "win_rate": 0.58,
+  "games": 6.3,
+  "move": [
+   [
+    "Giga Impact",
+    0.58,
+    6.3
+   ],
+   [
+    "Sucker Punch",
+    0.58,
+    6.3
+   ],
+   [
+    "Attract",
+    0.58,
+    6.3
+   ],
+   [
+    "Roar",
+    0.58,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Chesto Berry",
+    0.58,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Fur Coat",
+    0.58,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Naive",
+    0.58,
+    6.3
+   ]
+  ]
+ },
+ "Gourgeist-Large": {
+  "win_rate": 0.46,
+  "games": 6.3,
+  "move": [
+   [
+    "Imprison",
+    0.46,
+    6.3
+   ],
+   [
+    "Pain Split",
+    0.46,
+    6.3
+   ],
+   [
+    "Attract",
+    0.46,
+    6.3
+   ],
+   [
+    "Dark Pulse",
+    0.46,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Icy Rock",
+    0.46,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Pickup",
+    0.46,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.46,
+    6.3
+   ]
+  ]
+ },
+ "Gourgeist-Super": {
+  "win_rate": 0.4,
+  "games": 6.3,
+  "move": [
+   [
+    "Destiny Bond",
+    0.4,
+    6.3
+   ],
+   [
+    "Dark Pulse",
+    0.4,
+    6.3
+   ],
+   [
+    "Attract",
+    0.4,
+    6.3
+   ],
+   [
+    "Hypnosis",
+    0.4,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Iron Ball",
+    0.4,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Pickup",
+    0.4,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.4,
+    6.3
+   ]
+  ]
+ },
+ "Pikachu": {
+  "win_rate": 0.44,
+  "games": 6.3,
+  "move": [
+   [
+    "Thunder Punch",
+    0.44,
+    6.3
+   ],
+   [
+    "Light Screen",
+    0.44,
+    6.3
+   ],
+   [
+    "Discharge",
+    0.44,
+    6.3
+   ],
+   [
+    "Feint",
+    0.44,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Miracle Seed",
+    0.44,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Lightning Rod",
+    0.44,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Calm",
+    0.44,
+    6.3
+   ]
+  ]
+ },
+ "Pincurchin": {
+  "win_rate": 0.58,
+  "games": 6.3,
+  "move": [
+   [
+    "Thunder Wave",
+    0.58,
+    6.3
+   ],
+   [
+    "Pin Missile",
+    0.58,
+    6.3
+   ],
+   [
+    "Surf",
+    0.58,
+    6.3
+   ],
+   [
+    "Zing Zap",
+    0.58,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Muscle Band",
+    0.58,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Lightning Rod",
+    0.58,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.58,
+    6.3
+   ]
+  ]
+ },
+ "Rotom": {
+  "win_rate": 0.16,
+  "games": 6.3,
+  "move": [
+   [
+    "Electroweb",
+    0.16,
+    6.3
+   ],
+   [
+    "Light Screen",
+    0.16,
+    6.3
+   ],
+   [
+    "Sleep Talk",
+    0.16,
+    6.3
+   ],
+   [
+    "Rising Voltage",
+    0.16,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Charcoal",
+    0.16,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Levitate",
+    0.16,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.16,
+    6.3
+   ]
+  ]
+ },
+ "Simisear": {
+  "win_rate": 0.54,
+  "games": 6.3,
+  "move": [
+   [
+    "Overheat",
+    0.54,
+    6.3
+   ],
+   [
+    "Solar Beam",
+    0.54,
+    6.3
+   ],
+   [
+    "Dig",
+    0.54,
+    6.3
+   ],
+   [
+    "Fire Spin",
+    0.54,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Grassy Seed",
+    0.54,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Gluttony",
+    0.54,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.54,
+    6.3
+   ]
+  ]
+ },
+ "Vivillon-Archipelago": {
+  "win_rate": 0.24,
+  "games": 6.3,
+  "move": [
+   [
+    "Endure",
+    0.24,
+    6.3
+   ],
+   [
+    "Quiver Dance",
+    0.24,
+    6.3
+   ],
+   [
+    "Sleep Talk",
+    0.24,
+    6.3
+   ],
+   [
+    "Snore",
+    0.24,
+    6.3
+   ]
+  ],
+  "item": [
+   [
+    "Choice Scarf",
+    0.24,
+    6.3
+   ]
+  ],
+  "ability": [
+   [
+    "Shield Dust",
+    0.24,
+    6.3
+   ]
+  ],
+  "nature": [
+   [
+    "Brave",
+    0.24,
+    6.3
+   ]
+  ]
+ },
+ "Furfrou": {
+  "win_rate": 0.458,
+  "games": 6.0,
+  "move": [
+   [
+    "Last Resort",
+    0.458,
+    6.0
+   ],
+   [
+    "Helping Hand",
+    0.458,
+    6.0
+   ],
+   [
+    "Cotton Guard",
+    0.458,
+    6.0
+   ],
+   [
+    "Rest",
+    0.458,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Cheri Berry",
+    0.458,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Fur Coat",
+    0.458,
+    6.0
+   ]
+  ],
+  "nature": [
+   [
+    "Quirky",
+    0.458,
+    6.0
+   ]
+  ]
+ },
+ "Gallade": {
+  "win_rate": 0.458,
+  "games": 6.0,
+  "move": [
+   [
+    "Thief",
+    0.458,
+    6.0
+   ],
+   [
+    "Skill Swap",
+    0.458,
+    6.0
+   ],
+   [
+    "Reversal",
+    0.458,
+    6.0
+   ],
+   [
+    "Destiny Bond",
+    0.458,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Galladite",
+    0.458,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Steadfast",
+    0.458,
+    6.0
+   ]
+  ],
+  "nature": [
+   [
+    "Jolly",
+    0.458,
+    6.0
+   ]
+  ]
+ },
+ "Beartic": {
+  "win_rate": 0.167,
+  "games": 6.0,
+  "move": [
+   [
+    "Sheer Cold",
+    0.167,
+    6.0
+   ],
+   [
+    "Focus Blast",
+    0.167,
+    6.0
+   ],
+   [
+    "Slash",
+    0.167,
+    6.0
+   ],
+   [
+    "Charm",
+    0.167,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Metal Coat",
+    0.167,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Snow Cloak",
+    0.167,
+    6.0
+   ]
+  ],
+  "nature": [
+   [
+    "Serious",
+    0.167,
+    6.0
+   ]
+  ]
+ },
+ "Krookodile": {
+  "win_rate": 0.354,
+  "games": 6.0,
+  "move": [
+   [
+    "Knock Off",
+    0.354,
+    6.0
+   ],
+   [
+    "Round",
+    0.354,
+    6.0
+   ],
+   [
+    "Body Slam",
+    0.354,
+    6.0
+   ],
+   [
+    "Rest",
+    0.354,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Charti Berry",
+    0.354,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Intimidate",
+    0.354,
+    6.0
+   ]
+  ],
+  "nature": [
+   [
+    "Hardy",
+    0.354,
+    6.0
+   ]
+  ]
+ },
+ "Liepard": {
+  "win_rate": 0.479,
+  "games": 6.0,
+  "move": [
+   [
+    "Torment",
+    0.479,
+    6.0
+   ],
+   [
+    "Rain Dance",
+    0.479,
+    6.0
+   ],
+   [
+    "Payback",
+    0.479,
+    6.0
+   ],
+   [
+    "Snore",
+    0.479,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Silk Scarf",
+    0.479,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Prankster",
+    0.479,
+    6.0
+   ]
+  ],
+  "nature": [
+   [
+    "Docile",
+    0.479,
+    6.0
+   ]
+  ]
+ },
+ "Raichu": {
+  "win_rate": 0.375,
+  "games": 6.0,
+  "move": [
+   [
+    "Volt Tackle",
+    0.375,
+    6.0
+   ],
+   [
+    "Sleep Talk",
+    0.375,
+    6.0
+   ],
+   [
+    "Volt Switch",
+    0.375,
+    6.0
+   ],
+   [
+    "Reversal",
+    0.375,
+    6.0
+   ]
+  ],
+  "item": [
+   [
+    "Raichunite Y",
+    0.375,
+    6.0
+   ]
+  ],
+  "ability": [
+   [
+    "Static",
+    0.375,
+    6.0
+   ]
+  ],
+  "nature": [
+   [
+    "Bashful",
+    0.375,
+    6.0
+   ]
+  ]
+ },
+ "Milotic": {
+  "win_rate": 0.326,
+  "games": 5.7,
+  "move": [
+   [
+    "Dragon Dance",
+    0.326,
+    5.7
+   ],
+   [
+    "Muddy Water",
+    0.326,
+    5.7
+   ],
+   [
+    "Dragon Cheer",
+    0.326,
+    5.7
+   ],
+   [
+    "Icy Wind",
+    0.326,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Mental Herb",
+    0.326,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Marvel Scale",
+    0.326,
+    5.7
+   ]
+  ],
+  "nature": [
+   [
+    "Lax",
+    0.326,
+    5.7
+   ]
+  ]
+ },
+ "Vivillon-Jungle": {
+  "win_rate": 0.217,
+  "games": 5.7,
+  "move": [
+   [
+    "Pollen Puff",
+    0.217,
+    5.7
+   ],
+   [
+    "Draining Kiss",
+    0.217,
+    5.7
+   ],
+   [
+    "String Shot",
+    0.217,
+    5.7
+   ],
+   [
+    "Round",
+    0.217,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Eject Button",
+    0.217,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Shield Dust",
+    0.217,
+    5.7
+   ]
+  ],
+  "nature": [
+   [
+    "Modest",
+    0.217,
+    5.7
+   ]
+  ]
+ },
+ "Vivillon-Ocean": {
+  "win_rate": 0.478,
+  "games": 5.7,
+  "move": [
+   [
+    "Light Screen",
+    0.478,
+    5.7
+   ],
+   [
+    "Hurricane",
+    0.478,
+    5.7
+   ],
+   [
+    "Rest",
+    0.478,
+    5.7
+   ],
+   [
+    "Sleep Talk",
+    0.478,
+    5.7
+   ]
+  ],
+  "item": [
+   [
+    "Kebia Berry",
+    0.478,
+    5.7
+   ]
+  ],
+  "ability": [
+   [
+    "Compound Eyes",
+    0.478,
+    5.7
+   ]
+  ],
+  "nature": [
+   [
+    "Gentle",
+    0.478,
+    5.7
+   ]
+  ]
+ },
+ "Pelipper": {
+  "win_rate": 0.409,
+  "games": 5.3,
+  "move": [
+   [
+    "Round",
+    0.409,
+    5.3
+   ],
+   [
+    "Aerial Ace",
+    0.409,
+    5.3
+   ],
+   [
+    "Snowscape",
+    0.409,
+    5.3
+   ],
+   [
+    "Uproar",
+    0.409,
+    5.3
+   ]
+  ],
+  "item": [
+   [
+    "Red Card",
+    0.409,
+    5.3
+   ]
+  ],
+  "ability": [
+   [
+    "Keen Eye",
+    0.409,
+    5.3
+   ]
+  ],
+  "nature": [
+   [
+    "Timid",
+    0.409,
+    5.3
+   ]
+  ]
+ },
+ "Arbok": {
+  "win_rate": 0.167,
+  "games": 5.0,
+  "move": [
+   [
+    "Toxic Spikes",
+    0.167,
+    5.0
+   ],
+   [
+    "Thief",
+    0.167,
+    5.0
+   ],
+   [
+    "Venoshock",
+    0.167,
+    5.0
+   ],
+   [
+    "Poison Fang",
+    0.167,
+    5.0
+   ]
+  ],
+  "item": [
+   [
+    "Kebia Berry",
+    0.167,
+    5.0
+   ]
+  ],
+  "ability": [
+   [
+    "Unnerve",
+    0.167,
+    5.0
+   ]
+  ],
+  "nature": [
+   [
+    "Adamant",
+    0.167,
+    5.0
+   ]
+  ]
+ },
+ "Clefable": {
+  "win_rate": 0.167,
+  "games": 5.0,
+  "move": [
+   [
+    "Thunderbolt",
+    0.167,
+    5.0
+   ],
+   [
+    "Dig",
+    0.167,
+    5.0
+   ],
+   [
+    "Draining Kiss",
+    0.167,
+    5.0
+   ],
+   [
+    "Tri Attack",
+    0.167,
+    5.0
+   ]
+  ],
+  "item": [
+   [
+    "Clefablite",
+    0.167,
+    5.0
+   ]
+  ],
+  "ability": [
+   [
+    "Unaware",
+    0.167,
+    5.0
+   ]
+  ],
+  "nature": [
+   [
+    "Serious",
+    0.167,
+    5.0
+   ]
+  ]
+ },
+ "Passimian": {
+  "win_rate": 0.524,
+  "games": 5.0,
+  "move": [
+   [
+    "Payback",
+    0.524,
+    5.0
+   ],
+   [
+    "Substitute",
+    0.524,
+    5.0
+   ],
+   [
+    "Curse",
+    0.524,
+    5.0
+   ],
+   [
+    "Iron Tail",
+    0.524,
+    5.0
+   ]
+  ],
+  "item": [
+   [
+    "Fairy Feather",
+    0.524,
+    5.0
+   ]
+  ],
+  "ability": [
+   [
+    "Defiant",
+    0.524,
+    5.0
+   ]
+  ],
+  "nature": [
+   [
+    "Bold",
+    0.524,
+    5.0
+   ]
+  ]
+ }
+}

@@ -690,12 +690,13 @@ def describe_option(battle: Battle, sid: str, option) -> str:
 
 
 class Advisor:
-    def __init__(self, model_path: str | None = None, library: str | None = None, seed: int = 0):
+    def __init__(self, model_path: str | None = None, library: str | None = None, seed: int = 0,
+                 threads: int | None = None):
         self.model = None
         if model_path:
             import torch
             from .model import load_model
-            torch.set_num_threads(max(1, os.cpu_count() or 1))
+            torch.set_num_threads(threads or max(1, os.cpu_count() or 1))
             self.model = load_model(model_path)
         self.library = library
         self.rng = random.Random(seed)
