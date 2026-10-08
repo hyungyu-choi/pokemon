@@ -85,6 +85,9 @@ class MonState:
     toxic_turns: int = 0
     fresh: bool = False              # switched in this turn (Fake Out etc. still work)
     substitute_hp: float | None = None
+    belief: object = None            # opponent: StatBelief over hidden Stat Points / nature / Scarf
+    faster_than: list = field(default_factory=list)   # opponent: our Pokemon it moved before (same priority)
+    slower_than: list = field(default_factory=list)   # opponent: our Pokemon that moved before it
 
 
 @dataclass
@@ -185,6 +188,8 @@ def parse_input(data: dict) -> AdvisorInput:
             ms.fresh = bool(md.get('fresh'))
             if md.get('substitute_hp') is not None:
                 ms.substitute_hp = float(md['substitute_hp'])
+            ms.faster_than = [_species_name(n) for n in md.get('faster_than') or []]
+            ms.slower_than = [_species_name(n) for n in md.get('slower_than') or []]
             out[name] = ms
         return out
 
@@ -231,6 +236,7 @@ def parse_input(data: dict) -> AdvisorInput:
         for key in (k, {'trickroom': 'trick_room', 'magicroom': 'magic_room', 'wonderroom': 'wonder_room'}.get(k, k)):
             if fld.get(key):
                 pseudo[k] = int(fld[key])
+    _speed_hint_beliefs(team, foe_mons)
     return AdvisorInput(
         formatid=fmt, turn=int(data.get('turn') or 1),
         me=SideState(team=team, brought=me_brought, active=me_active, mons=me_mons, conditions=conds(me_d),
@@ -240,6 +246,29 @@ def parse_input(data: dict) -> AdvisorInput:
         weather=weather, weather_turns=int(fld.get('weather_turns') or 0),
         terrain=terrain, terrain_turns=int(fld.get('terrain_turns') or 0), pseudo=pseudo,
     )
+
+
+def _speed_hint_beliefs(my_team, foe_mons: dict):
+    """Turn "it moved before / after my X" hints into a posterior over the opponent's Speed."""
+    from ..sim.teams import calc_stats
+    from .inference import StatBelief
+    by_name = {s.species: s for s in my_team}
+    for ms in foe_mons.values():
+        if not (ms.faster_than or ms.slower_than):
+            continue
+        belief = ms.belief or StatBelief()
+        if ms.item is not None:
+            belief.set_item(ms.item)
+        for names, foe_first in ((ms.faster_than, True), (ms.slower_than, False)):
+            for n in names:
+                mine = by_name.get(n) or next((s for s in my_team if get_dex().species.get(s.species).baseSpecies ==
+                                               get_dex().species.get(n).baseSpecies), None)
+                if mine is None:
+                    continue
+                my_speed = calc_stats(mine)['spe'] * (1.5 if to_id(mine.get('item') or '') == 'choicescarf' else 1.0)
+                belief.observe_speed(ms.species, 1.0, my_speed, foe_first, False,
+                                     scarf_active=ms.item in (None, 'Choice Scarf'))
+        ms.belief = belief
 
 
 # ---------------------------------------------------------------------------
@@ -288,6 +317,22 @@ class SetPrior:
     def sample(self, species: str, known: MonState | None, rng: random.Random, used_items: set,
                mega_allowed: bool) -> dict:
         known = known or MonState(species=species)
+        s = self._sample_set(species, known, rng, used_items, mega_allowed)
+        belief = known.belief
+        if belief is not None and belief.observations > 0:
+            # nature / Stat Points / Choice Scarf from the posterior given what the battle has shown
+            nature, evs, scarf = belief.sample(rng)
+            s['nature'], s['evs'] = nature, evs
+            if known.item is None:
+                if scarf and 'Choice Scarf' not in used_items:
+                    s['item'] = 'Choice Scarf'
+                elif not scarf and s['item'] == 'Choice Scarf':
+                    s['item'] = self._sample_item(species, rng, used_items | {'Choice Scarf'}, mega_allowed,
+                                                  known.mega)
+        return s
+
+    def _sample_set(self, species: str, known: MonState, rng: random.Random, used_items: set,
+                    mega_allowed: bool) -> dict:
         lib = [s for s in self.library.get(species, []) if self._consistent(s, known, used_items)]
         if lib and rng.random() < 0.8:
             s = json.loads(json.dumps(rng.choice(lib)))

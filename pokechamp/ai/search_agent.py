@@ -51,6 +51,8 @@ def view_to_input(view: BattleView, team: list, formatid: str) -> AdvisorInput:
             ms.pp = {k: v[0] for k, v in mon.move_pp.items()}
         ms.sleep_turns = mon.sleep_turns
         ms.toxic_turns = mon.toxic_turns
+        if not mine:
+            ms.belief = mon.belief
         return ms
 
     me, foe = view.my_side, view.foe_side

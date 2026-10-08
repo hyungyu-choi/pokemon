@@ -44,7 +44,7 @@ CATEGORIES = ('Physical', 'Special', 'Status')
 
 N_MONS = 12
 MON_F = (1 + 1 + 1 + 1 + 1 + 1 + len(STATUS_LIST) + len(BOOST_STATS) + 6 + 6 + len(TYPES) + 4 + 2 +
-         len(VOL_INDEX) + 2 + 2 + 1 + 4)
+         len(VOL_INDEX) + 2 + 2 + 1 + 4 + 3)
 MOVE_F = 1 + 1 + 1 + len(CATEGORIES) + len(TYPES) + 1 + 1 + 1 + 1 + 2 + 2 + 1 + 1 + 6
 GLOB_F = (len(WEATHERS) + 1 + len(TERRAINS) + 1 + len(PSEUDO) + 1 + 2 * len(SIDE_CONDS) + 2 + 2 + 1 + 1 +
           4 + 4 + 4 + 1)
@@ -134,6 +134,13 @@ def encode_mon(mon: PokemonView | None, mine: bool, view: BattleView, out_ids, o
     f.append(len(mon.moves) / 4.0)
     f.append(1.0 if mon.disabled_moves else 0.0)
     f.append(1.0 if mon.last_move else 0.0)
+    # what has been inferred about hidden Stat Points / nature / Choice Scarf (opponent only)
+    b = mon.belief
+    if b is not None and not mine:
+        lo, hi = b.speed_quantiles(mon.species)
+        f.extend([b.certainty(), b.p_scarf() if mon.item in (None, 'Choice Scarf') else 0.0, (hi - lo) / 200.0])
+    else:
+        f.extend([1.0 if mine else 0.0, 0.0, 0.0])
     out_num[i, :len(f)] = f
 
 

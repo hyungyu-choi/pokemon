@@ -11,7 +11,10 @@ It is used by the heuristic agents and to build features for the neural network.
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 from functools import lru_cache
+
+import numpy as np
 
 from ..env.view import BattleView, PokemonView
 from ..sim.dex import get_dex
@@ -97,6 +100,9 @@ def estimated_stats(mon: PokemonView) -> dict:
         out = dict(mon.stats)
         out['hp'] = mon.maxhp or (calc_stat(info[0]['hp'], 16, 'hp') if info else 150)
         return out
+    if mon.belief is not None:
+        # posterior mean over the hidden Stat Points / nature (see ai.inference)
+        return mon.belief.mean_stats(mon.species)
     if info is None:
         return {s: 100 for s in STATS}
     base = info[0]
@@ -129,41 +135,60 @@ def is_grounded(mon: PokemonView, view: BattleView | None = None) -> bool:
     return True
 
 
-def effective_speed(mon: PokemonView, view: BattleView, side_id: str) -> float:
-    stats = estimated_stats(mon)
-    spe = stats['spe'] * BOOST_TABLE[max(-6, min(6, mon.boosts.get('spe', 0)))]
+def speed_multiplier(mon: PokemonView, view: BattleView, side_id: str, include_scarf: bool = True) -> float:
+    """Everything that multiplies the Speed stat (boosts, items, abilities, paralysis, Tailwind)."""
+    m = BOOST_TABLE[max(-6, min(6, mon.boosts.get('spe', 0)))]
     ability = known_ability(mon)
     weather = view.field.weather
-    if mon.item == 'Choice Scarf':
-        spe *= 1.5
+    if mon.item == 'Choice Scarf' and include_scarf:
+        m *= 1.5
     if mon.item == 'Iron Ball':
-        spe *= 0.5
+        m *= 0.5
     if ability == 'Swift Swim' and weather in ('raindance', 'primordialsea'):
-        spe *= 2
+        m *= 2
     elif ability == 'Chlorophyll' and weather in ('sunnyday', 'desolateland'):
-        spe *= 2
+        m *= 2
     elif ability == 'Sand Rush' and weather == 'sandstorm':
-        spe *= 2
+        m *= 2
     elif ability == 'Slush Rush' and weather in ('snowscape', 'snow', 'hail'):
-        spe *= 2
+        m *= 2
     elif ability == 'Surge Surfer' and view.field.terrain == 'electricterrain':
-        spe *= 2
+        m *= 2
     elif ability == 'Unburden' and mon.item == '' and mon.last_item:
-        spe *= 2
+        m *= 2
     elif ability == 'Quick Feet' and mon.status:
-        spe *= 1.5
+        m *= 1.5
     if mon.status == 'par' and ability != 'Quick Feet':
-        spe *= 0.5
-    if 'tailwind' in view.sides[side_id].conditions:
-        spe *= 2
-    return spe
+        m *= 0.5
+    side = view.sides.get(side_id)
+    if side is not None and 'tailwind' in side.conditions:
+        m *= 2
+    return m
+
+
+def effective_speed(mon: PokemonView, view: BattleView, side_id: str) -> float:
+    if mon.belief is not None and not mon.stats:
+        # expected speed under the posterior (incl. a possible Choice Scarf)
+        mult = speed_multiplier(mon, view, side_id, include_scarf=False)
+        p = mon.belief.p_scarf() if mon.item in (None, 'Choice Scarf') else 0.0
+        return estimated_stats(mon)['spe'] * mult * (1 + 0.5 * p)
+    return estimated_stats(mon)['spe'] * speed_multiplier(mon, view, side_id)
 
 
 def outspeeds(a: PokemonView, a_side: str, b: PokemonView, b_side: str, view: BattleView) -> float:
-    """Probability-like score that ``a`` moves before ``b`` with equal priority (0..1)."""
+    """Probability that ``a`` moves before ``b`` with equal priority (0..1)."""
+    tr = 'trickroom' in view.field.pseudo
+    if b.belief is not None and not b.stats and a.belief is None:
+        mine = effective_speed(a, view, a_side)
+        return 1.0 - b.belief.p_faster(b.species, speed_multiplier(b, view, b_side, include_scarf=False), mine, tr,
+                                       scarf_active=b.item in (None, 'Choice Scarf'))
+    if a.belief is not None and not a.stats and b.belief is None:
+        theirs = effective_speed(b, view, b_side)
+        return a.belief.p_faster(a.species, speed_multiplier(a, view, a_side, include_scarf=False), theirs, tr,
+                                 scarf_active=a.item in (None, 'Choice Scarf'))
     sa = effective_speed(a, view, a_side)
     sb = effective_speed(b, view, b_side)
-    if 'trickroom' in view.field.pseudo:
+    if tr:
         sa, sb = -sa, -sb
     if sa > sb:
         return 1.0
@@ -276,21 +301,22 @@ def expected_hits(move, attacker: PokemonView) -> float:
     return float(mh)
 
 
-def estimate_damage(attacker: PokemonView, defender: PokemonView, move_name: str, view: BattleView,
-                    spread: bool = False) -> tuple[float, float]:
-    """Expected damage as a fraction of the defender's max HP, and the chance to KO (0..1).
+def damage_parts(attacker: PokemonView, defender: PokemonView, move_name: str, view: BattleView,
+                 spread: bool = False, a_stats: dict | None = None, d_stats: dict | None = None):
+    """Everything in the damage formula except the raw attacking / defending stats.
 
-    Accuracy is folded into the expected damage but not into the KO chance.
+    ``damage = floor(floor(22 * bp * (A * atk_mult) / (D * def_mult)) / 50) + 2`` times ``mod`` and the
+    random factor (0.85..1), where A / D are the raw stats named ``atk_key`` / ``def_key``.  Keeping the
+    stats separate lets :mod:`pokechamp.ai.inference` evaluate many hypothetical opponent spreads at once.
+    Returns ``None`` when the move does no regular damage, or a :class:`DamageParts`.
     """
     move = move_info(move_name)
     if move is None or move.category == 'Status':
-        return 0.0, 0.0
+        return None
     a_side = _side_of(attacker, view)
     d_side = _side_of(defender, view)
-    a_stats = estimated_stats(attacker)
-    d_stats = estimated_stats(defender)
-    d_maxhp = max(1, d_stats['hp'])
-    d_hp = defender.hp_exact if defender.hp_exact is not None else defender.hp * d_maxhp
+    a_stats = a_stats or estimated_stats(attacker)
+    d_stats = d_stats or estimated_stats(defender)
     a_ability = known_ability(attacker)
     d_ability = known_ability(defender)
     mold_breaker = a_ability in ('Mold Breaker', 'Teravolt', 'Turboblaze')
@@ -301,16 +327,15 @@ def estimate_damage(attacker: PokemonView, defender: PokemonView, move_name: str
     # fixed-damage moves
     if move.damage == 'level' or move.id in ('seismictoss', 'nightshade'):
         if type_multiplier(mtype, tuple(defender.types)) == 0:
-            return 0.0, 0.0
-        dmg = attacker.level
-        return min(1.5, dmg / d_maxhp), 1.0 if dmg >= d_hp else 0.0
+            return DamageParts(kind='immune')
+        return DamageParts(kind='fixed', fixed=attacker.level)
     if move.id in ('superfang', 'ruination', 'naturesmadness'):
         if type_multiplier(mtype, tuple(defender.types)) == 0:
-            return 0.0, 0.0
-        return defender.hp / 2, 0.0
+            return DamageParts(kind='immune')
+        return DamageParts(kind='half')
     if move.id == 'finalgambit':
         hp = attacker.hp_exact if attacker.hp_exact is not None else attacker.hp * a_stats['hp']
-        return min(1.5, hp / d_maxhp), 1.0 if hp >= d_hp else 0.0
+        return DamageParts(kind='fixed', fixed=hp)
 
     eff = type_multiplier(mtype, tuple(defender.types))
     if move.id == 'freezedry' and 'Water' in defender.types:
@@ -332,24 +357,22 @@ def estimate_damage(attacker: PokemonView, defender: PokemonView, move_name: str
     if d_ability in ('Good as Gold',) and move.category == 'Status':
         eff = 0.0
     if eff == 0:
-        return 0.0, 0.0
+        return DamageParts(kind='immune')
 
     physical = move.category == 'Physical'
     # attacking stat
-    if move.overrideOffensivePokemon == 'target':
-        atk_mon, atk_stats = defender, d_stats
-    else:
-        atk_mon, atk_stats = attacker, a_stats
+    atk_from_target = move.overrideOffensivePokemon == 'target'
+    atk_mon = defender if atk_from_target else attacker
     atk_key = move.overrideOffensiveStat or ('atk' if physical else 'spa')
-    atk = atk_stats[atk_key] * BOOST_TABLE[max(-6, min(6, atk_mon.boosts.get(atk_key, 0)))]
+    atk = BOOST_TABLE[max(-6, min(6, atk_mon.boosts.get(atk_key, 0)))]
     def_key = move.overrideDefensiveStat or ('def' if physical else 'spd')
     if 'wonderroom' in view.field.pseudo:
         def_key = 'spd' if def_key == 'def' else 'def'
-    dfn = d_stats[def_key]
+    dfn = 1.0
     if not (move.ignoreDefensive or a_ability == 'Unaware' or move.id in ('chipaway', 'sacredsword', 'darkestlariat')):
         dfn *= BOOST_TABLE[max(-6, min(6, defender.boosts.get(def_key, 0)))]
     if d_ability == 'Unaware':
-        atk = atk_stats[atk_key]
+        atk = 1.0
 
     # attacker stat modifiers
     if a_ability in ('Huge Power', 'Pure Power') and atk_key == 'atk':
@@ -439,7 +462,6 @@ def estimate_damage(attacker: PokemonView, defender: PokemonView, move_name: str
     if 'charge' in attacker.volatiles and mtype == 'Electric':
         bp *= 2
 
-    base = math.floor(math.floor(22 * bp * atk / max(1, dfn)) / 50) + 2
     mod = 1.0
     if spread:
         mod *= 0.75
@@ -495,13 +517,6 @@ def estimate_damage(attacker: PokemonView, defender: PokemonView, move_name: str
     if a_ability == 'Sniper':
         mod *= 1.0 + 0.5 / 24
     hits = expected_hits(move, attacker)
-    lo = base * mod * 0.85 * hits
-    hi = base * mod * 1.0 * hits
-    crit_chance = 1 / 24 if not move.willCrit else 1.0
-    if move.willCrit:
-        lo *= 1.5
-        hi *= 1.5
-    mean = (lo + hi) / 2 * (1 + 0.5 * crit_chance if not move.willCrit else 1.0)
     acc = move.accuracy
     if acc is True or a_ability == 'No Guard' or d_ability == 'No Guard':
         acc_p = 1.0
@@ -513,17 +528,76 @@ def estimate_damage(attacker: PokemonView, defender: PokemonView, move_name: str
         if 'gravity' in view.field.pseudo:
             acc_p *= 5 / 3
         acc_p = min(1.0, acc_p)
-    if move.ohko:
-        return (acc_p * d_hp / d_maxhp if eff else 0.0), (0.3 if eff else 0.0)
+    return DamageParts(kind='ohko' if move.ohko else 'normal', bp=bp, atk_key=atk_key, atk_mult=atk,
+                       atk_from_target=atk_from_target, def_key=def_key, def_mult=dfn, mod=mod, hits=hits,
+                       acc=acc_p, will_crit=bool(move.willCrit),
+                       sturdy=(d_ability == 'Sturdy' or defender.item == 'Focus Sash'))
+
+
+@dataclass
+class DamageParts:
+    kind: str                     # 'normal' | 'immune' | 'fixed' | 'half' | 'ohko'
+    fixed: float = 0.0
+    bp: float = 0.0
+    atk_key: str = 'atk'
+    atk_mult: float = 1.0
+    atk_from_target: bool = False
+    def_key: str = 'def'
+    def_mult: float = 1.0
+    mod: float = 1.0
+    hits: float = 1.0
+    acc: float = 1.0
+    will_crit: bool = False
+    sturdy: bool = False
+
+    def base(self, atk_stat, def_stat):
+        """Base damage for raw stats (scalars or numpy arrays)."""
+        a = atk_stat * self.atk_mult
+        d = def_stat * self.def_mult
+        if isinstance(a, np.ndarray) or isinstance(d, np.ndarray):
+            d = np.maximum(1, d)
+            return np.floor(np.floor(22 * self.bp * a / d) / 50) + 2
+        return math.floor(math.floor(22 * self.bp * a / max(1, d)) / 50) + 2
+
+    def roll_range(self, atk_stat, def_stat, crit: bool = False):
+        """(min, max) damage over the random roll, in HP points."""
+        base = self.base(atk_stat, def_stat)
+        m = self.mod * self.hits * (1.5 if (crit or self.will_crit) else 1.0)
+        return base * m * 0.85, base * m
+
+
+def estimate_damage(attacker: PokemonView, defender: PokemonView, move_name: str, view: BattleView,
+                    spread: bool = False) -> tuple[float, float]:
+    """Expected damage as a fraction of the defender's max HP, and the chance to KO (0..1).
+
+    Accuracy is folded into the expected damage but not into the KO chance.
+    """
+    a_stats = estimated_stats(attacker)
+    d_stats = estimated_stats(defender)
+    parts = damage_parts(attacker, defender, move_name, view, spread, a_stats, d_stats)
+    if parts is None or parts.kind == 'immune':
+        return 0.0, 0.0
+    d_maxhp = max(1, d_stats['hp'])
+    d_hp = defender.hp_exact if defender.hp_exact is not None else defender.hp * d_maxhp
+    if parts.kind == 'fixed':
+        return min(1.5, parts.fixed / d_maxhp), 1.0 if parts.fixed >= d_hp else 0.0
+    if parts.kind == 'half':
+        return defender.hp / 2, 0.0
+    if parts.kind == 'ohko':
+        return parts.acc * d_hp / d_maxhp, 0.3
+    atk_stats = d_stats if parts.atk_from_target else a_stats
+    lo, hi = parts.roll_range(atk_stats[parts.atk_key], d_stats[parts.def_key])
+    crit_chance = 1 / 24 if not parts.will_crit else 1.0
+    mean = (lo + hi) / 2 * (1 + 0.5 * crit_chance if not parts.will_crit else 1.0)
     if d_hp <= lo:
         ko = 1.0
     elif d_hp > hi:
         ko = 0.0
     else:
         ko = (hi - d_hp) / max(1e-9, hi - lo)
-    if defender.hp >= 0.999 and (d_ability == 'Sturdy' or defender.item == 'Focus Sash') and hits <= 1:
+    if defender.hp >= 0.999 and parts.sturdy and parts.hits <= 1:
         ko = 0.0
-    return acc_p * mean / d_maxhp, ko * acc_p
+    return parts.acc * mean / d_maxhp, ko * parts.acc
 
 
 def likely_moves(mon: PokemonView) -> list[str]:

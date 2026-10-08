@@ -49,11 +49,20 @@ class BattleResult:
 class BattleSession:
     """A battle plus one :class:`LogTracker` per player."""
 
-    def __init__(self, formatid: str, team1, team2, seed=None, names=('p1', 'p2')):
+    def __init__(self, formatid: str, team1, team2, seed=None, names=('p1', 'p2'), infer: bool = True):
         self.formatid = formatid
         self.battle = Battle(formatid, seed=seed, p1={'name': names[0], 'team': team1},
                              p2={'name': names[1], 'team': team2})
-        self.trackers = {sid: LogTracker(sid, formatid) for sid in ('p1', 'p2')}
+        # trackers that also infer the opponent's hidden Stat Points / nature / Scarf (``infer`` may be
+        # True/False or a collection of side ids)
+        infer_sides = ('p1', 'p2') if infer is True else (() if not infer else tuple(infer))
+        self.trackers = {}
+        for sid in ('p1', 'p2'):
+            if sid in infer_sides:
+                from ..ai.inference import make_inference_tracker
+                self.trackers[sid] = make_inference_tracker(sid, formatid)
+            else:
+                self.trackers[sid] = LogTracker(sid, formatid)
         self._log_pos = {'p1': 0, 'p2': 0}
         self.n_active = 2 if self.battle.gameType == 'doubles' else 1
         self.picked = self.battle.ruleTable.pickedTeamSize or len(team1)
@@ -121,13 +130,13 @@ class BattleSession:
 
 def play_battle(team1, team2, agent1, agent2, formatid: str = FORMAT_SINGLES, seed=None,
                 max_turns: int = 200, keep_log: bool = False, record: bool = False,
-                names=('p1', 'p2')) -> BattleResult:
+                names=('p1', 'p2'), infer=True) -> BattleResult:
     """Play one battle.
 
     Agents implement ``choose(session, sid, view, legal) -> option | AgentChoice`` where ``legal`` is the
     list of legal options (team-preview orders or joint slot actions, see :mod:`pokechamp.env.actions`).
     """
-    session = BattleSession(formatid, team1, team2, seed=seed, names=names)
+    session = BattleSession(formatid, team1, team2, seed=seed, names=names, infer=infer)
     agents = {'p1': agent1, 'p2': agent2}
     for sid, agent in agents.items():
         if hasattr(agent, 'start_battle'):

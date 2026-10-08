@@ -1552,6 +1552,9 @@ class Battle:
     def validTargetLoc(self, targetLoc, source, targetType):
         if targetLoc == 0:
             return True
+        if targetLoc is None or targetLoc is NULL:
+            # JS: an undefined location makes every comparison NaN/false; only 'any' (!isSelf) passes
+            return targetType == 'any'
         num_slots = self.activePerHalf
         source_loc = source.getLocOf(source)
         if abs(targetLoc) > num_slots:

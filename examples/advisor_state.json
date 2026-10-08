@@ -3,26 +3,77 @@
   "turn": 3,
   "me": {
     "team": "Garchomp @ Choice Scarf\nAbility: Rough Skin\nSPs: 2 HP / 32 Atk / 32 Spe\nJolly Nature\n- Earthquake\n- Dragon Claw\n- Stone Edge\n- Poison Jab\n\nRotom-Wash @ Sitrus Berry\nAbility: Levitate\nSPs: 32 HP / 32 Def / 2 SpA\nBold Nature\n- Hydro Pump\n- Volt Switch\n- Will-O-Wisp\n- Protect\n\nKingambit @ Black Glasses\nAbility: Defiant\nSPs: 32 HP / 32 Atk / 2 Spe\nAdamant Nature\n- Kowtow Cleave\n- Sucker Punch\n- Iron Head\n- Swords Dance\n\nGengar @ Gengarite\nAbility: Cursed Body\nSPs: 2 HP / 32 SpA / 32 Spe\nTimid Nature\n- Shadow Ball\n- Sludge Bomb\n- Focus Blast\n- Protect\n\nTalonflame @ Focus Sash\nAbility: Gale Wings\nSPs: 2 HP / 32 Atk / 32 Spe\nJolly Nature\n- Brave Bird\n- Flare Blitz\n- Tailwind\n- Protect\n\nAzumarill @ Leftovers\nAbility: Huge Power\nSPs: 32 HP / 32 Atk / 2 Spe\nAdamant Nature\n- Aqua Jet\n- Play Rough\n- Liquidation\n- Belly Drum\n",
-    "brought": ["Garchomp", "Rotom-Wash", "Kingambit"],
-    "active": ["Garchomp"],
+    "brought": [
+      "Garchomp",
+      "Rotom-Wash",
+      "Kingambit"
+    ],
+    "active": [
+      "Garchomp"
+    ],
     "pokemon": {
-      "Garchomp": {"hp": "72%", "status": "", "boosts": {"atk": -1}, "locked_move": "Earthquake"},
-      "Rotom-Wash": {"hp": "100%"},
-      "Kingambit": {"hp": "100%"}
+      "Garchomp": {
+        "hp": "72%",
+        "status": "",
+        "boosts": {
+          "atk": -1
+        },
+        "locked_move": "Earthquake"
+      },
+      "Rotom-Wash": {
+        "hp": "100%"
+      },
+      "Kingambit": {
+        "hp": "100%"
+      }
     },
     "side": {},
     "mega_used": false
   },
   "foe": {
-    "team": ["Dragonite", "Gholdengo", "Hippowdon", "Primarina", "Tyranitar", "Corviknight"],
-    "brought": ["Dragonite", "Tyranitar"],
-    "active": ["Dragonite"],
+    "team": [
+      "Dragonite",
+      "Gholdengo",
+      "Hippowdon",
+      "Primarina",
+      "Tyranitar",
+      "Corviknight"
+    ],
+    "brought": [
+      "Dragonite",
+      "Tyranitar"
+    ],
+    "active": [
+      "Dragonite"
+    ],
     "pokemon": {
-      "Dragonite": {"hp": "54%", "ability": "Multiscale", "moves": ["Extreme Speed", "Dragon Dance"], "boosts": {"atk": 1, "spe": 1}},
-      "Tyranitar": {"hp": "100%", "ability": "Sand Stream"}
+      "Dragonite": {
+        "hp": "54%",
+        "ability": "Multiscale",
+        "moves": [
+          "Extreme Speed",
+          "Dragon Dance"
+        ],
+        "boosts": {
+          "atk": 1,
+          "spe": 1
+        },
+        "faster_than": [
+          "Rotom-Wash"
+        ]
+      },
+      "Tyranitar": {
+        "hp": "100%",
+        "ability": "Sand Stream"
+      }
     },
-    "side": {"stealthrock": 1},
+    "side": {
+      "stealthrock": 1
+    },
     "mega_used": false
   },
-  "field": {"weather": "sand", "weather_turns": 2}
+  "field": {
+    "weather": "sand",
+    "weather_turns": 2
+  }
 }

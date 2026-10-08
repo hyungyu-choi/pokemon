@@ -58,6 +58,7 @@ class PokemonView:
     last_move: str = ''
     times_attacked: int = 0
     trapped: bool = False
+    belief: object = None              # opponent: StatBelief over hidden SP / nature / Scarf (ai.inference)
 
     @property
     def alive(self) -> bool:

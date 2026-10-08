@@ -1,0 +1,23 @@
+{
+  "format": "gen9championsvgc2026regmc",
+  "turn": 2,
+  "me": {
+    "team": "Garchomp @ Choice Scarf\nAbility: Rough Skin\nSPs: 2 HP / 32 Atk / 32 Spe\nJolly Nature\n- Earthquake\n- Dragon Claw\n- Rock Slide\n- Poison Jab\n\nRotom-Wash @ Sitrus Berry\nAbility: Levitate\nSPs: 32 HP / 32 Def / 2 SpA\nBold Nature\n- Hydro Pump\n- Volt Switch\n- Will-O-Wisp\n- Protect\n\nKingambit @ Black Glasses\nAbility: Defiant\nSPs: 32 HP / 32 Atk / 2 Spe\nAdamant Nature\n- Kowtow Cleave\n- Sucker Punch\n- Iron Head\n- Protect\n\nGengar @ Gengarite\nAbility: Cursed Body\nSPs: 2 HP / 32 SpA / 32 Spe\nTimid Nature\n- Shadow Ball\n- Sludge Bomb\n- Focus Blast\n- Protect\n\nTalonflame @ Focus Sash\nAbility: Gale Wings\nSPs: 2 HP / 32 Atk / 32 Spe\nJolly Nature\n- Brave Bird\n- Flare Blitz\n- Tailwind\n- Protect\n\nAzumarill @ Leftovers\nAbility: Huge Power\nSPs: 32 HP / 32 Atk / 2 Spe\nAdamant Nature\n- Aqua Jet\n- Play Rough\n- Liquidation\n- Protect\n",
+    "brought": ["Garchomp", "Rotom-Wash", "Kingambit", "Gengar"],
+    "active": ["Garchomp", "Rotom-Wash"],
+    "pokemon": {
+      "Garchomp": {"hp": "100%"},
+      "Rotom-Wash": {"hp": "81%"}
+    }
+  },
+  "foe": {
+    "team": ["Dragonite", "Gholdengo", "Hippowdon", "Primarina", "Tyranitar", "Corviknight"],
+    "brought": ["Gholdengo", "Tyranitar"],
+    "active": ["Gholdengo", "Tyranitar"],
+    "pokemon": {
+      "Gholdengo": {"hp": "88%", "ability": "Good as Gold", "moves": ["Make It Rain"]},
+      "Tyranitar": {"hp": "100%", "ability": "Sand Stream"}
+    }
+  },
+  "field": {"weather": "sand", "weather_turns": 4}
+}
