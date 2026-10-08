@@ -607,13 +607,24 @@ def input_to_view(inp: AdvisorInput, battle: Battle | None = None) -> BattleView
     """Our view of the situation: from a rebuilt battle (own side exact) with opponent info hidden."""
     if battle is None:
         raise ValueError('need a rebuilt battle')
-    view = view_from_battle(battle, 'p1')
+    return mask_view(view_from_battle(battle, 'p1'), inp, battle)
+
+
+def mask_view(view: BattleView, inp: AdvisorInput, battle: Battle) -> BattleView:
+    """Hide what the player cannot know in a full-information view of a (rebuilt / simulated) battle.
+
+    The opponent side is listed like in a real battle: all six team-preview species, unseen ones
+    only by species; seen ones with percentage HP and only the revealed moves / item / ability, plus
+    the inferred Stat Point belief.  This keeps search positions in the same form as the positions
+    the network was trained on.
+    """
     foe = view.foe_side
     shown = []
     for name in inp.foe.team:
         mon = next((p for p in foe.pokemon if p.base_species == name or p.forme == name or p.species == name), None)
         ms = inp.foe.mons.get(name)
-        if mon is None or (name not in inp.foe.brought and not mon.active):
+        seen = mon is not None and (name in inp.foe.brought or mon.active or mon.fainted or mon.hp < 0.999)
+        if not seen:
             # unseen: only the species from team preview is known
             mon = PokemonView(species=name, base_species=name, forme=name)
             info = get_dex().species.get(name)
@@ -624,10 +635,15 @@ def input_to_view(inp: AdvisorInput, battle: Battle | None = None) -> BattleView
             mon.stats = None
             mon.hp_exact = None
             mon.maxhp = None
-            mon.item = ms.item if ms else None
-            mon.ability = ms.ability if ms else None
-            mon.moves = {m: 0 for m in (ms.moves if ms else [])}
+            used = [mon.last_move] if mon.last_move else []
+            known_moves = list(dict.fromkeys((ms.moves if ms else []) + used))
+            mon.moves = {m: 0 for m in known_moves}
             mon.move_pp = {}
+            if ms is None or ms.item is None:
+                mon.item = '' if (mon.item == '' and mon.last_item) else None
+            if ms is None or ms.ability is None:
+                mon.ability = None
+        mon.belief = ms.belief if ms else None
         shown.append(mon)
     foe.pokemon = shown
     foe.team_size = battle.ruleTable.pickedTeamSize or 6
@@ -700,6 +716,7 @@ class Advisor:
             self.model = load_model(model_path)
         self.library = library
         self.rng = random.Random(seed)
+        self._inp = None
 
     def _policy(self, sample: bool):
         if self.model is not None:
@@ -715,7 +732,7 @@ class Advisor:
         if session.ended:
             w = session.winner
             return 1.0 if w == 'p1' else 0.0 if w == 'p2' else 0.5
-        view = view_from_battle(session.battle, 'p1')
+        view = session.view('p1')
         if self.model is not None:
             req = session.request('p1')
             if req and not req.get('wait'):
@@ -747,6 +764,9 @@ class Advisor:
     def _rollout(self, battle: Battle, my_option, depth: int, foe_option=None, sample_reply=True) -> float:
         b = clone_battle(battle)
         session = RolloutSession(b)
+        if self._inp is not None:
+            inp = self._inp
+            session.view_fns['p1'] = lambda bb: mask_view(view_from_battle(bb, 'p1'), inp, bb)
         me_policy = self._policy(sample=False)
         foe_policy = self._policy(sample=True)
         # first decision: our candidate vs the opponent's reply (given, or sampled from its policy)
@@ -779,6 +799,7 @@ class Advisor:
         """Rank our legal actions.  ``reply_k`` > 0 enumerates the opponent's ``reply_k`` most likely
         replies (expectimax); 0 samples one reply per rollout."""
         prior_sets = SetPrior(inp.formatid, self.library)
+        self._inp = inp
         dex = get_dex()
         if log:
             for name, ms in inp.foe.mons.items():

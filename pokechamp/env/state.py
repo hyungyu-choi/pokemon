@@ -64,6 +64,7 @@ class RolloutSession:
         self.battle = battle
         self.n_active = 2 if battle.gameType == 'doubles' else 1
         self.picked = battle.ruleTable.pickedTeamSize or 6
+        self.view_fns = {}  # side id -> callable(battle) -> BattleView (default: full information)
 
     def pending(self) -> list[str]:
         out = []
@@ -77,7 +78,8 @@ class RolloutSession:
         return self.battle.getSide(sid).activeRequest
 
     def view(self, sid: str) -> BattleView:
-        return view_from_battle(self.battle, sid)
+        fn = self.view_fns.get(sid)
+        return fn(self.battle) if fn is not None else view_from_battle(self.battle, sid)
 
     def foe_alive(self, sid: str):
         foe = self.battle.getSide(sid).foe
