@@ -72,3 +72,21 @@ class NNAgent:
                 'phi': potential(view), 'kind': 1 if request.get('teamPreview') else 0,
                 'n_lead': view.n_active}
         return AgentChoice(legal[idx], obs=obs, info=info)
+
+
+@torch.no_grad()
+def batch_policy(model: PolicyValueNet, items: list):
+    """Policy probabilities and values for many move decisions at once.
+
+    ``items``: list of ``(view, request, legal)`` (no team-preview decisions).  Returns
+    ``(probs_list, values)`` where ``probs_list[i]`` is a numpy array over ``legal``.
+    """
+    if not items:
+        return [], []
+    obs = [encode(view, request) for view, request, _legal in items]
+    slot_logits, values, _x = model(collate_obs(obs))
+    combos, mask = pad_options([legal for _v, _r, legal in items], 2)
+    logits = joint_logits(slot_logits, combos, mask)
+    probs = torch.softmax(logits, dim=-1).numpy()
+    out = [probs[i, :len(items[i][2])] for i in range(len(items))]
+    return out, values.tolist()

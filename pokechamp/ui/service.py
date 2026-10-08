@@ -91,13 +91,19 @@ class AssistantService:
         self._advisor = None
         self._lock = threading.Lock()
         self._data = None
+        # every AI request gets a generation number; a newer request (or /api/cancel) makes the running
+        # one stop at its next sample and return what it has so far
+        self._gen = 0
+        self._gen_lock = threading.Lock()
+        self.torch_threads = 2  # leave CPU for the browser / other processes
 
     # ------------------------------------------------------------------
     @property
     def advisor(self):
         if self._advisor is None:
             from ..ai.advisor import Advisor
-            self._advisor = Advisor(model_path=self.model_path, library=self.library_path, seed=self.seed)
+            self._advisor = Advisor(model_path=self.model_path, library=self.library_path, seed=self.seed,
+                                    threads=self.torch_threads)
         return self._advisor
 
     def warmup(self):
@@ -109,6 +115,15 @@ class AssistantService:
             _hypotheses()
         except Exception:  # warm-up is best effort
             pass
+
+    def _new_generation(self) -> int:
+        with self._gen_lock:
+            self._gen += 1
+            return self._gen
+
+    def cancel(self) -> dict:
+        """Stop the running AI calculation (it returns its partial result)."""
+        return {'cancelled_generation': self._new_generation() - 1}
 
     def status(self) -> dict:
         return {'format': self.formatid, 'model': os.path.basename(self.model_path) if self.model_path else None,
@@ -288,7 +303,10 @@ class AssistantService:
         # simulate each shortlisted choice against sampled opponent sets (the opponent picks with the heuristic)
         results = []
         agent_me = self._battle_agent()
+        gen = self._new_generation()
         for prior_score, opt, h, p in shortlist:
+            if self._gen != gen and results:
+                break  # cancelled / superseded: return what has been simulated
             wins = 0.0
             for k in range(sims):
                 r = random.Random(self.seed * 1000 + k)
@@ -320,9 +338,15 @@ class AssistantService:
         state.setdefault('format', self.formatid)
         inp = parse_input(state)
         log_lines = []
+        gen = self._new_generation()
         with self._lock:
-            recs = self.advisor.recommend(inp, determinizations=samples, depth=depth, log=log_lines.append)
+            self.advisor.cancel_check = lambda: self._gen != gen
+            try:
+                recs = self.advisor.recommend(inp, determinizations=samples, depth=depth, log=log_lines.append)
+            finally:
+                self.advisor.cancel_check = None
             info = dict(self.advisor.last_info)
+        cancelled = self._gen != gen
         total = sum(info.get('foe_replies', {}).values()) or 1.0
         foe_replies = sorted(({'label': k, 'prob': v / total} for k, v in info.get('foe_replies', {}).items()),
                              key=lambda x: -x['prob'])[:6]
@@ -337,7 +361,7 @@ class AssistantService:
                                  'meaning': [list(m) if m else None for m in (r.meaning or ())]}
                                 for r in recs],
             'value': info.get('value'), 'foe_replies': foe_replies, 'beliefs': beliefs,
-            'samples': info.get('samples'), 'elapsed': round(time.time() - t0, 1),
+            'samples': info.get('samples'), 'elapsed': round(time.time() - t0, 1), 'cancelled': cancelled,
             'log': [x for x in log_lines if 'could not rebuild' in x][:5],
         }
 

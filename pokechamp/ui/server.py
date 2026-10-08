@@ -11,6 +11,7 @@ JSON API (all POST bodies are JSON; errors come back as ``{"error": "..."}`` wit
     POST /api/preview                   {"my_team": [sets], "foe": [6 species], "sims"?: int}
     POST /api/advise                    {"state": <advisor state>, "samples"?: int, "depth"?: int}
     POST /api/advise_switch             {"state": <advisor state>, "samples"?: int}
+    POST /api/cancel                    stop the running AI calculation (it returns its partial result)
 """
 from __future__ import annotations
 
@@ -36,12 +37,16 @@ def make_handler(service: AssistantService):
 
         # -- helpers ---------------------------------------------------------
         def _send(self, status: int, body: bytes, ctype: str):
-            self.send_response(status)
-            self.send_header('Content-Type', ctype)
-            self.send_header('Content-Length', str(len(body)))
-            self.send_header('Cache-Control', 'no-store')
-            self.end_headers()
-            self.wfile.write(body)
+            try:
+                self.send_response(status)
+                self.send_header('Content-Type', ctype)
+                self.send_header('Content-Length', str(len(body)))
+                self.send_header('Cache-Control', 'no-store')
+                self.end_headers()
+                self.wfile.write(body)
+            except (BrokenPipeError, ConnectionResetError):
+                # the browser gave up on the request (e.g. the user pressed "취소" during a long calculation)
+                self.close_connection = True
 
         def _json(self, status: int, obj):
             self._send(status, json.dumps(obj, ensure_ascii=False).encode('utf-8'), 'application/json; charset=utf-8')
@@ -83,6 +88,8 @@ def make_handler(service: AssistantService):
                 if path == '/api/advise':
                     return self._json(200, service.advise(body['state'], samples=int(body.get('samples') or 12),
                                                           depth=int(body.get('depth') or 2)))
+                if path == '/api/cancel':
+                    return self._json(200, service.cancel())
                 if path == '/api/advise_switch':
                     return self._json(200, service.advise_switch(body['state'],
                                                                  samples=int(body.get('samples') or 8)))

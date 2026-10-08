@@ -5,6 +5,14 @@ logic in `pokechamp/ui/service.py`). The page is `pokechamp/ui/static/index.html
 are served from `/static/<file>`. All JSON is UTF-8. Errors: `{"error": "..."}` with HTTP 400/500.
 Format: singles only, `gen9championsbssregmc` (bring 6, pick 3, level 50).
 
+UI files (plain HTML/CSS/JS, no build step, no external resources): `static/index.html`, `static/app.js`
+(screens, state, <state> builder), `static/combobox.js` (searchable dropdown: Korean / English / initial-consonant
+search), `static/style.css`. The page keeps its state in `localStorage` (key `pokechamp-ui-v1`).
+
+AI requests (`/api/preview`, `/api/advise`, `/api/advise_switch`) are serialized by a lock. A client may abort one
+(the UI's "취소" button); the server still finishes that computation and silently drops the reply, so the next AI
+request waits until it is done.
+
 ## GET /api/status
 `{"format": "gen9championsbssregmc", "model": "battle_singles.pt" | null, "library": "teams_singles.json" | null, "korean_names": bool}`
 
@@ -136,3 +144,8 @@ Use canonical English species/move/item/ability names from `/api/data` everywher
             "trickroom": 2, "gravity": 0, "magicroom": 0, "wonderroom": 0}       // turns left, 0 = off
 }
 ```
+
+## POST /api/cancel
+Body `{}` → `{"cancelled_generation": n}`. The running `/api/advise` (or `/api/preview`) stops after its current
+sample and returns the partial result (`"cancelled": true` in the advise response). Starting a new advise request
+also supersedes a running one.

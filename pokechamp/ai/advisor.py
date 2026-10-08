@@ -718,6 +718,7 @@ class Advisor:
         self.rng = random.Random(seed)
         self._inp = None
         self.last_info = {}
+        self.cancel_check = None   # optional callable() -> bool, polled between samples
 
     def _policy(self, sample: bool):
         if self.model is not None:
@@ -762,7 +763,91 @@ class Advisor:
         total = sum(p for _, p in ranked) or 1.0
         return [(o, p / total) for o, p in ranked]
 
-    def _rollout(self, battle: Battle, my_option, depth: int, foe_option=None, sample_reply=True) -> float:
+    def _cancelled(self) -> bool:
+        return bool(self.cancel_check and self.cancel_check())
+
+    def _evaluate_leaves(self, sessions: list) -> list[float]:
+        """Win probabilities for p1 of many leaf positions; one batched network call."""
+        out = [None] * len(sessions)
+        batch, idx = [], []
+        for i, session in enumerate(sessions):
+            if session.ended or self.model is None:
+                out[i] = self._evaluate_leaf(session)
+                continue
+            req = session.request('p1')
+            if req is not None and req.get('wait'):
+                req = None
+            from .features import encode
+            batch.append(encode(session.view('p1'), req))
+            idx.append(i)
+        if batch:
+            import torch
+            from .model import collate_obs
+            with torch.no_grad():
+                _logits, values, _x = self.model(collate_obs(batch))
+            for i, v in zip(idx, values.tolist()):
+                out[i] = 0.5 * (v + 1)
+        return out
+
+    def _run_batch(self, battle: Battle, jobs: list, depth: int) -> list:
+        """Play many (our option, opponent reply) pairs in lockstep; every network call is batched.
+
+        Returns one win probability per job (nan when the engine rejected our option).
+        """
+        import numpy as np
+        from .nn_agent import batch_policy
+        inp = self._inp
+        rng = np.random.default_rng(self.rng.randrange(1 << 30))
+        sessions, starts, results = [], [], [None] * len(jobs)
+        for i, (opt, reply) in enumerate(jobs):
+            session = RolloutSession(clone_battle(battle))
+            if inp is not None:
+                session.view_fns['p1'] = lambda bb, inp=inp: mask_view(view_from_battle(bb, 'p1'), inp, bb)
+            if not session.apply('p1', opt):
+                results[i] = float('nan')
+                sessions.append(None)
+                starts.append(0)
+                continue
+            if reply is not None and 'p2' in session.pending():
+                if not session.apply('p2', reply):
+                    session.apply_default('p2')
+            sessions.append(session)
+            starts.append(session.battle.turn)
+        for _ in range(8 * max(1, depth) + 8):
+            todo = []
+            for i, session in enumerate(sessions):
+                if session is None or session.ended or session.battle.turn >= starts[i] + depth:
+                    continue
+                for sid in session.pending():
+                    todo.append((i, sid))
+            if not todo:
+                break
+            items = []
+            for i, sid in todo:
+                session = sessions[i]
+                req = session.request(sid)
+                items.append((session.view(sid), req, session.legal(sid)))
+            probs_list, _values = batch_policy(self.model, items)
+            choices = {}
+            for (i, sid), (_v, _r, legal), probs in zip(todo, items, probs_list):
+                if sid == 'p1':
+                    k = int(np.argmax(probs))                       # our policy: greedy
+                else:
+                    p = probs / probs.sum()
+                    k = int(rng.choice(len(legal), p=p))            # opponent: sampled
+                choices.setdefault(i, []).append((sid, legal[k]))
+            for i, picks in choices.items():
+                for sid, option in picks:
+                    if not sessions[i].apply(sid, option):
+                        sessions[i].apply_default(sid)
+        leaf_idx = [i for i, s in enumerate(sessions) if s is not None]
+        values = self._evaluate_leaves([sessions[i] for i in leaf_idx])
+        for i, v in zip(leaf_idx, values):
+            results[i] = v
+        return results
+
+    def _rollout(self, battle: Battle, my_option, depth: int, foe_option=None, sample_reply=True,
+                 return_session: bool = False):
         b = clone_battle(battle)
         session = RolloutSession(b)
         if self._inp is not None:
@@ -793,6 +878,8 @@ class Advisor:
             for sid, opt in choices.items():
                 if not session.apply(sid, opt):
                     session.apply_default(sid)
+        if return_session:
+            return session
         return self._evaluate_leaf(session)
 
     def recommend(self, inp: AdvisorInput, determinizations: int = 12, depth: int = 3,
@@ -861,22 +948,39 @@ class Advisor:
                 if reply is not None:
                     lab = describe_option(battle, 'p2', reply)
                     self.last_info['foe_replies'][lab] = self.last_info['foe_replies'].get(lab, 0.0) + pr
+            if self._cancelled():
+                break
+            # play every (our option, opponent reply) pair to its leaf, then score all leaves in one batch
+            jobs = []
             for opt in legal:
                 labels.setdefault(opt, describe_option(battle, 'p1', opt))
                 meanings.setdefault(opt, option_meaning(battle, 'p1', opt))
-                if replies is None:
-                    v = self._rollout(battle, opt, depth)
-                else:
-                    # expectimax over the opponent's likely replies (much lower variance than sampling one)
-                    v, wsum = 0.0, 0.0
-                    for reply, pr in replies:
-                        x = self._rollout(battle, opt, depth, foe_option=reply, sample_reply=False)
-                        if x == x:
-                            v += pr * x
-                            wsum += pr
-                    v = v / wsum if wsum else float('nan')
-                if v != v:  # rejected choice
+            if self.model is not None and replies is not None:
+                # all rollouts of this sample advance together with batched network calls
+                pairs = [(opt, reply, pr) for opt in legal for reply, pr in replies]
+                values = self._run_batch(battle, [(o, r) for o, r, _ in pairs], depth)
+                jobs = [(o, pr, v) for (o, _r, pr), v in zip(pairs, values)]
+            else:
+                for opt in legal:
+                    pairs = [(None, 1.0)] if replies is None else replies
+                    for reply, pr in pairs:
+                        res = self._rollout(battle, opt, depth, foe_option=reply, sample_reply=replies is None,
+                                            return_session=True)
+                        jobs.append((opt, pr, res))
+            leaf_sessions = [res for _, _, res in jobs if not isinstance(res, float)]
+            leaf_values = iter(self._evaluate_leaves(leaf_sessions))
+            per_opt = {}
+            for opt, pr, res in jobs:
+                x = res if isinstance(res, float) else next(leaf_values)
+                if x == x:  # nan = choice rejected by the engine
+                    acc = per_opt.setdefault(opt, [0.0, 0.0])
+                    acc[0] += pr * x
+                    acc[1] += pr
+            for opt in legal:
+                if opt not in per_opt or not per_opt[opt][1]:
                     continue
+                # expectimax over the opponent's likely replies (much lower variance than sampling one)
+                v = per_opt[opt][0] / per_opt[opt][1]
                 sums[opt] = sums.get(opt, 0.0) + v
                 sq[opt] = sq.get(opt, 0.0) + v * v
                 counts[opt] = counts.get(opt, 0) + 1
