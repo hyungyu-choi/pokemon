@@ -18,6 +18,11 @@ from .dex import Condition, Effect, Format, ModdedDex, get_dex
 from .js import (NULL, Obj, clamp_int_range, deep_clone, is_number, join_part, js_round,
                  js_str, js_typeof, to_id, to_int32, trunc, truthy)
 from .prng import PRNG
+from .battle_actions import BattleActions
+from .battle_queue import BattleQueue
+from .field import Field
+from .pokemon import RESTORATIVE_BERRIES, Pokemon
+from .side import Side
 
 __all__ = ['Battle', 'BattleError']
 
@@ -92,6 +97,31 @@ def _or0(v):
     return v if v else 0
 
 
+class Handler:
+    """An event listener (Showdown's EventListener)."""
+
+    __slots__ = ('effect', 'callback', 'state', 'end', 'endCallArgs', 'effectHolder', 'order', 'priority',
+                 'subOrder', 'effectOrder', 'speed', 'index', 'target')
+
+    def __init__(self, effect, callback, state, end, effectHolder, endCallArgs=None):
+        self.effect = effect
+        self.callback = callback
+        self.state = state
+        self.end = end
+        self.endCallArgs = endCallArgs
+        self.effectHolder = effectHolder
+        self.order = False
+        self.priority = 0
+        self.subOrder = 0
+        self.effectOrder = None
+        self.speed = None
+        self.index = None
+        self.target = None
+
+    def get(self, name, default=None):
+        return getattr(self, name, default)
+
+
 def compare_priority(a, b):
     """``Battle.comparePriority`` (order asc, priority desc, speed desc, subOrder asc, effectOrder asc)."""
     ao = a.get('order') or _ORDER_DEFAULT
@@ -163,7 +193,6 @@ class Battle:
                  timestamp: int | None = None, dex: ModdedDex | None = None):
         from .battle_actions import BattleActions
         from .battle_queue import BattleQueue
-        from .field import Field
 
         self.log: list[str] = []
         self._timestamp = timestamp
@@ -349,9 +378,6 @@ class Battle:
             self.eachEvent('Update')
 
     def fieldEvent(self, eventid: str, targets=None):
-        from .field import Field
-        from .pokemon import Pokemon
-        from .side import Side
         callback_name = 'on' + eventid
         get_key = 'duration' if eventid == 'Residual' else None
         handlers = self.findFieldEventHandlers(self.field, f"onField{eventid}", get_key)
@@ -426,7 +452,6 @@ class Battle:
 
     def singleEvent(self, eventid: str, effect, state, target, source=None, sourceEffect=None,
                     relayVar=None, customCallback=None):
-        from .pokemon import Pokemon
         if self.eventDepth >= 8:
             self.add('message', 'STACK LIMIT EXCEEDED')
             self.add('message', 'PLEASE REPORT IN BUG THREAD')
@@ -494,7 +519,6 @@ class Battle:
 
     def runEvent(self, eventid: str, target=None, source=None, sourceEffect=None, relayVar=None,
                  onEffect=False, fastExit=False):
-        from .pokemon import Pokemon
         if self.eventDepth >= 8:
             self.add('message', 'STACK LIMIT EXCEEDED')
             self.add('message', 'PLEASE REPORT IN BUG THREAD')
@@ -512,9 +536,8 @@ class Battle:
             if callback is not None:
                 if isinstance(target, list):
                     raise BattleError('')
-                handlers.insert(0, self.resolvePriority(Obj(
-                    effect=sourceEffect, callback=callback, state=self.initEffectState(Obj()), end=None,
-                    effectHolder=target), 'on' + eventid))
+                handlers.insert(0, self.resolvePriority(Handler(
+                    sourceEffect, callback, self.initEffectState(Obj()), None, target), 'on' + eventid))
 
         if eventid in ('Invulnerability', 'TryHit', 'DamagingHit', 'EntryHazard'):
             _stable_sort(handlers, compare_left_to_right_order)
@@ -614,9 +637,6 @@ class Battle:
         return self.runEvent(eventid, target, source, effect, relayVar, onEffect, True)
 
     def resolvePriority(self, handler: Obj, callbackName: str) -> Obj:
-        from .field import Field
-        from .pokemon import Pokemon
-        from .side import Side
         effect = handler.effect
         handler.order = effect.get(callbackName + 'Order') or False
         handler.priority = effect.get(callbackName + 'Priority') or 0
@@ -649,18 +669,15 @@ class Battle:
         return handler
 
     def getCallback(self, target, effect, callbackName: str):
-        from .pokemon import Pokemon
         callback = effect.get(callbackName)
         if (callback is None and callbackName == 'onSwitchIn' and isinstance(target, Pokemon) and
                 effect.get('onAnySwitchIn') is None and
-                (effect.effectType in ('Ability', 'Item') or
-                 (effect.effectType == 'Status' and effect.id.split(':')[0] in ('ability', 'item')))):
+                (effect.get('effectType') in ('Ability', 'Item') or
+                 (effect.get('effectType') == 'Status' and effect.id.split(':')[0] in ('ability', 'item')))):
             callback = effect.get('onStart')
         return callback
 
     def findEventHandlers(self, target, eventName: str, source=None) -> list:
-        from .pokemon import Pokemon
-        from .side import Side
         handlers = []
         if isinstance(target, list):
             for i, pokemon in enumerate(target):
@@ -707,103 +724,109 @@ class Battle:
 
     def findPokemonEventHandlers(self, pokemon, callbackName: str, getKey=None) -> list:
         handlers = []
+        # Fast path: no effect anywhere defines this callback (and no Residual duration bookkeeping).
+        if (getKey is None and callbackName not in self.dex.callback_names and
+                not (callbackName == 'onSwitchIn')):
+            return handlers
+        getCallback = self.getCallback
+        resolve = self.resolvePriority
         status = pokemon.getStatus()
-        callback = self.getCallback(pokemon, status, callbackName)
+        callback = getCallback(pokemon, status, callbackName)
         if callback is not None or (getKey and pokemon.statusState.get(getKey)):
-            handlers.append(self.resolvePriority(Obj(
-                effect=status, callback=callback, state=pokemon.statusState, end=_end_clear_status,
-                effectHolder=pokemon), callbackName))
-        for id_, volatile_state in list(pokemon.volatiles.items()):
-            volatile = self.dex.conditions.getByID(id_)
-            callback = self.getCallback(pokemon, volatile, callbackName)
-            if callback is not None or (getKey and volatile_state.get(getKey)):
-                handlers.append(self.resolvePriority(Obj(
-                    effect=volatile, callback=callback, state=volatile_state, end=_end_remove_volatile,
-                    effectHolder=pokemon), callbackName))
+            handlers.append(resolve(Handler(status, callback, pokemon.statusState, _end_clear_status, pokemon),
+                                    callbackName))
+        if pokemon.volatiles:
+            get_condition = self.dex.conditions.getByID
+            for id_, volatile_state in list(pokemon.volatiles.items()):
+                volatile = get_condition(id_)
+                callback = getCallback(pokemon, volatile, callbackName)
+                if callback is not None or (getKey and volatile_state.get(getKey)):
+                    handlers.append(resolve(Handler(volatile, callback, volatile_state, _end_remove_volatile,
+                                                    pokemon), callbackName))
         ability = pokemon.getAbility()
-        callback = self.getCallback(pokemon, ability, callbackName)
+        callback = getCallback(pokemon, ability, callbackName)
         if callback is not None or (getKey and pokemon.abilityState.get(getKey)):
-            handlers.append(self.resolvePriority(Obj(
-                effect=ability, callback=callback, state=pokemon.abilityState, end=_end_clear_ability,
-                effectHolder=pokemon), callbackName))
+            handlers.append(resolve(Handler(ability, callback, pokemon.abilityState, _end_clear_ability, pokemon),
+                                    callbackName))
         item = pokemon.getItem()
-        callback = self.getCallback(pokemon, item, callbackName)
+        callback = getCallback(pokemon, item, callbackName)
         if callback is not None or (getKey and pokemon.itemState.get(getKey)):
-            handlers.append(self.resolvePriority(Obj(
-                effect=item, callback=callback, state=pokemon.itemState, end=_end_clear_item,
-                effectHolder=pokemon), callbackName))
+            handlers.append(resolve(Handler(item, callback, pokemon.itemState, _end_clear_item, pokemon),
+                                    callbackName))
         species = pokemon.baseSpecies
-        callback = self.getCallback(pokemon, species, callbackName)
+        callback = getCallback(pokemon, species, callbackName)
         if callback is not None:
-            handlers.append(self.resolvePriority(Obj(
-                effect=species, callback=callback, state=pokemon.speciesState, end=_end_noop,
-                effectHolder=pokemon), callbackName))
+            handlers.append(resolve(Handler(species, callback, pokemon.speciesState, _end_noop, pokemon),
+                                    callbackName))
         side = pokemon.side
         # JS: `for (id in side.slotConditions[pokemon.position])` is a no-op for benched Pokemon
-        slot_conds = side.slotConditions[pokemon.position] if pokemon.position < len(side.slotConditions) else {}
-        for cond_id, slot_state in list(slot_conds.items()):
-            slot_condition = self.dex.conditions.getByID(cond_id)
-            callback = self.getCallback(pokemon, slot_condition, callbackName)
-            if callback is not None or (getKey and slot_state.get(getKey)):
-                handlers.append(self.resolvePriority(Obj(
-                    effect=slot_condition, callback=callback, state=slot_state,
-                    end=_end_remove_slot_condition, endCallArgs=[side, pokemon, slot_condition.id],
-                    effectHolder=pokemon), callbackName))
+        if pokemon.position < len(side.slotConditions):
+            slot_conds = side.slotConditions[pokemon.position]
+            if slot_conds:
+                for cond_id, slot_state in list(slot_conds.items()):
+                    slot_condition = self.dex.conditions.getByID(cond_id)
+                    callback = getCallback(pokemon, slot_condition, callbackName)
+                    if callback is not None or (getKey and slot_state.get(getKey)):
+                        handlers.append(resolve(Handler(slot_condition, callback, slot_state,
+                                                        _end_remove_slot_condition, pokemon,
+                                                        [side, pokemon, slot_condition.id]), callbackName))
         return handlers
 
     def findBattleEventHandlers(self, callbackName: str, getKey=None, customHolder=None) -> list:
         handlers = []
+        if getKey is None and not self.events and callbackName not in self.dex.callback_names:
+            return handlers
         fmt = self.format
         callback = self.getCallback(self, fmt, callbackName)
         if callback is not None or (getKey and self.formatData.get(getKey)):
-            handlers.append(self.resolvePriority(Obj(
-                effect=fmt, callback=callback, state=self.formatData, end=None,
-                effectHolder=customHolder or self), callbackName))
+            handlers.append(self.resolvePriority(Handler(
+                fmt, callback, self.formatData, None, customHolder or self), callbackName))
         if self.events and self.events.get(callbackName) is not None:
             for handler in self.events[callbackName]:
                 state = self.formatData if handler.target.effectType == 'Format' else None
-                handlers.append(Obj(
-                    effect=handler.target, callback=handler.callback, state=state, end=None,
-                    effectHolder=customHolder or self, priority=handler.priority, order=handler.order,
-                    subOrder=handler.subOrder))
+                h = Handler(handler.target, handler.callback, state, None, customHolder or self)
+                h.priority = handler.priority
+                h.order = handler.order
+                h.subOrder = handler.subOrder
+                handlers.append(h)
         return handlers
 
     def findFieldEventHandlers(self, field, callbackName: str, getKey=None, customHolder=None) -> list:
         handlers = []
+        if getKey is None and callbackName not in self.dex.callback_names:
+            return handlers
         for id_, pw_state in list(field.pseudoWeather.items()):
             pseudo_weather = self.dex.conditions.getByID(id_)
             callback = self.getCallback(field, pseudo_weather, callbackName)
             if callback is not None or (getKey and pw_state.get(getKey)):
-                handlers.append(self.resolvePriority(Obj(
-                    effect=pseudo_weather, callback=callback, state=pw_state,
-                    end=None if customHolder else _end_remove_pseudo_weather,
-                    effectHolder=customHolder or field), callbackName))
+                handlers.append(self.resolvePriority(Handler(
+                    pseudo_weather, callback, pw_state, None if customHolder else _end_remove_pseudo_weather,
+                    customHolder or field), callbackName))
         weather = field.getWeather()
         callback = self.getCallback(field, weather, callbackName)
         if callback is not None or (getKey and self.field.weatherState.get(getKey)):
-            handlers.append(self.resolvePriority(Obj(
-                effect=weather, callback=callback, state=self.field.weatherState,
-                end=None if customHolder else _end_clear_weather,
-                effectHolder=customHolder or field), callbackName))
+            handlers.append(self.resolvePriority(Handler(
+                weather, callback, self.field.weatherState, None if customHolder else _end_clear_weather,
+                customHolder or field), callbackName))
         terrain = field.getTerrain()
         callback = self.getCallback(field, terrain, callbackName)
         if callback is not None or (getKey and field.terrainState.get(getKey)):
-            handlers.append(self.resolvePriority(Obj(
-                effect=terrain, callback=callback, state=field.terrainState,
-                end=None if customHolder else _end_clear_terrain,
-                effectHolder=customHolder or field), callbackName))
+            handlers.append(self.resolvePriority(Handler(
+                terrain, callback, field.terrainState, None if customHolder else _end_clear_terrain,
+                customHolder or field), callbackName))
         return handlers
 
     def findSideEventHandlers(self, side, callbackName: str, getKey=None, customHolder=None) -> list:
         handlers = []
+        if not side.sideConditions or (getKey is None and callbackName not in self.dex.callback_names):
+            return handlers
         for id_, data in list(side.sideConditions.items()):
             side_condition = self.dex.conditions.getByID(id_)
             callback = self.getCallback(side, side_condition, callbackName)
             if callback is not None or (getKey and data.get(getKey)):
-                handlers.append(self.resolvePriority(Obj(
-                    effect=side_condition, callback=callback, state=data,
-                    end=None if customHolder else _end_remove_side_condition,
-                    effectHolder=customHolder or side), callbackName))
+                handlers.append(self.resolvePriority(Handler(
+                    side_condition, callback, data, None if customHolder else _end_remove_side_condition,
+                    customHolder or side), callbackName))
         return handlers
 
     def onEvent(self, eventid: str, target, *rest):
@@ -994,7 +1017,6 @@ class Battle:
         return self.win()
 
     def win(self, side=None):
-        from .side import Side
         if self.ended:
             return False
         if side and isinstance(side, str):
@@ -1195,7 +1217,6 @@ class Battle:
                     break
         if len(can_switch) == len(trappedBySide) and all(can_switch):
             return None
-        from .pokemon import RESTORATIVE_BERRIES
         losers = []
         for side in self.sides:
             berry = False
@@ -2029,7 +2050,6 @@ class Battle:
             self.add('showteam', side.id, pack_team(team))
 
     def setPlayer(self, slot: str, options: dict):
-        from .side import Side
         from .teams import pack_team, unpack_team
         slot_num = int(slot[1]) - 1
         if self.sides[slot_num] is None:
@@ -2058,7 +2078,6 @@ class Battle:
         return trunc(self.turn - 1, 8)
 
     def initEffectState(self, obj: Obj, effectOrder=None) -> Obj:
-        from .pokemon import Pokemon
         if not isinstance(obj, Obj):
             obj = Obj(obj)
         if not obj.get('id'):

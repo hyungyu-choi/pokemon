@@ -611,7 +611,8 @@ class BattleActions:
             move.lastHit = move.hit == target_hits
             if move.smartTarget and len(targets) > 1:
                 targets_copy = [targets[hit - 1]]
-                damage = [damage[hit - 1]]
+                # JS: an out-of-range index reads undefined
+                damage = [damage[hit - 1] if hit - 1 < len(damage) else None]
             else:
                 targets_copy = list(targets)
             target = targets_copy[0]
@@ -658,6 +659,8 @@ class BattleActions:
             for i, md in enumerate(move_damage):
                 if move.smartTarget and i != hit - 1:
                     continue
+                while len(damage) <= i:
+                    damage.append(None)
                 damage[i] = 0 if (md is True or not md) else md
                 move.totalDamage += damage[i]
             battle.eachEvent('Update')

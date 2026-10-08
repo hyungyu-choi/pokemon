@@ -619,6 +619,20 @@ def _mega_stone_take_item(self, item, source):
     return not (mega and mega.get(source.baseSpecies.baseSpecies))
 
 
+def _mega_stone_take_item_by_name(self, item, source):
+    # Floettite / Meowsticite: keyed by forme name (Floette-Eternal, Meowstic-M/F)
+    mega = item.megaStone
+    return not mega or (not mega.get(source.baseSpecies.name) and source.baseSpecies.name not in mega.values())
+
+
+class floettite:
+    onTakeItem = _mega_stone_take_item_by_name
+
+
+class meowsticite:
+    onTakeItem = _mega_stone_take_item_by_name
+
+
 def _register_mega_stones():
     path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                         'data', 'items.json')

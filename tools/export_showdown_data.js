@@ -17,6 +17,9 @@
  *   items.json      - every item usable in Champions
  *   conditions.json - generic conditions (status, weather, volatiles, ...)
  *   typechart.json, natures.json, learnsets.json, formats.json
+ *   legality.json   - per format: legal species and their legal abilities/moves/items
+ *                     (computed with Showdown's TeamValidator)
+ *   empties.json    - default fields of empty effects (dex.items.get('') etc.)
  *   callbacks.json  - inventory of all JS callbacks that the Python engine ports
  *   meta.json       - source commit / version information
  *
@@ -238,6 +241,67 @@ for (const fid of FORMATS) {
 }
 
 // ---------------------------------------------------------------------------
+// Legality per format, computed with Showdown's own TeamValidator: for every species that can be
+// on a team, the abilities / moves / items it may legally use.
+const { TeamValidator } = require(path.join(psPath, 'dist', 'sim', 'team-validator'));
+const legality = {};
+for (const formatid of FORMATS) {
+	const validator = TeamValidator.get(formatid);
+	const out = { species: {}, items: [] };
+	const allItems = Object.keys(items).map(id => dex.items.get(id)).filter(i => !i.isNonstandard);
+	for (const id of Object.keys(species)) {
+		const s = dex.species.get(id);
+		if (!species[id].legal || s.battleOnly || s.isMega) continue;
+		const learn = [...new Set([id, dex.toID(s.changesFrom), dex.toID(s.baseSpecies)]
+			.flatMap(x => (x && learnsets[x]) || []))].filter(m => moves[m]);
+		const baseSet = (extra) => Object.assign({
+			name: s.baseSpecies, species: s.name, item: '', ability: Object.values(s.abilities)[0], moves: [],
+			nature: 'Hardy', evs: { hp: 32, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 }, level: 50, gender: '',
+		}, extra);
+		const legalMoves = learn.filter(m => {
+			const errors = validator.validateSet(baseSet({ moves: [dex.moves.get(m).name] }), {});
+			return !errors;
+		}).map(m => dex.moves.get(m).name);
+		if (!legalMoves.length) continue;
+		const probe = legalMoves[0];
+		const legalAbilities = [...new Set(Object.values(s.abilities))].filter(a => (
+			!validator.validateSet(baseSet({ ability: a, moves: [probe] }), {})
+		));
+		if (!legalAbilities.length) continue;
+		const legalItems = allItems.filter(i => (
+			!validator.validateSet(baseSet({ ability: legalAbilities[0], moves: [probe], item: i.name }), {})
+		)).map(i => i.name);
+		const required = s.requiredItem || (s.requiredItems || [])[0];
+		if (required && !legalItems.includes(required)) continue;
+		out.species[s.name] = { abilities: legalAbilities, moves: legalMoves, items: legalItems, num: s.num };
+	}
+	out.items = [...new Set(Object.values(out.species).flatMap(x => x.items))].sort();
+	for (const sp of Object.values(out.species)) {
+		// store per-species items only where they differ from the format-wide list (mega stones etc.)
+		const own = new Set(sp.items);
+		sp.itemsExcluded = out.items.filter(i => !own.has(i));
+		delete sp.items;
+	}
+	out.evLimit = validator.ruleTable.evLimit;
+	out.pickedTeamSize = validator.ruleTable.pickedTeamSize;
+	out.minTeamSize = validator.ruleTable.minTeamSize;
+	out.maxTeamSize = validator.ruleTable.maxTeamSize;
+	legality[formatid] = out;
+}
+
+// Empty effects (what `dex.items.get('')` etc. return): the engine needs their exact default fields
+// (e.g. an empty item has `isBerry: false`, which Stuff Cheeks' onTry returns).
+const empties = {};
+for (const [kind, table] of Object.entries({
+	item: dex.items, ability: dex.abilities, move: dex.moves, species: dex.species, condition: dex.conditions,
+})) {
+	const e = table.get('');
+	const o = {};
+	for (const k in e) if (!['zMove', 'maxMove', 'tags'].includes(k)) o[k] = e[k];
+	empties[kind] = plain(o, 'empty', kind);
+}
+
+// ---------------------------------------------------------------------------
 let commit = '';
 try {
 	commit = child_process.execSync('git rev-parse HEAD', { cwd: psPath }).toString().trim();
@@ -263,6 +327,8 @@ write('conditions.json', conditions);
 write('typechart.json', typechart);
 write('natures.json', natures);
 write('formats.json', formats);
+write('empties.json', empties);
+write('legality.json', legality);
 write('callbacks.json', callbacks);
 write('meta.json', meta);
 if (sourcesFile) fs.writeFileSync(sourcesFile, sources.join('\n'));

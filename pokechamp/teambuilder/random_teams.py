@@ -29,43 +29,36 @@ class LegalPool:
     meta: dict = field(default_factory=dict)
 
 
-_POOL: LegalPool | None = None
+_POOLS: dict[str, LegalPool] = {}
 
 
-def legal_pool(dex: ModdedDex | None = None) -> LegalPool:
-    """Everything a Champions team may contain (species, abilities, learnable moves, items)."""
-    global _POOL
-    if _POOL is not None and dex is None:
-        return _POOL
+def legal_pool(dex: ModdedDex | None = None, formatid: str = 'gen9championsbssregmc') -> LegalPool:
+    """Everything a team of ``formatid`` may contain (from Showdown's TeamValidator, see legality.json)."""
+    from .validator import format_legality
+    if formatid in _POOLS and dex is None:
+        return _POOLS[formatid]
     dex = dex or get_dex()
-    species = []
-    abilities = {}
-    moves = {}
-    for s in dex.species.all():
-        if not s.legal or s.battleOnly or s.isMega or s.tier == 'Illegal' or s.isNonstandard:
-            continue
-        if s.requiredItem or s.requiredItems:
-            continue
-        learn = [m for m in dex.learnset(s.id) if dex.moves.get(m).exists and not dex.moves.get(m).isNonstandard]
-        if len(learn) < 1:
-            continue
-        species.append(s.name)
-        abilities[s.name] = sorted(set(a for a in s.abilities.values() if dex.abilities.get(a).exists))
-        moves[s.name] = sorted(set(dex.moves.get(m).name for m in learn))
+    leg = format_legality(formatid)
+    species = sorted(leg.species)
+    abilities = {s: list(leg.species[s]['abilities']) for s in species}
+    moves = {s: sorted(leg.species[s]['moves']) for s in species}
     items = []
     mega_stones: dict[str, list[str]] = {}
-    for it in dex.items.all():
-        if it.isNonstandard:
-            continue
+    for name in leg.items:
+        it = dex.items.get(name)
         if it.megaStone:
-            for base, mega in it.megaStone.items():
+            for base in it.megaStone:
                 mega_stones.setdefault(base, []).append(it.name)
             continue
         items.append(it.name)
     natures = sorted(n.name for n in dex.natures.all())
-    pool = LegalPool(sorted(species), abilities, moves, sorted(items), mega_stones, natures)
+    nums = {s: leg.species[s]['num'] for s in species}
+    all_items = set(leg.items)
+    excluded = {s: all_items - set(leg.species[s]['items']) for s in species}
+    pool = LegalPool(species, abilities, moves, sorted(items), mega_stones, natures,
+                     meta={'num': nums, 'excluded_items': excluded})
     if dex is get_dex():
-        _POOL = pool
+        _POOLS[formatid] = pool
     return pool
 
 
@@ -94,9 +87,10 @@ def random_sp(rng: random.Random) -> Obj:
 
 
 class RandomTeamGenerator:
-    def __init__(self, seed: int | None = None, dex: ModdedDex | None = None, mega_chance: float = 0.35):
+    def __init__(self, seed: int | None = None, dex: ModdedDex | None = None, mega_chance: float = 0.35,
+                 formatid: str = 'gen9championsbssregmc'):
         self.rng = random.Random(seed)
-        self.pool = legal_pool(dex)
+        self.pool = legal_pool(dex, formatid)
         self.mega_chance = mega_chance
 
     def random_set(self, species: str | None = None, used_items: set | None = None) -> Obj:
@@ -106,13 +100,14 @@ class RandomTeamGenerator:
         movepool = pool.moves[species]
         moves = rng.sample(movepool, min(4, len(movepool)))
         used_items = used_items if used_items is not None else set()
+        banned = pool.meta['excluded_items'].get(species, set())
         item = ''
         base = species
-        stones = [st for st in pool.mega_stones.get(base, []) if st not in used_items]
+        stones = [st for st in pool.mega_stones.get(base, []) if st not in used_items and st not in banned]
         if stones and rng.random() < self.mega_chance:
             item = rng.choice(stones)
         else:
-            choices = [i for i in pool.items if i not in used_items]
+            choices = [i for i in pool.items if i not in used_items and i not in banned]
             if choices:
                 item = rng.choice(choices)
         if item:
@@ -129,6 +124,16 @@ class RandomTeamGenerator:
         )
 
     def random_team(self, size: int = 6) -> list[Obj]:
-        species = self.rng.sample(self.pool.species, size)
+        # Species Clause: at most one Pokemon per National Dex number
+        nums = self.pool.meta['num']
+        species = []
+        used_nums = set()
+        for s in self.rng.sample(self.pool.species, len(self.pool.species)):
+            if nums[s] in used_nums:
+                continue
+            species.append(s)
+            used_nums.add(nums[s])
+            if len(species) == size:
+                break
         used_items: set = set()
         return [self.random_set(s, used_items) for s in species]

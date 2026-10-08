@@ -212,6 +212,11 @@ class _Table:
             e.name = id_
             e.id = id_
             e.exists = False
+            if e.get('fullname'):  # 'item: ' -> 'item: <id>'
+                e.fullname = e.fullname + id_
+            if e.get('effectType') == 'Pokemon':
+                e.baseSpecies = id_
+                e.spriteid = id_
         return e
 
     def all(self):
@@ -411,10 +416,14 @@ class ModdedDex:
         self.ability_data = abilities
         self.item_data = items
 
-        self.moves = _Table(self, moves, Move, _make_empty(Move, 'Move', basePower=0, category='Physical'))
-        self.abilities = _Table(self, abilities, Ability, _make_empty(Ability, 'Ability'))
-        self.items = _Table(self, items, Item, _make_empty(Item, 'Item'))
-        self.species = _Table(self, species, Species, _make_empty(Species, 'Pokemon'))
+        # empty effects carry Showdown's exact default fields (empties.json)
+        empties = _load('empties.json')
+        empty_move = Move(empties['move'])
+        empty_move.basePower = 0  # JS NaN; never used for damage
+        self.moves = _Table(self, moves, Move, empty_move)
+        self.abilities = _Table(self, abilities, Ability, Ability(empties['ability']))
+        self.items = _Table(self, items, Item, Item(empties['item']))
+        self.species = _Table(self, species, Species, Species(empties['species']))
         self.types = TypeTable(self.typechart)
         self.natures = _Table(self, {k: Nature(v, id=k, effectType='Nature', fullname=f"nature: {v['name']}",
                                                exists=True) for k, v in self.nature_data.items()},
@@ -432,6 +441,32 @@ class ModdedDex:
             self.rulesets[rid] = f
         self.formats = FormatTable(self)
         self.conditions = ConditionTable(self)
+        self.callback_names = self._collect_callback_names()
+
+    def _collect_callback_names(self) -> set:
+        """All ``on*`` callback names defined by any effect (used to skip impossible event lookups)."""
+        names = set()
+
+        def scan(obj):
+            if not isinstance(obj, dict):
+                return
+            for k, v in obj.items():
+                # a superset is harmless: extra names only cost a lookup
+                if k.startswith('on') and v is not None:
+                    names.add(k)
+        tables = [self.move_data, self.ability_data, self.item_data, self.condition_data,
+                  self.species.data, self.rulesets]
+        for table in tables:
+            for effect in table.values():
+                scan(effect)
+                cond = effect.get('condition') if isinstance(effect, dict) else None
+                if cond:
+                    scan(cond)
+        for fmt in self.format_data.values():
+            scan(fmt)
+        # onStart doubles as onSwitchIn for abilities/items
+        names.add('onSwitchIn')
+        return names
 
     # --- helpers ported from ModdedDex ---------------------------------------
 
