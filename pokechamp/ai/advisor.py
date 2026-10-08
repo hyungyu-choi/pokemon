@@ -86,6 +86,8 @@ class MonState:
     fresh: bool = False              # switched in this turn (Fake Out etc. still work)
     substitute_hp: float | None = None
     belief: object = None            # opponent: StatBelief over hidden Stat Points / nature / Scarf
+    choices: list = field(default_factory=list)       # opponent: (move used, our Pokemon it faced, view)
+    view: object = None              # opponent: its PokemonView (for behaviour-based move inference)
     faster_than: list = field(default_factory=list)   # opponent: our Pokemon it moved before (same priority)
     slower_than: list = field(default_factory=list)   # opponent: our Pokemon that moved before it
 
@@ -317,7 +319,14 @@ class SetPrior:
     def sample(self, species: str, known: MonState | None, rng: random.Random, used_items: set,
                mega_allowed: bool) -> dict:
         known = known or MonState(species=species)
-        s = self._sample_set(species, known, rng, used_items, mega_allowed)
+        if known.choices and known.view is not None:
+            # behaviour-based move inference: weight candidate sets by how well they explain the
+            # opponent's past choices (it would usually have used a much stronger attack if it had one)
+            cands = [self._sample_set(species, known, rng, used_items, mega_allowed) for _ in range(6)]
+            weights = [self._choice_likelihood(c, known) for c in cands]
+            s = rng.choices(cands, weights)[0]
+        else:
+            s = self._sample_set(species, known, rng, used_items, mega_allowed)
         belief = known.belief
         if belief is not None and belief.observations > 0:
             # nature / Stat Points / Choice Scarf from the posterior given what the battle has shown
@@ -330,6 +339,25 @@ class SetPrior:
                     s['item'] = self._sample_item(species, rng, used_items | {'Choice Scarf'}, mega_allowed,
                                                   known.mega)
         return s
+
+    def _choice_likelihood(self, cand: dict, known: MonState) -> float:
+        from .damage import estimate_damage
+        lik = 1.0
+        for move, target, view in known.choices[-6:]:
+            chosen = self.dex.moves.get(move)
+            if not chosen.exists:
+                continue
+            d_chosen = estimate_damage(known.view, target, move, view)[0] if chosen.category != 'Status' else 0.0
+            best = 0.0
+            for m in cand['moves']:
+                if m == move or m in known.moves:
+                    continue
+                if self.dex.moves.get(m).category == 'Status':
+                    continue
+                best = max(best, estimate_damage(known.view, target, m, view)[0])
+            if best >= 0.3 and best >= 1.5 * d_chosen + 0.15:
+                lik *= 0.35
+        return lik
 
     def _sample_set(self, species: str, known: MonState, rng: random.Random, used_items: set,
                     mega_allowed: bool) -> dict:
@@ -730,6 +758,10 @@ class Advisor:
                   log=None) -> list[Recommendation]:
         prior_sets = SetPrior(inp.formatid, self.library)
         dex = get_dex()
+        if log:
+            for name, ms in inp.foe.mons.items():
+                if ms.belief is not None and ms.belief.observations:
+                    log(f"[advisor] inferred {name}: {ms.belief.most_likely(name)}")
         sums: dict = {}
         counts: dict = {}
         sq: dict = {}

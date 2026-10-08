@@ -35,7 +35,7 @@ class EvolveConfig:
     out: str = 'runs/teams'
     population: int = 32
     generations: int = 50
-    games_per_team: int = 16          # games played per team per generation (half as each side)
+    games_per_team: int = 24          # games played per team per generation (half as each side)
     hall_of_fame: int = 8
     elite: int = 6
     random_opponents: int = 4         # fresh random teams per generation (keeps fitness grounded)
@@ -50,6 +50,61 @@ class EvolveConfig:
 def team_key(team) -> str:
     return json.dumps([[s['species'], s['item'], s['ability'], sorted(s['moves']), s['nature'],
                         [s['evs'][k] for k in STATS]] for s in team], sort_keys=True)
+
+
+def _move_prior(species, move_name, set_=None) -> float:
+    """Weak prior for proposing a move: strong, accurate, STAB attacks and well-known utility."""
+    from ..sim.dex import get_dex
+    dex = get_dex()
+    m = dex.moves.get(move_name)
+    if m.category == 'Status':
+        return 1.0 if m.id in _UTILITY else 0.25
+    sp = dex.species.get(species)
+    bp = min(m.basePower or 60, 150) * (3 if m.multihit else 1)
+    acc = 1.0 if m.accuracy is True else m.accuracy / 100
+    stab = 1.5 if m.type in sp.types else 1.0
+    w = (bp * acc * stab / 90) ** 2
+    if set_ is not None:
+        evs = set_.get('evs') or {}
+        physical = evs.get('atk', 0) >= evs.get('spa', 0)
+        if (m.category == 'Physical') != physical:
+            w *= 0.5
+    if m.flags.get('recharge') or (m.flags.get('charge') and m.id != 'solarbeam'):
+        w *= 0.3
+    return 0.2 + w
+
+
+_UTILITY = {
+    'protect', 'detect', 'swordsdance', 'nastyplot', 'calmmind', 'dragondance', 'quiverdance', 'bulkup', 'recover',
+    'roost', 'slackoff', 'shoreup', 'moonlight', 'synthesis', 'willowisp', 'thunderwave', 'toxic', 'spore',
+    'sleeppowder', 'yawn', 'stealthrock', 'spikes', 'taunt', 'trickroom', 'tailwind', 'encore', 'substitute',
+    'leechseed', 'reflect', 'lightscreen', 'auroraveil', 'haze', 'partingshot', 'followme', 'ragepowder',
+    'helpinghand', 'wideguard', 'irondefense', 'shellsmash', 'bellydrum', 'agility', 'kingsshield', 'spikyshield',
+    'banefulbunker', 'stickyweb', 'trick', 'painsplit', 'wish', 'strengthsap', 'glare', 'coil', 'fakeout',
+    'uturn', 'voltswitch', 'flipturn', 'knockoff', 'suckerpunch', 'extremespeed', 'aquajet', 'machpunch',
+}
+
+
+def _make_coherent(s, rng):
+    """Align nature and Stat Points with the set's attacks (a common, sensible variation)."""
+    from ..sim.dex import get_dex
+    dex = get_dex()
+    cats = [dex.moves.get(m).category for m in s['moves']]
+    phys, spec = cats.count('Physical'), cats.count('Special')
+    physical = phys >= spec
+    atk = 'atk' if physical else 'spa'
+    fast = rng.random() < 0.6
+    second = 'spe' if fast else 'hp'
+    evs = {k: 0 for k in STATS}
+    evs[atk] = 32
+    evs[second] = 32
+    evs[rng.choice([k for k in STATS if k not in (atk, second)])] = 2
+    s['evs'] = evs
+    if physical:
+        s['nature'] = 'Jolly' if fast and rng.random() < 0.5 else 'Adamant'
+    else:
+        s['nature'] = 'Timid' if fast and rng.random() < 0.5 else 'Modest'
+    return s
 
 
 def _plain(team):
@@ -127,12 +182,19 @@ class TeamEvolver:
         self.species_stats = defaultdict(lambda: [0.0, 0.0])
 
     # -- variation -------------------------------------------------------------
-    def _weighted(self, species, kind, options):
-        """Pick among ``options`` with weights from past success (optimistic for untried genes)."""
+    def _weighted(self, species, kind, options, team_set=None):
+        """Pick among ``options`` with weights from past success (optimistic for untried genes).
+
+        For moves the learned score is multiplied by a weak domain prior (power, accuracy, STAB,
+        matching the set's attacking stat), which only speeds up the search - selection decides.
+        """
         ws = []
         for o in options:
             w, n = self.gene_stats[(species, kind, o)]
-            ws.append(((w + 1.0) / (n + 2.0)) ** 3 + 0.02)
+            score = ((w + 1.0) / (n + 2.0)) ** 3 + 0.02
+            if kind == 'move':
+                score *= _move_prior(species, o, team_set)
+            ws.append(score)
         return self.rng.choices(options, ws)[0]
 
     def mutate_set(self, s, used_items: set):
@@ -146,7 +208,7 @@ class TeamEvolver:
             candidates = [m for m in pool.moves[species] if m not in moves]
             if candidates:
                 k = rng.randrange(len(moves)) if len(moves) >= 4 else len(moves)
-                new = self._weighted(species, 'move', candidates)
+                new = self._weighted(species, 'move', candidates, s)
                 if k < len(moves):
                     moves[k] = new
                 else:
@@ -162,8 +224,10 @@ class TeamEvolver:
                 used_items.add(s['item'])
         elif r < 0.65:
             s['ability'] = self._weighted(species, 'ability', pool.abilities[species])
-        elif r < 0.75:
+        elif r < 0.72:
             s['nature'] = self._weighted(species, 'nature', pool.natures)
+        elif r < 0.82:
+            _make_coherent(s, rng)
         else:
             # move Stat Points between stats
             evs = dict(s['evs'])

@@ -15,6 +15,7 @@ the real game.  That keeps training and live use consistent.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from dataclasses import field as dc_field
 
 from ..sim.dex import get_dex
 from ..sim.js import to_id
@@ -141,6 +142,9 @@ class BattleView:
     field: FieldView = field(default_factory=FieldView)
     ended: bool = False
     winner: str | None = None
+    # opponent decisions seen so far (filled by the inference tracker): dicts with
+    # 'foe' (PokemonView), 'move', 'target' (snapshot of our Pokemon at that time)
+    history: list = dc_field(default_factory=list)
 
     @property
     def foe(self) -> str:

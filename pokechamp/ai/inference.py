@@ -17,6 +17,7 @@ comparisons and the network features, and the advisor samples spreads from it.
 """
 from __future__ import annotations
 
+import copy
 import itertools
 import random
 from functools import lru_cache
@@ -367,6 +368,19 @@ def make_inference_tracker(me: str, formatid: str = ''):
             self._crit = set()
             if src and src != 'lockedmove':
                 return
+            side = _parse_ident(args[0])[0]
+            if side != self.view.me and not src:
+                # remember the opponent's free choice and what it was facing
+                target_ident = args[2] if len(args) > 2 else ''
+                target = self._get(target_ident, create=False) if target_ident.startswith(self.view.me) else None
+                if target is None:
+                    act = self.view.my_side.active()
+                    target = act[0] if act else None
+                if target is not None:
+                    snap = copy.copy(target)
+                    snap.boosts = dict(target.boosts)
+                    snap.volatiles = set(target.volatiles)
+                    self.view.history.append({'foe': mon, 'move': args[1], 'target': snap, 'turn': self.view.turn})
             if not self._turn_moves:
                 # speed-relevant state at the moment the turn order was decided
                 self._turn_snapshot = {

@@ -53,6 +53,8 @@ def view_to_input(view: BattleView, team: list, formatid: str) -> AdvisorInput:
         ms.toxic_turns = mon.toxic_turns
         if not mine:
             ms.belief = mon.belief
+            ms.view = mon
+            ms.choices = [(h['move'], h['target'], view) for h in view.history if h['foe'] is mon]
         return ms
 
     me, foe = view.my_side, view.foe_side
