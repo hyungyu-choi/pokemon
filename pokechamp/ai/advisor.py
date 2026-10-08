@@ -754,7 +754,7 @@ class Advisor:
                     session.apply_default(sid)
         return self._evaluate_leaf(session)
 
-    def recommend(self, inp: AdvisorInput, determinizations: int = 12, depth: int = 3, prior_weight: float = 0.04,
+    def recommend(self, inp: AdvisorInput, determinizations: int = 12, depth: int = 3,
                   log=None) -> list[Recommendation]:
         prior_sets = SetPrior(inp.formatid, self.library)
         dex = get_dex()
@@ -828,8 +828,7 @@ class Advisor:
             var = max(0.0, sq[opt] / n - mean * mean)
             out.append(Recommendation(opt, labels[opt], mean, math.sqrt(var / max(1, n)), priors.get(opt, 0.0), n,
                                       meanings.get(opt)))
-        # close calls (within the sampling noise) go to the policy's preferred action
-        out.sort(key=lambda r: -(r.win_rate + prior_weight * r.prior))
+        out.sort(key=lambda r: (-r.win_rate, -r.prior))
         return out
 
 

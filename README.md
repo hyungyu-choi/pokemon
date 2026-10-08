@@ -137,6 +137,9 @@ python -m pokechamp evolve --out runs/teams --generations 100 --agent runs/singl
 # 3) 공진화: 진화한 팀들로 배틀 AI를 다시 학습 (랜덤 팀과 섞어서)
 python -m pokechamp train --out runs/singles2 --init runs/singles/best.pt \
        --team-pool runs/teams/population.json --iters 300
+
+# 1~3을 자동으로 반복 (팀 진화 <-> 배틀 AI 학습)
+python -m pokechamp coevolve --out runs/coevolve --rounds 5 --generations 30 --iters 100
 ```
 
 * 행동 복제 → PPO: 상대는 현재 정책(자기대전), 과거 스냅샷, 휴리스틱 AI를 섞은 리그입니다.

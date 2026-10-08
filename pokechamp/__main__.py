@@ -4,6 +4,7 @@ Commands
   battle     play battles between agents and report the results (optionally save logs)
   train      train the battle AI (behaviour cloning + PPO self-play)
   evolve     evolve teams starting from random teams
+  coevolve   alternate team evolution and policy training (teams and battle AI improve together)
   advise     recommend the best action for a live battle situation (JSON state file)
   validate   check a team (Showdown text format with SPs) against the Champions rules
   randomteam print a random legal team
@@ -94,6 +95,26 @@ def cmd_evolve(args):
     print(f"population, best team and usage statistics written to {args.out}/")
 
 
+def cmd_coevolve(args):
+    """Alternate team evolution (with the current policy) and policy training (on the evolved teams)."""
+    from .ai.train import TrainConfig, train
+    from .teambuilder.evolve import EvolveConfig, evolve
+    os.makedirs(args.out, exist_ok=True)
+    model = args.init
+    teams = None
+    for r in range(1, args.rounds + 1):
+        tdir = os.path.join(args.out, f'round{r}_teams')
+        evolve(EvolveConfig(formatid=args.format, out=tdir, population=args.population,
+                            generations=args.generations, workers=args.workers, agent=model or 'heuristic',
+                            seed=args.seed + r), resume=teams)
+        teams = os.path.join(tdir, 'population.json')
+        mdir = os.path.join(args.out, f'round{r}_policy')
+        model = train(TrainConfig(formatid=args.format, out=mdir, workers=args.workers, iters=args.iters,
+                                  bc_games=0 if model else args.bc_games, team_pool=teams, team_pool_prob=0.6,
+                                  seed=args.seed + r), init=model)
+        print(f"[coevolve] round {r}: teams -> {teams}, policy -> {model}")
+
+
 def cmd_advise(args):
     from .ai.advisor import Advisor, format_recommendations, parse_input
     with open(args.state, encoding='utf-8') as f:
@@ -173,6 +194,19 @@ def main(argv=None):
     p.add_argument('--workers', type=int, default=max(1, (os.cpu_count() or 2) - 1))
     p.add_argument('--seed', type=int, default=0)
     p.set_defaults(func=cmd_evolve)
+
+    p = sub.add_parser('coevolve', help='alternate team evolution and policy training')
+    p.add_argument('--format', default='gen9championsbssregmc', help=fmt_help)
+    p.add_argument('--out', default='runs/coevolve')
+    p.add_argument('--init', help='starting policy checkpoint (default: behaviour cloning first)')
+    p.add_argument('--rounds', type=int, default=3)
+    p.add_argument('--generations', type=int, default=30)
+    p.add_argument('--population', type=int, default=32)
+    p.add_argument('--iters', type=int, default=100)
+    p.add_argument('--bc-games', type=int, default=3000)
+    p.add_argument('--workers', type=int, default=max(1, (os.cpu_count() or 2) - 1))
+    p.add_argument('--seed', type=int, default=0)
+    p.set_defaults(func=cmd_coevolve)
 
     p = sub.add_parser('advise', help='rank actions for a live battle situation')
     p.add_argument('state', help='JSON file describing the situation (see examples/advisor_state.json)')

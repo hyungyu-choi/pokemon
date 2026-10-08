@@ -102,10 +102,11 @@ class SearchAgent:
     name = 'search'
 
     def __init__(self, seed=None, model_path: str | None = None, library: str | None = None,
-                 determinizations: int = 6, depth: int = 2, fallback=None):
+                 determinizations: int = 6, depth: int = 2, fallback=None, prior_weight: float = 0.04):
         self.advisor = Advisor(model_path=model_path, library=library, seed=seed or 0)
         self.determinizations = determinizations
         self.depth = depth
+        self.prior_weight = prior_weight
         if fallback is None:
             from .heuristic import HeuristicAgent
             fallback = HeuristicAgent(seed)
@@ -123,6 +124,8 @@ class SearchAgent:
         except Exception:
             recs = []
         legal_set = set(legal)
+        # close calls (within the sampling noise) go to the policy's preferred action
+        recs = sorted(recs, key=lambda r: -(r.win_rate + self.prior_weight * r.prior))
         for r in recs:
             option = translate_option(r.option, r.meaning, request)
             if option in legal_set:
