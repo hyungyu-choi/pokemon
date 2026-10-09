@@ -65,6 +65,68 @@ class NNAgent:
         return AgentChoice(legal[idx], obs=obs, info=info)
 
 
+_OBS_DTYPES = {'ids': np.int64, 'mon': np.float32, 'move_ids': np.int64, 'move': np.float32,
+               'glob': np.float32, 'active_idx': np.int64}
+
+
+def collate_any(obs_list: list, device='cpu') -> dict:
+    """Like :func:`model.collate_obs`, but also accepts compact observations (float16 / small ints, see
+    :mod:`pokechamp.ai.vec_rollout`): every array is converted to the dtype the network expects."""
+    out = {}
+    for k, dtype in _OBS_DTYPES.items():
+        arr = np.stack([o[k] for o in obs_list])
+        if arr.dtype != dtype:
+            arr = arr.astype(dtype)
+        out[k] = torch.from_numpy(arr).to(device)
+    return out
+
+
+@torch.no_grad()
+def batch_evaluate(model: PolicyValueNet, obs_list: list, legal_list: list, preview_n_lead: list,
+                   temperatures=None, critic: bool = False):
+    """One forward pass for many decisions, move decisions and team previews mixed.
+
+    ``obs_list[i]``: ``features.encode`` output (or its compact form); ``legal_list[i]``: the options;
+    ``preview_n_lead[i]``: ``None`` for a move decision, else the number of leads (``view.n_active``) of a
+    team-preview decision; ``temperatures[i]`` (default 1) divides that row's logits, as in
+    :meth:`NNAgent.evaluate`.  Returns ``(probs, logps, values, critics)``: per-decision numpy arrays over the
+    legal options (softmax probabilities and log-softmax), the value head ``[B]`` (``2 * P(win) - 1``) and the
+    critic ``[B]`` (or ``None`` when the model has none or ``critic`` is False).  All tensors live on the
+    model's device.
+    """
+    n = len(obs_list)
+    if n == 0:
+        return [], [], np.zeros(0, np.float32), None
+    dev = next(model.parameters()).device
+    slot_logits, value, x = model(collate_any(obs_list, dev))
+    crit = model.critic(x).float().cpu().numpy() if critic and model.has_critic else None
+    temps = np.ones(n, dtype=np.float32) if temperatures is None else \
+        np.maximum(1e-3, np.asarray(temperatures, dtype=np.float32))
+    probs, logps = [None] * n, [None] * n
+    mv = [i for i in range(n) if preview_n_lead[i] is None]
+    pv = [i for i in range(n) if preview_n_lead[i] is not None]
+    for rows, width in ((mv, 2), (pv, 4)):
+        if not rows:
+            continue
+        sel = torch.tensor(rows, dtype=torch.long, device=dev)
+        options, mask = pad_options([legal_list[i] for i in rows], width)
+        options, mask = options.to(dev), mask.to(dev)
+        if width == 2:
+            logits = joint_logits(slot_logits[sel], options, mask)
+        else:
+            pick, lead = model.preview_scores(x[sel])
+            n_lead = torch.tensor([int(preview_n_lead[i]) for i in rows], dtype=torch.long, device=dev)
+            logits = preview_logits(pick, lead, options, n_lead, mask)
+        t = torch.from_numpy(temps[rows]).to(dev).unsqueeze(1)
+        logits = logits / t
+        p = torch.softmax(logits, dim=-1).cpu().numpy()
+        lp = torch.log_softmax(logits, dim=-1).cpu().numpy()
+        for j, i in enumerate(rows):
+            k = len(legal_list[i])
+            probs[i], logps[i] = p[j, :k], lp[j, :k]
+    return probs, logps, value.float().cpu().numpy(), crit
+
+
 @torch.no_grad()
 def batch_policy(model: PolicyValueNet, items: list):
     """Policy probabilities and values for many move decisions at once.

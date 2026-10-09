@@ -237,6 +237,29 @@ BATON_PASS_VOLATILES = {'substitute', 'aquaring', 'confusion', 'curse', 'embargo
                         'telekinesis', 'laserfocus', 'dragoncheer'}
 
 
+_DEX_NAMES: dict = {}
+_SPECIES_TYPES: dict = {}
+
+
+def _dex_name(table, name: str):
+    """``table.get(name).name``, memoised per dex table (dex data never change; requests repeat the same
+    names every turn)."""
+    key = (table, name)
+    out = _DEX_NAMES.get(key)
+    if out is None:
+        out = _DEX_NAMES[key] = table.get(name).name
+    return out
+
+
+def _species_types(table, species: str):
+    """Types of ``species`` as a tuple (``None`` for an unknown species), memoised per dex table."""
+    key = (table, species)
+    if key not in _SPECIES_TYPES:
+        sp = table.get(species)
+        _SPECIES_TYPES[key] = tuple(sp.types) if sp.exists else None
+    return _SPECIES_TYPES[key]
+
+
 class LogTracker:
     """Builds a :class:`BattleView` for one player from the battle protocol (+ requests).
 
@@ -799,22 +822,22 @@ class LogTracker:
                 mon.species = species
                 if '-Mega' in species:
                     mon.mega = True
-            sp = dex.species.get(mon.species)
-            if sp.exists and not ({'typechange', 'transform'} & mon.volatiles):
-                mon.types = list(sp.types)
+            types = _species_types(dex.species, mon.species)
+            if types is not None and not ({'typechange', 'transform'} & mon.volatiles):
+                mon.types = list(types)
             mon.level, mon.gender = level, gender
             frac, cur, mx, status, fainted = _parse_condition(entry['condition'])
             mon.hp, mon.hp_exact, mon.maxhp = frac, cur, mx
             mon.status = status
             mon.fainted = fainted
             mon.stats = dict(entry.get('stats') or {})
-            mon.item = dex.items.get(entry.get('item') or '').name if entry.get('item') else ''
-            mon.ability = dex.abilities.get(entry.get('ability') or entry.get('baseAbility') or '').name
-            mon.base_ability = dex.abilities.get(entry.get('baseAbility') or entry.get('ability') or '').name
+            mon.item = _dex_name(dex.items, entry.get('item') or '') if entry.get('item') else ''
+            mon.ability = _dex_name(dex.abilities, entry.get('ability') or entry.get('baseAbility') or '')
+            mon.base_ability = _dex_name(dex.abilities, entry.get('baseAbility') or entry.get('ability') or '')
             mon.revealed = True
             moves = {}
             for mid in entry.get('moves') or []:
-                mname = dex.moves.get(mid).name or mid
+                mname = _dex_name(dex.moves, mid) or mid
                 moves[mname] = mon.moves.get(mname, 0)
             mon.moves = moves
             if entry.get('active'):

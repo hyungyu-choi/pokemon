@@ -8,7 +8,14 @@ Usage (see ``python -m pokechamp train --help``)::
     python -m pokechamp train --preset cloud --out runs/cloud --time-budget-h 11.5 --sync-dir /content/drive/MyDrive/pokechamp
 
 Rollouts run in worker processes (one CPU thread each, CPU inference); the learner updates the network
-between rollout rounds on ``cfg.device`` (``auto`` = CUDA when available).  Opponents come from a league: the
+between rollout rounds on ``cfg.device`` (``auto`` = CUDA when available).  With ``vectorized`` (the default)
+every worker keeps ``envs_per_worker`` games in play and decides all their pending network moves with one
+batched forward pass per model (:mod:`pokechamp.ai.vec_rollout`); an iteration is split into up to
+``jobs_per_worker`` jobs per worker that the pool hands out as workers become free, the weights are written once
+per iteration (``out/_weights_N.pt``, removed afterwards) and workers cache them, and observations come back as
+float16 (the actors act on the same rounded values).  ``vectorized=False`` keeps the one-game-at-a-time actors
+(:func:`_rollout_job`) for comparison.  ``python -m pokechamp.tools.bench_rollout`` measures both.  Opponents come
+from a league: the
 current policy (self-play, both sides learn), earlier snapshots chosen by prioritised fictitious self-play
 (snapshots we lose to are picked more often; the warm-start / behaviour-cloning models stay in the pool as
 anchors) and the heuristic agent.  Teams are a mixture of random legal teams, the evolved team pool and
@@ -63,7 +70,11 @@ per game (self-play games give two; their order does not matter)::
              'teams':   {source: count}}
 
 :func:`check_trajectory` validates one record against this contract (the learner checks a sample of every
-iteration); :class:`StepBatch` collates a list of records into device tensors once per iteration.
+iteration); :class:`StepBatch` collates a list of records into device tensors once per iteration.  Vectorised
+actors may send a record compressed (:func:`vec_rollout.compress_trajectory`: the steps without ``obs`` plus
+``'packed'`` arrays ``[T, ...]`` in float16 / small ints); the learner restores the format above with
+:func:`vec_rollout.decompress_trajectory` before checking or collating.  Their job stats add ``decisions``,
+``nn_decisions``, ``forwards``, ``nn_seconds``, ``job_seconds`` and ``jobs`` (throughput in the iteration log).
 
 Files in ``cfg.out``
 --------------------
@@ -89,7 +100,7 @@ import signal
 import sys
 import time
 from collections import Counter
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from concurrent.futures.process import BrokenProcessPool
 from dataclasses import asdict, dataclass, field, fields, replace
 
@@ -106,6 +117,7 @@ from .heuristic import HeuristicAgent
 from .model import (PolicyValueNet, atomic_save, checkpoint_dict, collate_obs, cpu_state_dict, joint_logits,
                     load_model, model_from_checkpoint, preview_logits, save_model)
 from .nn_agent import NNAgent, potential
+from . import vec_rollout
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 MODELS_DIR = os.path.join(REPO_ROOT, 'models')
@@ -165,6 +177,13 @@ class TrainConfig:
     eval_every: int = 10
     eval_games: int = 400                 # per opponent: greedy policy vs HeuristicAgent(0) and vs incumbent
     incumbent: str | None = 'auto'        # model to beat ('auto': models/battle_singles.pt for singles)
+    # actors (rollout workers)
+    vectorized: bool = True               # each worker plays envs_per_worker games at once with one batched
+                                          #   forward per step (False: one game at a time, the old path)
+    envs_per_worker: int = 48             # games a worker keeps in play at once (vectorized)
+    jobs_per_worker: int = 2              # rollout jobs per worker and iteration (balances uneven jobs)
+    compress_obs: bool = True             # float16 observations from the workers (actors act on the same)
+    snapshots_per_job: int = 1            # snapshot models one rollout job plays against (bigger batches)
     # run control
     time_budget_h: float | None = None    # stop in time for the final evaluation and save (None: no limit)
     checkpoint_minutes: float = 10.0
@@ -245,6 +264,8 @@ def validate_config(cfg: TrainConfig):
         raise ValueError('games_per_iter and ppo_epochs must be >= 1, iters >= 0')
     if cfg.time_budget_h is not None and cfg.time_budget_h <= 0:
         raise ValueError('time_budget_h must be positive (or null for no limit)')
+    if cfg.envs_per_worker < 1 or cfg.jobs_per_worker < 1 or cfg.snapshots_per_job < 1:
+        raise ValueError('envs_per_worker, jobs_per_worker and snapshots_per_job must be >= 1')
 
 
 def repo_path(path: str | None) -> str | None:
@@ -569,9 +590,33 @@ def check_trajectory(traj: dict, need_logp: bool = True):
             raise ValueError(f"{where}: logp must be a log-probability (<= 0), not {s['logp']!r}")
 
 
+_SUMMED_STATS = ('games', 'turns', 'errors', 'decisions', 'nn_decisions', 'forwards', 'nn_seconds', 'job_seconds',
+                 'jobs')
+
+
+def rollout_throughput(stats: dict, seconds: float, workers: int) -> dict:
+    """Actor throughput of one rollout round from the merged job stats: games/s, decisions/s (both players),
+    mean rows per batched forward, share of worker time spent in the network and worker utilisation."""
+    seconds = max(1e-6, seconds)
+    out = {'rollout_games_per_s': stats.get('games', 0) / seconds}
+    if stats.get('decisions'):
+        out['decisions'] = stats['decisions']
+        out['decisions_per_s'] = stats['decisions'] / seconds
+    if stats.get('forwards'):
+        out['forwards'] = stats['forwards']
+        out['mean_batch'] = stats.get('nn_decisions', 0) / stats['forwards']
+    if stats.get('job_seconds'):
+        out['nn_share'] = stats.get('nn_seconds', 0.0) / stats['job_seconds']
+        out['worker_util'] = stats['job_seconds'] / (seconds * max(1, workers))
+    if stats.get('jobs'):
+        out['jobs'] = stats['jobs']
+    return out
+
+
 def _merge_stats(total: dict, s: dict):
-    for k in ('games', 'turns', 'errors'):
-        total[k] = total.get(k, 0) + s.get(k, 0)
+    for k in _SUMMED_STATS:
+        if k in s or k in ('games', 'turns', 'errors'):
+            total[k] = total.get(k, 0) + s.get(k, 0)
     for group in ('by_opp', 'by_snap'):
         dst = total.setdefault(group, {})
         for k, (w, n) in s.get(group, {}).items():
@@ -644,6 +689,7 @@ def _rollout_job(args):
         stats['games'] += 1
         stats['turns'] += r.turns
         stats['errors'] += int(bool(r.error))
+        stats['decisions'] = stats.get('decisions', 0) + len(r.decisions)
         if kind != 'self':
             me = sides[0]
             score = 1.0 if r.winner == me else (0.5 if r.winner is None else 0.0)
@@ -1039,6 +1085,7 @@ class Trainer:
         self.last_ckpt = time.time()
         self.need_bc = False
         self._prev_handlers = {}
+        self._weights_n = 0
 
     # -- logging ----------------------------------------------------------------------------------------------
     def log(self, msg: str):
@@ -1135,7 +1182,27 @@ class Trainer:
                 self.ex.shutdown(wait=False, cancel_futures=True)
                 self._start_pool()
 
+    def _gather(self, fn, jobs: list, transform=None) -> list:
+        """Run ``jobs`` on the pool, each worker taking the next job as soon as it is free; returns the results
+        in job order (so the learner's data never depend on which worker finished first).  ``transform(result)``
+        is applied as each result arrives.  A dead worker restarts the pool and the round is retried once."""
+        for attempt in range(2):
+            try:
+                futures = {self.ex.submit(fn, job): i for i, job in enumerate(jobs)}
+                out = [None] * len(jobs)
+                for f in as_completed(futures):
+                    r = f.result()
+                    out[futures[f]] = transform(r) if transform else r
+                return out
+            except BrokenProcessPool as exc:
+                if attempt:
+                    raise
+                self.log(f'[warn] a worker process died ({exc}); restarting the pool and retrying')
+                self.ex.shutdown(wait=False, cancel_futures=True)
+                self._start_pool()
+
     def _run_jobs(self, state: bytes, n_games: int, seed: int, snapshots: list, mode: str):
+        """The one-game-at-a-time path (``vectorized=False``): one job per worker, weights in every job."""
         W = self.workers
         per = [n_games // W + (1 if w < n_games % W else 0) for w in range(W)]
         jobs = [(self.wcfg, state, seed * 1000 + w, k, snapshots, mode) for w, k in enumerate(per) if k > 0]
@@ -1143,7 +1210,61 @@ class Trainer:
         for t, s in self._map(_rollout_job, jobs):
             trajs.extend(t)
             _merge_stats(stats, s)
+        stats['jobs'] = len(jobs)
         return trajs, stats
+
+    # -- vectorised actors --------------------------------------------------------------------------------------
+    def _vec_opts(self) -> dict:
+        cfg = self.cfg
+        return {'envs': cfg.envs_per_worker, 'compress': cfg.compress_obs, 'snapshots_per_job': cfg.snapshots_per_job}
+
+    def job_sizes(self, n_games: int) -> list:
+        """Split ``n_games`` into ``workers * j`` jobs with ``j`` <= jobs_per_worker chosen so a job has at least
+        envs_per_worker games when possible (full batches) and every worker gets the same number of jobs."""
+        W, K = self.workers, self.cfg.envs_per_worker
+        j = max(1, min(self.cfg.jobs_per_worker, int(n_games // max(1, W * K))))
+        n_jobs = max(1, min(n_games, W * j))
+        return [n_games // n_jobs + (1 if i < n_games % n_jobs else 0) for i in range(n_jobs)]
+
+    def _publish_weights(self) -> 'vec_rollout.WeightsRef':
+        self._weights_n += 1
+        return vec_rollout.publish_weights(self.model, self._path(f'_weights_{self._weights_n}.pt'))
+
+    def _remove_weights(self, ref=None):
+        """Delete the published weights file ``ref`` (default: every ``_weights_*.pt`` in out)."""
+        paths = [ref.path] if ref is not None else [self._path(n) for n in os.listdir(self.out)
+                                                   if n.startswith('_weights_') and n.endswith('.pt')]
+        for path in paths:
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+
+    def _run_vec_jobs(self, weights, n_games: int, seed: int, snapshots: list, mode: str):
+        jobs = [(self.wcfg, weights, seed * 1000 + i, k, snapshots, mode, self._vec_opts())
+                for i, k in enumerate(self.job_sizes(n_games))]
+
+        def unpack(res):
+            t, s = res
+            for tr in t:
+                vec_rollout.decompress_trajectory(tr)
+            return t, s
+        trajs, stats = [], {}
+        for t, s in self._gather(vec_rollout.rollout_job, jobs, unpack):
+            trajs.extend(t)
+            _merge_stats(stats, s)
+        return trajs, stats
+
+    def rollout(self, n_games: int, seed: int, snapshots: list, mode: str = 'ppo'):
+        """Play ``n_games`` on the worker pool with the current weights -> ``(trajectories, stats)``."""
+        if not self.cfg.vectorized:
+            return self._run_jobs(_state_bytes(self.model) if mode == 'ppo' else b'', n_games, seed, snapshots, mode)
+        ref = self._publish_weights() if mode == 'ppo' else None
+        try:
+            return self._run_vec_jobs(ref, n_games, seed, snapshots, mode)
+        finally:
+            if ref is not None:
+                self._remove_weights(ref)
 
     # -- setup / resume ---------------------------------------------------------------------------------------
     def setup(self):
@@ -1157,6 +1278,7 @@ class Trainer:
                      'heuristic_randomness': cfg.heuristic_randomness, 'team_pool': pool,
                      'team_pool_prob': cfg.team_pool_prob, 'usage_stats': usage, 'team_mix': mix,
                      'd': cfg.d, 'layers': cfg.layers, 'heads': cfg.heads}
+        self._remove_weights()  # left over by an interrupted session
         resumed = self._resume()
         if not resumed:
             self._fresh_start()
@@ -1360,7 +1482,7 @@ class Trainer:
     def behaviour_cloning(self):
         cfg = self.cfg
         t = time.time()
-        trajs, stats = self._run_jobs(b'', cfg.bc_games, cfg.seed + 7, [], 'bc')
+        trajs, stats = self.rollout(cfg.bc_games, cfg.seed + 7, [], 'bc')
         n = sum(len(tr['steps']) for tr in trajs)
         self.log(f"[bc] {n} samples from {stats.get('games', 0)} heuristic games in {time.time() - t:.0f}s")
         bc_train(self.model, StepBatch(trajs, self.device), cfg.bc_epochs, cfg.bc_lr, self.minibatch, self.log,
@@ -1381,8 +1503,7 @@ class Trainer:
             torch.cuda.reset_peak_memory_stats(self.device)
         t0 = time.time()
         seed = cfg.seed + 100 + it
-        trajs, stats = self._run_jobs(_state_bytes(self.model), cfg.games_per_iter, seed,
-                                      self._snapshot_weights(), 'ppo')
+        trajs, stats = self.rollout(cfg.games_per_iter, seed, self._snapshot_weights(), 'ppo')
         t1 = time.time()
         games = stats.get('games', 0)
         self.games_per_s = games / max(1e-6, t1 - t0)
@@ -1419,9 +1540,14 @@ class Trainer:
         eta = left if left is not None else ((cfg.iters - it) * self.iter_seconds if cfg.iters < 100000 else None)
         gpu = torch.cuda.max_memory_allocated(self.device) / 2 ** 20 if self.device.type == 'cuda' else None
         opp = ', '.join(f'{k} {w / max(1, n) * 100:.0f}% of {n}' for k, (w, n) in sorted(stats.get('by_opp', {}).items()))
+        tp = rollout_throughput(stats, t1 - t0, self.workers)
         line = (f"[it {it}] {games} games {samples} samples | {games / max(1e-6, dt):.2f} games/s "
-                f"{samples / max(1e-6, dt):.0f} samples/s | total {self.counters['games']} games | "
-                f"vs {opp or '-'}")
+                f"{samples / max(1e-6, dt):.0f} samples/s | rollout {tp['rollout_games_per_s']:.1f} games/s")
+        if 'decisions_per_s' in tp:
+            line += f" {tp['decisions_per_s']:.0f} dec/s"
+        if 'mean_batch' in tp:
+            line += f" batch {tp['mean_batch']:.1f}"
+        line += f" | total {self.counters['games']} games | vs {opp or '-'}"
         if upd:
             line += (f" | pl {upd['pl']:.3f} cl {upd['cl']:.3f} vl {upd['vl']:.3f} ent {upd['ent']:.3f} "
                      f"kl {upd['kl']:.4f} clip {upd['clipfrac']:.2f} ev {diag.get('ev', 0):.2f} "
@@ -1440,7 +1566,7 @@ class Trainer:
                  'total_games': self.counters['games'], 'total_samples': self.counters['samples'],
                  'elapsed_s': elapsed, 'wall_s': self.wall_base + elapsed, 'eta_s': eta,
                  'by_opp': stats.get('by_opp', {}), 'teams': stats.get('teams', {}), 'lr': lr,
-                 'shaping': shaping, 'gpu_mem_mb': gpu, 'time': time.time(), **upd, **diag}
+                 'shaping': shaping, 'gpu_mem_mb': gpu, 'time': time.time(), **tp, **upd, **diag}
         self._jsonl(entry)
         if cfg.snapshot_every and it % cfg.snapshot_every == 0:
             self._add_snapshot(it)
@@ -1452,16 +1578,20 @@ class Trainer:
         if cfg.eval_games <= 0 or not pairs:
             return None
         t = time.time()
-        state = _state_bytes(self.model)
         inc_path = os.path.abspath(self._path(self.incumbent)) if self.incumbent else None
         opponents = ['heuristic'] + ([inc_path] if inc_path else [])
-        W = self.workers
-        per = math.ceil(len(pairs) / W)
-        chunks = [pairs[i:i + per] for i in range(0, len(pairs), per)]
-        jobs = [(self.wcfg, state, opp, chunk, cfg.seed + 999) for opp in opponents for chunk in chunks]
         res = {opp: MatchResult() for opp in opponents}
-        for opp, r in self._map(_eval_job, jobs):
-            res[opp] = res[opp] + r
+        if cfg.vectorized:
+            for opp, r in self._vec_eval(pairs, opponents).items():
+                res[opp] = res[opp] + r
+        else:
+            state = _state_bytes(self.model)
+            W = self.workers
+            per = math.ceil(len(pairs) / W)
+            chunks = [pairs[i:i + per] for i in range(0, len(pairs), per)]
+            jobs = [(self.wcfg, state, opp, chunk, cfg.seed + 999) for opp in opponents for chunk in chunks]
+            for opp, r in self._map(_eval_job, jobs):
+                res[opp] = res[opp] + r
         heur, inc = res['heuristic'], res.get(inc_path)
         score, ci = combined_score([heur, inc])
         dt = time.time() - t
@@ -1485,6 +1615,23 @@ class Trainer:
         self.log(msg)
         self._jsonl({'eval': rec, 'time': time.time()})
         return rec
+
+    def _vec_eval(self, pairs: list, opponents: list) -> dict:
+        """Fixed-set evaluation with vectorised greedy play: every job plays a contiguous chunk of the pairs
+        against every opponent (so the policy's batches stay full).  Results do not depend on the split."""
+        ref = self._publish_weights()
+        try:
+            n_jobs = max(1, min(len(pairs), self.workers * self.cfg.jobs_per_worker))
+            bounds = [len(pairs) * j // n_jobs for j in range(n_jobs + 1)]
+            jobs = [(self.wcfg, ref, [(opp, i, pairs[i]) for i in range(a, b) for opp in opponents],
+                     self.cfg.seed + 999, self._vec_opts()) for a, b in zip(bounds, bounds[1:]) if b > a]
+            total = {}
+            for res, _stats in self._gather(vec_rollout.eval_job, jobs):
+                for opp, r in res.items():
+                    total[opp] = total.get(opp, MatchResult()) + r
+            return total
+        finally:
+            self._remove_weights(ref)
 
     # -- checkpoints ------------------------------------------------------------------------------------------
     def state_dict(self) -> dict:

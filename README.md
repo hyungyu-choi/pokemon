@@ -317,7 +317,10 @@ python -m pokechamp train --preset cloud --out runs/cloud --sync-dir /content/dr
 ```
 
 * GPU가 있으면 자동으로 사용합니다(`--device auto|cpu|cuda`). 배틀은 CPU 작업자 프로세스가 진행합니다
-  (`--workers auto` = CPU 스레드 수).
+  (`--workers auto` = CPU 스레드 수). 작업자마다 배틀 48개(`envs_per_worker`)를 동시에 진행하면서 신경망
+  계산을 한 번에 묶어 처리하므로, 한 판씩 두던 방식보다 초당 배틀 수가 1.5배 이상 많습니다
+  (`--config '{"vectorized": false}'`이면 예전 방식). 반복마다 `rollout … games/s … dec/s batch …`로
+  처리량이 표시되고, `python -m pokechamp.tools.bench_rollout`으로 내 컴퓨터에서 두 방식을 비교할 수 있습니다.
 * Ctrl-C(또는 SIGTERM): 진행 중인 반복을 마치고 저장한 뒤 종료합니다. 한 번 더 누르면 즉시 종료합니다.
 * 설정 우선순위: 기본값 < `--preset` < `--config` (JSON 파일 또는 `'{"lr": 2e-4}'` 같은 JSON) < 명령줄 옵션.
 * 결과 폴더: `best.pt`(평가 점수 = 휴리스틱 상대 승률과 기존 모델 상대 승률의 평균이 가장 높은 모델),
@@ -341,7 +344,7 @@ pokechamp/
   env/            플레이어 시점 상태 추적(BattleView/LogTracker), 행동 공간, 배틀 실행기
   teambuilder/    랜덤 팀 생성, 팀 검증기, 팀 진화
   ai/             데미지 추정, 휴리스틱 AI, 특징 인코딩, 신경망, 학습(PPO), 평가, 어드바이저, 탐색 AI
-  tools/          Showdown과의 차등 테스트(difftest), 리플레이
+  tools/          Showdown과의 차등 테스트(difftest), 리플레이, 학습 처리량 벤치마크(bench_rollout)
 tools/            Node.js 스크립트: Showdown 데이터 내보내기, 레퍼런스 배틀 실행
 tests/            pytest (Showdown 레퍼런스 배틀 재생 포함)
 examples/         어드바이저 입력 예시, 예시 팀

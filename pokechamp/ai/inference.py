@@ -137,6 +137,21 @@ def _stats_doubled(species: str) -> np.ndarray:
     return np.concatenate([st, st], axis=0)
 
 
+@lru_cache(maxsize=512)
+def _speed_order(species: str, mult: float) -> tuple:
+    """Sort order of the effective speeds of every (doubled, Scarf) hypothesis and the sorted speeds; they do
+    not depend on the weights, so beliefs share them (read-only arrays)."""
+    stats = _stats_doubled(species)
+    n = stats.shape[0] // 2
+    spe = stats[:, 5] * mult * np.where(np.concatenate([np.zeros(n, dtype=bool), np.ones(n, dtype=bool)]), 1.5, 1.0)
+    order = np.argsort(spe)
+    spe_sorted = spe[order]
+    order = order.astype(np.int32)
+    order.setflags(write=False)
+    spe_sorted.setflags(write=False)
+    return order, spe_sorted
+
+
 @lru_cache(maxsize=1)
 def _scarf_mult() -> np.ndarray:
     n = len(_hypotheses()[3])
@@ -249,12 +264,10 @@ class StatBelief:
         """(10%, 90%) quantiles of the effective speed (incl. a possible Scarf)."""
         key = ('q', species, mult)
         if key not in self._cache:
-            stats = self._stats(species)
-            spe = stats[:, 5] * mult * np.where(self.scarf, 1.5, 1.0)
-            order = np.argsort(spe)
+            order, spe_sorted = _speed_order(species, mult)
             cw = np.cumsum(self.w[order])
-            q10 = spe[order][np.searchsorted(cw, 0.1)]
-            q90 = spe[order][min(len(cw) - 1, np.searchsorted(cw, 0.9))]
+            q10 = spe_sorted[np.searchsorted(cw, 0.1)]
+            q90 = spe_sorted[min(len(cw) - 1, np.searchsorted(cw, 0.9))]
             self._cache[key] = (float(q10), float(q90))
         return self._cache[key]
 

@@ -80,6 +80,11 @@ def _vid(table: str, name: str | None) -> int:
         return UNK
     if name == '':
         return 0
+    return _vid_cached(table, name)
+
+
+@lru_cache(maxsize=None)
+def _vid_cached(table: str, name: str) -> int:
     return vocab()[table].get(to_id(name), UNK)
 
 
@@ -162,25 +167,12 @@ def encode_moves(mon: PokemonView | None, mine: bool, view: BattleView, targets:
             out_ids[i, k] = 0 if mine else (UNK if not mon.fainted else 0)
             continue
         name = names[k]
-        move = move_info(name)
+        static = _move_static(name)
         out_ids[i, k] = _vid('moves', name)
-        if move is None:
+        if static is None:
             continue
-        f = []
-        f.append(min(move.basePower or 0, 250) / 150.0)
-        acc = move.accuracy
-        f.append(1.0 if acc is True else acc / 100.0)
-        f.append((move.priority or 0) / 5.0)
-        f.extend(1.0 if move.category == c else 0.0 for c in CATEGORIES)
-        tv = [0.0] * len(TYPES)
-        if move.type in TYPE_INDEX:
-            tv[TYPE_INDEX[move.type]] = 1.0
-        f.extend(tv)
+        head, spread, tail = static
         pp = mon.move_pp.get(name)
-        f.append(pp[0] / max(1, pp[1]) if pp else 1.0)
-        f.append(1.0 if name in mon.disabled_moves else 0.0)
-        f.append(1.0)  # known
-        f.append(1.0 if move.target in ('allAdjacentFoes', 'allAdjacent', 'all') else 0.0)
         dmg = [0.0, 0.0]
         ko = [0.0, 0.0]
         for t_i, tgt in enumerate(targets[:2]):
@@ -189,17 +181,40 @@ def encode_moves(mon: PokemonView | None, mine: bool, view: BattleView, targets:
             d, k_ = estimate_damage(mon, tgt, name, view)
             dmg[t_i] = min(d, 1.5)
             ko[t_i] = k_
-        f.extend(dmg)
-        f.extend(ko)
-        f.append(1.0 if move.flags.get('contact') else 0.0)
-        f.append(1.0 if (move.self or {}).get('boosts') or move.boosts else 0.0)
-        f.append(1.0 if move.heal or move.flags.get('heal') else 0.0)
-        f.append(1.0 if move.status or move.volatileStatus else 0.0)
-        f.append(1.0 if move.sideCondition else 0.0)
-        f.append(1.0 if move.selfSwitch else 0.0)
-        f.append(1.0 if move.drain else 0.0)
-        f.append(1.0 if move.recoil else 0.0)
+        f = [*head, pp[0] / max(1, pp[1]) if pp else 1.0, 1.0 if name in mon.disabled_moves else 0.0,
+             1.0,  # known
+             spread, *dmg, *ko, *tail]
         out_num[i, k, :len(f)] = f
+
+
+@lru_cache(maxsize=None)
+def _move_static(name: str):
+    """The parts of a move's features that depend only on the move (cached per name): ``(head, spread,
+    tail)`` = (base power, accuracy, priority, category and type one-hots), the spread-target flag and the
+    effect flags; ``None`` for an unknown move.  :func:`encode_moves` puts the per-Pokemon values (PP,
+    disabled, known, damage and KO chance against each target) between them."""
+    move = move_info(name)
+    if move is None:
+        return None
+    head = [min(move.basePower or 0, 250) / 150.0]
+    acc = move.accuracy
+    head.append(1.0 if acc is True else acc / 100.0)
+    head.append((move.priority or 0) / 5.0)
+    head.extend(1.0 if move.category == c else 0.0 for c in CATEGORIES)
+    tv = [0.0] * len(TYPES)
+    if move.type in TYPE_INDEX:
+        tv[TYPE_INDEX[move.type]] = 1.0
+    head.extend(tv)
+    spread = 1.0 if move.target in ('allAdjacentFoes', 'allAdjacent', 'all') else 0.0
+    tail = (1.0 if move.flags.get('contact') else 0.0,
+            1.0 if (move.self or {}).get('boosts') or move.boosts else 0.0,
+            1.0 if move.heal or move.flags.get('heal') else 0.0,
+            1.0 if move.status or move.volatileStatus else 0.0,
+            1.0 if move.sideCondition else 0.0,
+            1.0 if move.selfSwitch else 0.0,
+            1.0 if move.drain else 0.0,
+            1.0 if move.recoil else 0.0)
+    return tuple(head), spread, tail
 
 
 def encode_global(view: BattleView, out):

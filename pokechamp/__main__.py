@@ -96,7 +96,7 @@ TRAIN_FLAGS = {'format': 'formatid', 'out': 'out', 'init': 'init', 'workers': 'w
                'bc_epochs': 'bc_epochs', 'iters': 'iters', 'games_per_iter': 'games_per_iter', 'lr': 'lr',
                'eval_every': 'eval_every', 'eval_games': 'eval_games', 'team_pool': 'team_pool', 'width': 'd',
                'layers': 'layers', 'seed': 'seed', 'resume': 'resume', 'time_budget_h': 'time_budget_h',
-               'sync_dir': 'sync_dir', 'device': 'device'}
+               'sync_dir': 'sync_dir', 'device': 'device', 'envs_per_worker': 'envs_per_worker'}
 
 
 def train_config_from_args(args):
@@ -264,6 +264,8 @@ def build_parser():
     p.add_argument('--sync-dir', help='mirror checkpoints and logs here after every checkpoint (e.g. Google Drive)')
     p.add_argument('--device', choices=('auto', 'cpu', 'cuda'), help='learner device (auto: GPU if available)')
     p.add_argument('--workers', type=_workers_arg, help="rollout processes: 'auto' (= CPU threads) or a number")
+    p.add_argument('--envs-per-worker', type=int,
+                   help='games each worker plays at once, sharing batched network calls (default 48)')
     p.add_argument('--bc-games', type=int)
     p.add_argument('--bc-epochs', type=int)
     p.add_argument('--iters', type=int)
