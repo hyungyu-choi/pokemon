@@ -1,8 +1,10 @@
 """Running the battle assistant on the user's own computer: launchers, start-up checks, console messages,
 static file serving (Content-Type, Windows-style paths), port errors and the AI fallbacks."""
+import inspect
 import io
 import json
 import os
+import re
 import shutil
 import socket
 import subprocess
@@ -10,6 +12,7 @@ import sys
 import threading
 import urllib.error
 import urllib.request
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pytest
 
@@ -95,6 +98,7 @@ def test_static_windows_style_paths_are_404_not_500(http):
 # server start: port in use, banner, LAN addresses
 
 def test_port_in_use_gives_a_korean_message_and_exit_1(capsys):
+    """A listener that never answers HTTP (the probe for a running assistant times out): the port message."""
     blocker = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         blocker.bind(('127.0.0.1', 0))
@@ -105,8 +109,77 @@ def test_port_in_use_gives_a_korean_message_and_exit_1(capsys):
         assert e.value.code == 1
     finally:
         blocker.close()
-    err = capsys.readouterr().err
+    captured = capsys.readouterr()
+    err = captured.err
     assert f'포트 {port}번을 이미' in err and f'--port {port + 1}' in err and 'Traceback' not in err
+    assert console.launcher_command(port + 1) in err and '이미 실행 중' not in captured.out
+
+
+@pytest.fixture
+def no_proxy_bypass(monkeypatch):
+    """A proxy for every request and no exceptions: the probe must still talk to this computer directly."""
+    for name in ('NO_PROXY', 'no_proxy'):
+        monkeypatch.delenv(name, raising=False)
+    for name in ('HTTP_PROXY', 'http_proxy', 'HTTPS_PROXY', 'https_proxy', 'ALL_PROXY', 'all_proxy'):
+        monkeypatch.setenv(name, 'http://127.0.0.1:9')
+
+
+def test_second_start_opens_the_running_assistant(monkeypatch, capsys, no_proxy_bypass):
+    """Started again (a second double-click) while it already runs on that port: open its page, exit 3."""
+    first = make_server('127.0.0.1', 0, AssistantService(model_path='', seed=1))
+    threading.Thread(target=first.serve_forever, daemon=True).start()
+    port = first.server_address[1]
+    opened = []
+    import webbrowser
+    monkeypatch.setattr(webbrowser, 'open', lambda url, *a, **k: opened.append(url))
+    try:
+        assert console.assistant_running('127.0.0.1', port, 'gen9championsbssregmc')
+        assert not console.assistant_running('127.0.0.1', port, 'gen9championsvgc2026regmc')  # another format
+        with pytest.raises(SystemExit) as e:
+            serve('127.0.0.1', port, AssistantService(model_path=''), open_browser=True)
+        assert e.value.code == console.ALREADY_RUNNING_EXIT
+        with pytest.raises(SystemExit) as e:  # also when the new one listens on all addresses
+            serve('0.0.0.0', port, AssistantService(model_path=''))
+        assert e.value.code == console.ALREADY_RUNNING_EXIT
+    finally:
+        first.shutdown()
+        first.server_close()
+    out = capsys.readouterr()
+    url = f'http://127.0.0.1:{port}/'
+    assert f'배틀 도우미가 이미 실행 중입니다: {url}' in out.out and _cp949_safe(out.out)
+    assert opened == [url] and '[오류]' not in out.err
+
+
+class _OtherApp(BaseHTTPRequestHandler):
+    def do_GET(self):
+        body = json.dumps({'format': 'something else', 'ok': True}).encode()
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.send_header('Content-Length', str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, *args):
+        pass
+
+
+def test_port_used_by_another_web_server_is_an_error(monkeypatch, capsys, no_proxy_bypass):
+    other = ThreadingHTTPServer(('127.0.0.1', 0), _OtherApp)
+    threading.Thread(target=other.serve_forever, daemon=True).start()
+    port = other.server_address[1]
+    opened = []
+    import webbrowser
+    monkeypatch.setattr(webbrowser, 'open', lambda url, *a, **k: opened.append(url))
+    try:
+        assert not console.assistant_running('127.0.0.1', port, 'gen9championsbssregmc')
+        with pytest.raises(SystemExit) as e:
+            serve('127.0.0.1', port, AssistantService(model_path=''), open_browser=True)
+        assert e.value.code == 1
+    finally:
+        other.shutdown()
+        other.server_close()
+    out = capsys.readouterr()
+    assert f'포트 {port}번을 이미 다른 프로그램이' in out.err and '이미 실행 중입니다' not in out.out and not opened
 
 
 @pytest.mark.parametrize('exc,needle', [
@@ -122,8 +195,34 @@ def test_port_error_messages(exc, needle):
     assert needle in msg and _cp949_safe(msg)
 
 
+def test_port_error_names_the_start_script_of_this_os():
+    exc = OSError(10048, 'Only one usage of each socket address')
+    win = console.port_error_message('127.0.0.1', 8765, exc, platform='win32')
+    assert 'run_ui.bat --port 8766' in win and 'run_ui.sh' not in win
+    for plat in ('linux', 'darwin'):
+        msg = console.port_error_message('127.0.0.1', 8765, exc, platform=plat)
+        assert './run_ui.sh --port 8766' in msg and 'run_ui.bat' not in msg
+    msg = console.port_error_message('127.0.0.1', 80, OSError(10013, 'forbidden'), platform='win32')
+    assert 'run_ui.bat --port 81' in msg
+    assert console.address_in_use(OSError(98, 'x')) and console.address_in_use(OSError(10048, 'x'))
+    assert not console.address_in_use(OSError(13, 'x')) and not console.address_in_use(OverflowError('x'))
+
+
 def test_windows_server_does_not_share_ports():
     assert server.UIServer.allow_reuse_address == (os.name != 'nt')
+    # no SO_EXCLUSIVEADDRUSE: on Windows it can keep a restarted server from reopening the port for a while
+    assert 'setsockopt' not in inspect.getsource(server.UIServer.server_bind)
+
+
+def test_restart_on_the_same_port_right_away():
+    httpd = make_server('127.0.0.1', 0, AssistantService(model_path=''))
+    port = httpd.server_address[1]
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    assert _get(f'http://127.0.0.1:{port}/api/status')[0] == 200  # leaves a connection in TIME_WAIT
+    httpd.shutdown()
+    httpd.server_close()
+    again = make_server('127.0.0.1', port, AssistantService(model_path=''))
+    again.server_close()
 
 
 def test_dropped_connections_are_not_reported(capsys):
@@ -181,15 +280,34 @@ def test_lan_addresses_never_fail(monkeypatch):
 def test_dependency_message():
     msg = console.dependency_message({'torch': "ModuleNotFoundError: No module named 'torch'"},
                                      python='C:\\Program Files\\Python313\\python.exe', version=(3, 13),
-                                     platform='win32', bits64=True)
-    assert '"C:\\Program Files\\Python313\\python.exe" -m pip install numpy torch' in msg
+                                     platform='win32', bits64=True, machine='ARM64', build='win-amd64')
+    assert '"C:\\Program Files\\Python313\\python.exe" -m pip install torch\n' in msg
+    assert 'install numpy' not in msg  # numpy works: only the missing package is installed
     assert 'run_ui.bat' in msg and '--no-model' in msg and 'PowerShell' in msg and _cp949_safe(msg)
-    assert 'Python 3.13 (64비트)을 설치' not in msg  # a supported Python: no version advice
+    assert 'Python 3.14 또는 3.13 (64비트)을 설치' not in msg  # x64 Python (also emulated on ARM64): no version advice
+    assert '3.13, 64비트, win-amd64, ARM64' in msg
+    msg = console.dependency_message({'torch': 'x'}, python='python', version=(3, 13), platform='win32',
+                                     bits64=True, machine='ARM64', build='win-arm64')  # no PyTorch for this build
+    assert '3.13, 64비트, win-arm64, ARM64' in msg and 'Python 3.14 또는 3.13 (64비트)을 설치' in msg
+    assert 'Windows installer (64-bit)' in msg and _cp949_safe(msg)
     msg = console.dependency_message({'torch': 'x'}, python='/usr/bin/python3', version=(3, 15), platform='linux',
-                                     bits64=True)
-    assert '--index-url https://download.pytorch.org/whl/cpu' in msg and 'Python 3.13' in msg and _cp949_safe(msg)
+                                     bits64=True, machine='x86_64', build='linux-x86_64')
+    assert '/usr/bin/python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu' in msg
+    assert 'install numpy' not in msg and '3.13 (64비트)' in msg and '3.15, 64비트, linux-x86_64, x86_64' in msg
+    assert 'ARM64 용은 없음' not in msg  # the Windows-only note
+    assert 'Windows installer' not in msg and _cp949_safe(msg)
+    msg = console.dependency_message({'torch': 'x'}, python='python', version=(3, 13), platform='win32',
+                                     bits64=False, machine='AMD64', build='win32')
+    assert '3.13, 32비트, win32, AMD64' in msg and 'Python 3.14 또는 3.13 (64비트)을 설치' in msg
+    msg = console.dependency_message({'numpy': 'x', 'torch': 'y'}, python='python3', version=(3, 12),
+                                     platform='linux', bits64=True, machine='aarch64')
+    assert 'python3 -m pip install numpy\n' in msg and 'python3 -m pip install torch --index-url' in msg
+    msg = console.dependency_message({'numpy': 'x', 'torch': 'y'}, python='python3', version=(3, 12),
+                                     platform='darwin', bits64=True, machine='arm64')
+    assert 'python3 -m pip install numpy\n' in msg and 'python3 -m pip install torch\n' in msg
     msg = console.dependency_message({'numpy': 'x'}, python='python', version=(3, 12), platform='darwin', bits64=True)
-    assert 'python -m pip install numpy\n' in msg and '--no-model' not in msg and _cp949_safe(msg)
+    assert 'python -m pip install numpy\n' in msg and 'torch' not in msg and '--no-model' not in msg
+    assert _cp949_safe(msg)
 
 
 def _run_ui_main(monkeypatch, argv, missing=()):
@@ -298,9 +416,50 @@ def test_windows_launcher_is_plain_ascii_with_crlf():
     assert raw.count(b'\n') == raw.count(b'\r\n') > 20, 'cmd.exe needs CRLF line endings'
     assert not raw.startswith(b'\xef\xbb\xbf')
     text = raw.decode('ascii').lower()
-    for needle in ('chcp 65001', 'cd /d "%here%"', 'python.org/downloads', '-m venv', 'pip install', 'numpy torch',
-                   'pokechamp-deps-ok', '-m pokechamp ui --open %*', 'pause', 'add python.exe to path'):
+    for needle in ('chcp 65001', 'cd /d "%here%"', 'python.org/downloads/windows', '-m venv', 'pip install',
+                   'pokechamp-deps-ok', 'pokechamp-numpy-ok', 'pokechamp-venv', 'set "no_model=--no-model"',
+                   '-m pokechamp ui --open %no_model% %*', 'pause', 'add python.exe to path',
+                   'windows installer (64-bit)', "sysconfig.get_platform() == 'win-amd64'"):
         assert needle in text, needle
+
+
+def test_windows_launcher_structure():
+    """What cmd.exe needs, checked without Windows: labels exist, no blocks, quoted special characters."""
+    lines = open(os.path.join(ROOT, 'run_ui.bat'), encoding='ascii', newline='').read().split('\r\n')
+    labels = {ln[1:].strip().lower() for ln in lines if ln.startswith(':')}
+    for i, line in enumerate(lines, 1):
+        low = line.strip().lower()
+        for target in re.findall(r'\b(?:goto|call)\s+:?(\w+)', low):
+            assert target == 'eof' or target in labels, (i, line)
+        if low.startswith('rem'):
+            assert '%' not in line, (i, 'cmd expands % even in rem lines')
+            continue
+        outside = re.sub(r'"[^"]*"', '', line)
+        assert line.count('"') % 2 == 0, (i, line)
+        if not low.startswith('for %%v in ('):
+            assert '(' not in outside and ')' not in outside, (i, 'no ( ) blocks or unquoted parentheses')
+        assert '!' not in line and '%errorlevel%' not in low and 'enabledelayedexpansion' not in low, (i, line)
+        if low.startswith('echo'):
+            assert not re.search(r'[&|<^]', outside), (i, line)
+    text = '\n'.join(lines).lower()
+    # deleting: only an environment this file created (tagged), and only after a Python has been found
+    renew = text[text.index('\n:renew_venv'):text.index('\n:existing_venv')]
+    assert renew.index('call :find_python') < renew.index('if not defined py goto no_python') < renew.index('rmdir')
+    # python.exe of a venv in use (another window) cannot be deleted: then stop before deleting anything else
+    assert renew.index('del /f /q "%vpy%"') < renew.index('if exist "%vpy%" goto venv_locked') < renew.index('rmdir')
+    assert text.count('del /f') == 1
+    setup = text[text.index('\n:setup'):text.index('\n:renew_venv')]
+    # renewing (deleting) only a tagged environment: after the untagged ones went to existing_venv, or guarded
+    for ln in setup.splitlines():
+        if 'goto renew_venv' in ln and setup.index(ln) < setup.index('if not exist "%tag%" goto existing_venv'):
+            assert ln.startswith('if exist "%tag%"'), ln
+    # the default LOCALAPPDATA folder counts as created by this file (an older run_ui.bat did not tag it)
+    assert 'if defined own_default if not exist "%tag%" echo created by run_ui.bat>"%tag%"' in setup
+    assert text.count('rmdir') == 2 and 'if exist "%venv%" rmdir /s /q "%venv%"' in text  # + a failed -m venv
+    # the tag is written right after a successful -m venv
+    create = text[text.index('\n:create'):text.index('\n:install')]
+    assert re.search(r'%py% -m venv "%venv%"\nif errorlevel 1 goto venv_create_failed\n', create)
+    assert create.endswith(':venv_created\necho created by run_ui.bat>"%tag%"\n')
 
 
 def test_unix_launchers():
@@ -314,8 +473,86 @@ def test_unix_launchers():
         if sh:
             assert subprocess.run([sh, '-n', path]).returncode == 0, name
     text = open(os.path.join(ROOT, 'run_ui.sh'), encoding='utf-8').read()
-    for needle in ('download.pytorch.org/whl/cpu', '-m venv', 'pokechamp-deps-ok', '-m pokechamp ui', '"$@"'):
+    for needle in ('download.pytorch.org/whl/cpu', '-m venv', 'pokechamp-deps-ok', 'pokechamp-numpy-ok',
+                   'pokechamp-venv', 'set -- --no-model "$@"', '-m pokechamp ui', '"$@"'):
         assert needle in text, needle
+
+
+# run_ui.sh with an environment it did not create (POKECHAMP_VENV) or with one where only PyTorch is missing.
+# The started server finds the test server on its port ("already running", exit 3) instead of serving.
+
+needs_sh = pytest.mark.skipif(os.name == 'nt' or not shutil.which('sh'), reason='POSIX sh launcher')
+ALREADY = console.ALREADY_RUNNING_EXIT
+
+
+def _launch(env_dir, *args, python=None):
+    env = {k: v for k, v in os.environ.items() if not k.startswith(('POKECHAMP_', 'PIP_')) and
+           k not in ('DISPLAY', 'WAYLAND_DISPLAY')}
+    env.update(POKECHAMP_VENV=str(env_dir), POKECHAMP_PYTHON=python or sys.executable, PIP_NO_INDEX='1',
+               PIP_RETRIES='0', POKECHAMP_TORCH_INDEX='http://127.0.0.1:9/simple/', NO_PROXY='*', no_proxy='*')
+    return subprocess.run(['sh', os.path.join(ROOT, 'run_ui.sh')] + list(args), env=env, capture_output=True,
+                          text=True, encoding='utf-8', timeout=300)
+
+
+def _venv(path):
+    subprocess.run([sys.executable, '-m', 'venv', '--system-site-packages', '--without-pip', str(path)], check=True)
+    (path / 'my-precious-file.txt').write_text('keep me')
+    return path
+
+
+def _site_packages(env_dir):
+    found = [p for p in env_dir.glob('lib/python3*/site-packages')]
+    assert len(found) == 1
+    return found[0]
+
+
+@needs_sh
+def test_launcher_uses_an_environment_it_did_not_create(http, tmp_path):
+    pytest.importorskip('numpy')
+    pytest.importorskip('torch')  # the environment shares this Python's packages
+    env_dir = _venv(tmp_path / 'my env')
+    port = http.rsplit(':', 1)[1]
+    out = _launch(env_dir, '--port', port)
+    assert out.returncode == ALREADY, out.stdout + out.stderr
+    assert '이미 있는 Python 환경을 사용합니다' in out.stdout and '이미 실행 중입니다' in out.stdout
+    assert (env_dir / 'my-precious-file.txt').read_text() == 'keep me'
+    assert (env_dir / 'pokechamp-deps-ok').exists() and not (env_dir / 'pokechamp-venv').exists()
+    out = _launch(env_dir, '--port', port)  # ready now: straight to the server
+    assert out.returncode == ALREADY and '이미 있는 Python 환경' not in out.stdout and '이미 실행 중' in out.stdout
+
+
+@needs_sh
+def test_launcher_never_deletes_a_broken_environment_it_did_not_create(tmp_path):
+    env_dir = tmp_path / 'my env'
+    env_dir.mkdir()
+    (env_dir / 'pyvenv.cfg').write_text('home = /nowhere\n')
+    (env_dir / 'my-precious-file.txt').write_text('keep me')
+    (env_dir / 'pokechamp-deps-ok').write_text('ok')  # even with the marker of an older run_ui.sh
+    out = _launch(env_dir)
+    assert out.returncode == 1 and '지우지 않습니다' in out.stderr
+    assert sorted(p.name for p in env_dir.iterdir()) == ['my-precious-file.txt', 'pokechamp-deps-ok', 'pyvenv.cfg']
+    (env_dir / 'pyvenv.cfg').unlink()  # not a Python environment at all
+    out = _launch(env_dir)
+    assert out.returncode == 1 and 'Python 환경이 아닙니다' in out.stderr
+    assert (env_dir / 'my-precious-file.txt').read_text() == 'keep me'
+
+
+@needs_sh
+def test_launcher_starts_without_the_network_when_pytorch_cannot_be_installed(http, tmp_path):
+    pytest.importorskip('numpy')
+    env_dir = _venv(tmp_path / 'env')
+    (env_dir / 'pokechamp-venv').write_text('created by run_ui.sh')  # as if run_ui.sh had created it
+    (env_dir / 'pokechamp-numpy-ok').write_text('numpy ok')
+    (_site_packages(env_dir) / 'torch.py').write_text('raise ImportError("no PyTorch for this test")\n')
+    port = http.rsplit(':', 1)[1]
+    for _ in range(2):  # every start tries PyTorch again, keeps the environment and starts with --no-model
+        out = _launch(env_dir, '--port', port)
+        assert out.returncode == ALREADY, out.stdout + out.stderr  # without --no-model the missing torch: error
+        assert 'PyTorch (신경망 AI) 를 설치합니다' in out.stdout and '신경망 없이 시작합니다' in out.stdout
+        assert 'numpy 를 설치합니다' not in out.stdout and 'setting up again' not in out.stdout
+        assert '이미 실행 중입니다' in out.stdout
+        assert (env_dir / 'my-precious-file.txt').exists() and (env_dir / 'pokechamp-numpy-ok').exists()
+        assert not (env_dir / 'pokechamp-deps-ok').exists()
 
 
 def test_gitattributes_keep_launcher_line_endings():

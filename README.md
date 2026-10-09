@@ -83,11 +83,18 @@ python -m pokechamp battle --format gen9championsvgc2026regmc --p1 heuristic --p
   "압축 풀기"/"모두 압축 풀기"). ZIP 창 안에서 바로 실행하면 동작하지 않습니다.
 * git: `git clone -b claude/pokemon-champions-battle-sim-wmjyya https://github.com/hyungyu-choi/pokemon.git`
 
-**2. Python 설치** (Python 3.10 이상이 이미 있으면 건너뛰세요)
+**2. Python 설치** (64비트 Python 3.10 ~ 3.14가 이미 있으면 건너뛰세요)
 
-* <https://www.python.org/downloads/> 에서 **Python 3.13 (64비트)** 를 권장합니다 (3.10 ~ 3.14 사용 가능).
-  PyTorch가 아직 지원하지 않는 너무 새 버전(예: 3.15)은 피하세요.
-* Windows: 설치 첫 화면 아래의 **"Add python.exe to PATH"를 체크**한 뒤 "Install Now"를 누릅니다.
+* **Windows**: <https://www.python.org/downloads/windows/> 에서 **"Python 3.14.x (또는 3.13.x) - Windows installer
+  (64-bit)"** 를 내려받으세요 ("Windows installer (64-bit)" 파일이 있는 가장 새 3.14/3.13 버전). 맨 위의 큰 다운로드 버튼은 가장 새 버전(예: 3.15)을 줄 수 있는데, 신경망 AI에
+  필요한 PyTorch가 아직 지원하지 않습니다 (그 버전만 있으면 도우미는 신경망 없이 더 약한 AI로 켜집니다,
+  아래 [문제 해결](#문제-해결) 참고). Windows 11 on ARM(ARM64) 노트북도 ARM64용이 아닌 이 64-bit(x64)
+  installer를 고르세요 (ARM64용 PyTorch는 없습니다). 설치 첫 화면 아래의 **"Add python.exe to PATH"를 체크**한 뒤
+  "Install Now"를 누릅니다.
+* 새 **"Python install manager"** (Python 설치 관리자)를 설치했다면, 설치가 끝날 때 Python을 설치할지 물으면
+  **Y**를 누르고 `run_ui.bat`을 실행하세요 (그 Python이 3.15 이상이거나 ARM64용이면 명령 프롬프트에서 `py install 3.14-64`를
+  실행한 뒤 다시 실행하면 신경망 AI까지 씁니다).
+* macOS: <https://www.python.org/downloads/macos/> 에서 Python 3.13 (Intel Mac은 3.12) 을 설치합니다.
 * Linux: 배포판의 Python과 venv를 설치합니다 (예: `sudo apt install python3 python3-venv`).
 
 **3. 실행**
@@ -104,25 +111,37 @@ python -m pokechamp battle --format gen9championsvgc2026regmc --p1 heuristic --p
 "포켓몬 챔피언스 배틀 도우미가 실행 중입니다"와 주소가 나오고 브라우저가 `http://127.0.0.1:8765`를 엽니다
 (안 열리면 그 주소를 직접 여세요).
 
+* PyTorch를 설치할 수 없으면 (너무 새 Python, 32비트 Python, PyTorch가 없는 컴퓨터, 인터넷 문제) 도우미는
+  **신경망 없이 더 약한 휴리스틱 AI로** 켜지고 창에 이유와 해결 방법을 보여 줍니다. 다음 실행 때마다 PyTorch
+  설치를 다시 시도하고(인터넷이 안 되면 짧게만 기다림), 그 사이 64비트 Python 3.14/3.13을 설치했다면 그 Python으로
+  환경을 다시 만듭니다.
+* 도우미가 이미 켜져 있을 때 다시 실행하면 새로 켜지 않고 **이미 켜진 도우미의 페이지만 엽니다**
+  ("배틀 도우미가 이미 실행 중입니다", Windows에서는 이 창이 몇 초 뒤 닫힙니다).
 * **도우미를 쓰는 동안 검은 창을 닫지 마세요.** 끝낼 때는 그 창을 닫거나 Ctrl+C를 누릅니다
   (Windows에서 "일괄 작업을 끝내시겠습니까 (Y/N)?"가 나오면 Y).
 * 옵션은 그대로 전달됩니다: `run_ui.bat --port 8766`, `./run_ui.sh --host 0.0.0.0` 등.
   (Windows에서 옵션을 붙이려면 폴더 창의 주소 표시줄에 `cmd`를 입력하고 Enter → 열린 창에 `run_ui.bat --port 8766`.)
 * 설치 위치: Windows는 `%LOCALAPPDATA%\pokechamp\venv` (짧은 경로라 긴 경로 오류가 없고, ZIP을 새로 받아도
   다시 설치하지 않습니다. Microsoft Store판 Python이면 폴더 안 `.venv`), macOS/Linux는 폴더 안 `.venv`.
-  이 폴더를 지우면 다음 실행 때 다시 설치합니다.
+  이 폴더를 지우면 다음 실행 때 다시 설치합니다. 환경 변수 `POKECHAMP_VENV`로 다른 폴더를 지정할 수 있고,
+  실행 파일이 직접 만들지 않은 폴더는 절대 지우지 않고 그 안에 필요한 패키지만 설치합니다.
 
 **직접 명령으로 실행하기** (실행 파일 없이, 프로젝트 폴더 = `README.md`가 있는 폴더에서)
 
+Windows (명령 프롬프트 또는 PowerShell). `py -3.13`은 설치한 64비트 Python 3.10 ~ 3.14 버전으로 바꿔도 됩니다:
+
 ```bat
-:: Windows (명령 프롬프트 또는 PowerShell)
-py -m venv .venv
+py -3.13 -m venv .venv
 .venv\Scripts\python -m pip install numpy torch
 .venv\Scripts\python -m pokechamp ui --open
 ```
 
+torch 설치가 `No such file or directory` 같은 긴 경로(Long Path) 오류로 실패하면 프로젝트 폴더를 `C:\pokemon`처럼
+짧은 경로로 옮긴 뒤 다시 하세요.
+
+macOS / Linux:
+
 ```bash
-# macOS / Linux
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy torch       # Linux: torch 는 --index-url https://download.pytorch.org/whl/cpu 를 붙여 CPU 버전으로
 .venv/bin/python -m pokechamp ui --open
@@ -147,8 +166,10 @@ PyTorch를 설치할 수 없으면 `--no-model`을 붙여 신경망 없이(더 �
 |---|---|
 | 브라우저에 "사이트에 연결할 수 없음" / `ERR_CONNECTION_REFUSED` | 도우미 검은 창이 켜져 있고 "실행 중입니다"가 나왔는지 확인하세요 (첫 실행은 설치 때문에 몇 분 걸립니다). 도우미와 브라우저는 **같은 컴퓨터**여야 합니다. 휴대폰은 `127.0.0.1`이 아니라 창에 나온 휴대폰 주소로 엽니다. `--port`를 바꿨다면 주소의 숫자도 바꾸세요. |
 | `[ERROR] Python 3.10 or newer was not found.` | 위 2단계대로 Python을 설치하고("Add python.exe to PATH" 체크) `run_ui.bat`을 다시 실행하세요. |
-| `[오류] 포트 8765번을 이미 다른 프로그램이 쓰고 있습니다` | 도우미가 이미 다른 창에서 켜져 있으면 그 창을 그대로 쓰고 브라우저에서 주소만 여세요. 아니면 `run_ui.bat --port 8766`으로 켜고 `http://127.0.0.1:8766`을 엽니다. |
-| `[ERROR] Installing numpy and PyTorch failed.` / `[오류] ... 파이썬 패키지를 불러오지 못했습니다` | 인터넷 연결을 확인하고 다시 실행하세요(실패한 설치는 처음부터 다시 합니다). PyTorch는 64비트 Python 3.10 ~ 3.14용만 나옵니다. 다른 버전이면 Python 3.13을 설치한 뒤 다시 실행하면 실행 파일이 그 버전을 골라 씁니다. Microsoft Store판 Python에서 문제가 나면 python.org 판을 설치하세요. `DLL` 오류는 [Visual C++ 재배포 패키지](https://aka.ms/vs/17/release/vc_redist.x64.exe) 설치 후 다시. 직접 실행하는 경우 오류 메시지에 나온 `pip install` 명령을 그대로 실행하세요. |
+| 도우미를 한 번 더 실행했더니 창이 몇 초 뒤 닫히고 브라우저만 열림 / `배틀 도우미가 이미 실행 중입니다` | 정상입니다. 도우미가 이미 다른 창에서 켜져 있어서 그 페이지를 연 것입니다. 처음 켠 검은 창을 그대로 쓰세요. "신경망 없이 켜져 있습니다"나 "이 PC에서만 열립니다"가 함께 나오면 처음 창을 닫고 다시 실행하세요. |
+| `[오류] 포트 8765번을 이미 다른 프로그램이 쓰고 있습니다` | 도우미가 아닌 다른 프로그램이 그 포트를 쓰고 있습니다. `run_ui.bat --port 8766` (macOS/Linux: `./run_ui.sh --port 8766`)으로 켜고 `http://127.0.0.1:8766`을 엽니다. |
+| `[NOTE] PyTorch could not be installed` (또는 `cannot be loaded`) / `[참고] PyTorch 를 쓸 수 없어 신경망 없이 시작합니다` | 도우미는 신경망 없이 (더 약한 휴리스틱 AI로) 켜져서 그대로 쓸 수 있습니다. 신경망 AI를 쓰려면: 인터넷 연결을 확인하고 다시 실행하세요(실행할 때마다 PyTorch 설치를 다시 시도합니다). PyTorch는 64비트 Python 3.10 ~ 3.14용만 나옵니다. 창에 나온 "This Python / 이 Python"이 3.15 이상이거나 32bit이면 위 2단계대로 Python 3.13 (64-bit)을 설치한 뒤 다시 실행하세요. 실행 파일이 그 Python으로 환경을 다시 만듭니다. Windows용 PyTorch는 x64(`win-amd64`) Python용만 있으므로, 창에 `win-arm64`나 `win32`가 보이면 Windows 11 on ARM 컴퓨터라도 "Windows installer (64-bit)"로 Python 3.14 또는 3.13을 설치하세요. `DLL` 오류는 [Visual C++ 재배포 패키지](https://aka.ms/vs/17/release/vc_redist.x64.exe) 설치 후 다시. |
+| `[ERROR] Installing numpy failed.` / `[오류] ... 파이썬 패키지를 불러오지 못했습니다` | 인터넷 연결을 확인하고 다시 실행하세요. Microsoft Store판 Python에서 문제가 나면 python.org 판을 설치하세요. `DLL` 오류는 [Visual C++ 재배포 패키지](https://aka.ms/vs/17/release/vc_redist.x64.exe) 설치 후 다시. 직접 실행하는 경우 오류 메시지에 나온 `pip install` 명령을 그대로 실행하세요. |
 | 설치 중 `No such file or directory` / 긴 경로(Long Path) 오류 | 폴더 경로가 너무 깁니다. 프로젝트 폴더를 `C:\pokemon`처럼 짧은 곳으로 옮겨 다시 실행하세요. |
 | `[ERROR] The pokechamp folder was not found next to this file.` | ZIP 압축을 모두 푼 폴더 안의 `run_ui.bat`을 실행하세요. |
 | 검은 창이 멈춘 것 같음 | 창 안을 마우스로 클릭하면 Windows가 출력을 멈춥니다(창 제목이 "선택"으로 시작). Esc를 누르세요. |

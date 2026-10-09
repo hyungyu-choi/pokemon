@@ -18,7 +18,6 @@ from __future__ import annotations
 import json
 import mimetypes
 import os
-import socket
 import socketserver
 import sys
 import threading
@@ -217,13 +216,13 @@ class UIServer(ThreadingHTTPServer):
     print tracebacks when a browser drops a connection, and starts without a DNS lookup."""
 
     # On Windows SO_REUSEADDR lets a second server bind a port that is already in use (both then get requests);
-    # SO_EXCLUSIVEADDRUSE makes the second one fail instead. Elsewhere SO_REUSEADDR only allows a quick restart.
+    # without it Windows refuses a second listener and still lets a restarted server reuse the port at once.
+    # (SO_EXCLUSIVEADDRUSE is not used: it can make a restart right after closing the window fail.)
+    # Elsewhere SO_REUSEADDR only allows that quick restart.
     allow_reuse_address = os.name != 'nt'
     daemon_threads = True
 
     def server_bind(self):
-        if os.name == 'nt' and hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
-            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
         socketserver.TCPServer.server_bind(self)
         # HTTPServer.server_bind would also call socket.getfqdn(host), a reverse DNS lookup that can stall the
         # start for seconds on some networks; the name is not used
@@ -239,16 +238,45 @@ def make_server(host: str, port: int, service: AssistantService) -> UIServer:
     return UIServer((host, port), make_handler(service))
 
 
+def _open_browser(url: str):
+    try:
+        import webbrowser
+        webbrowser.open(url)
+    except Exception:  # no browser available: the address is printed
+        pass
+
+
 def serve(host: str = '127.0.0.1', port: int = 8765, service: AssistantService | None = None,
           open_browser: bool = False, notes=()):
-    """Run the UI until Ctrl+C. A port that cannot be opened ends the program with a message (exit code 1)."""
+    """Run the UI until Ctrl+C. A port that cannot be opened ends the program with a message (exit code 1);
+    when the battle assistant itself already runs on that port (started again by a second double-click), its
+    page is opened instead (exit code console.ALREADY_RUNNING_EXIT)."""
     from . import console
     service = service or AssistantService()
-    try:
-        httpd = make_server(host, port, service)
-    except (OSError, OverflowError) as exc:  # port in use / reserved, bad host, port out of range
-        print(console.port_error_message(host, port, exc), file=sys.stderr, flush=True)
-        raise SystemExit(1) from None
+    # asked first: Windows and macOS let a second server bind the same port on another address (127.0.0.1 next
+    # to 0.0.0.0), so a failing bind does not always tell
+    running = console.running_assistant(host, port, service.formatid) if port else None
+    httpd = None
+    if running is None:
+        try:
+            httpd = make_server(host, port, service)
+        except (OSError, OverflowError) as exc:  # port in use / reserved, bad host, port out of range
+            if console.address_in_use(exc):
+                running = console.running_assistant(host, port, service.formatid)
+            if running is None:
+                print(console.port_error_message(host, port, exc), file=sys.stderr, flush=True)
+                raise SystemExit(1) from None
+    if httpd is None:
+        url = console.local_url(host, port)
+        lan = console.lan_addresses()[:2] if console.is_wildcard(host) else []
+        phone_missing = bool(lan) and not any(
+            console.running_assistant(host, port, service.formatid, timeout=1.0, url=f'http://{ip}:{port}/')
+            for ip in lan)
+        print(console.already_running_message(url, running, want_model=bool(service.model_path),
+                                              phone_missing=phone_missing), flush=True)
+        if open_browser:
+            _open_browser(url)
+        raise SystemExit(console.ALREADY_RUNNING_EXIT)
     # load data and the network in the background so the first real request is fast
     threading.Thread(target=service.warmup, daemon=True).start()
     port = httpd.server_address[1]
@@ -257,11 +285,7 @@ def serve(host: str = '127.0.0.1', port: int = 8765, service: AssistantService |
     print(console.startup_banner(host, port, notes), flush=True)
     print(f'pokechamp battle assistant: {url}  (model: {st["model"]}, team library: {st["library"]})', flush=True)
     if open_browser:
-        try:
-            import webbrowser
-            webbrowser.open(url)
-        except Exception:  # no browser available: the address is printed above
-            pass
+        _open_browser(url)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
