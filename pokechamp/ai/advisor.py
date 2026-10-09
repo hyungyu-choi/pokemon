@@ -34,7 +34,7 @@ from ..sim.js import Obj, to_id
 from ..sim.teams import import_team
 from ..teambuilder.random_teams import STATS, legal_pool
 from .damage import species_info
-from .nn_agent import potential
+from .shaping import potential  # torch-free: the advisor works with the heuristic AI without PyTorch
 
 WEATHER_ALIASES = {
     'sun': 'sunnyday', 'sunny': 'sunnyday', 'harshsunlight': 'sunnyday', 'rain': 'raindance', 'sand': 'sandstorm',
@@ -310,7 +310,7 @@ class SetPrior:
         self.dex = get_dex()
         self.library: dict[str, list] = {}
         if library_path and os.path.exists(library_path):
-            with open(library_path, encoding='utf-8') as f:
+            with open(library_path, encoding='utf-8-sig') as f:  # -sig: also files saved with a BOM (Notepad)
                 data = json.load(f)
             teams = data.get('teams', []) + data.get('hall_of_fame', []) if isinstance(data, dict) else data
             for team in teams:

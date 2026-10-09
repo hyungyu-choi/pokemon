@@ -36,9 +36,15 @@
 ## 설치
 
 ```bash
-pip install numpy torch pytest      # torch는 AI 학습/추론에만 필요 (CPU로 충분)
+pip install numpy torch pytest      # torch: 신경망 AI와 배틀 도우미 UI에 필요 (CPU 버전으로 충분)
 python -m pytest -q                 # 엔진/AI 테스트 (약 20초)
 ```
+
+* Linux에서는 `pip install torch`가 CUDA 포함 버전(수 GB)을 받습니다. CPU 버전으로 충분하니
+  `pip install torch --index-url https://download.pytorch.org/whl/cpu` 를 쓰세요.
+* `pip install -e ".[ui]"` 로 패키지째 설치할 수도 있습니다. 학습된 모델(`models/`)은 프로젝트 폴더에
+  있으므로 UI는 프로젝트 폴더에서 실행하세요(다른 곳에서 실행하면 `--model` / `--library` 로 지정).
+* 배틀 도우미만 쓰려면 아래 [내 컴퓨터에서 실행하기](#내-컴퓨터에서-실행하기)를 따라 하면 됩니다.
 
 ## 빠른 시작
 
@@ -61,11 +67,102 @@ python -m pokechamp battle --format gen9championsvgc2026regmc --p1 heuristic --p
 
 ## 배틀 도우미 UI (실전용, 싱글 배틀)
 
+### 내 컴퓨터에서 실행하기
+
+배틀 도우미는 **내 컴퓨터에서 켜 두고 브라우저로 여는 프로그램**입니다. 주소
+`http://127.0.0.1:8765`의 `127.0.0.1`은 "지금 이 컴퓨터"라는 뜻이라서, 도우미(검은 창)가 **브라우저와
+같은 컴퓨터에서 켜져 있을 때만** 열립니다. 다른 컴퓨터나 클라우드에서 켠 도우미는 이 주소로 열 수 없고
+"사이트에 연결할 수 없음"이 나옵니다. 휴대폰에서 쓰려면 PC에서 켠 뒤 아래 [휴대폰에서 쓰기](#휴대폰에서-쓰기)를
+보세요.
+
+**1. 내려받기** (둘 중 하나)
+
+* ZIP: [이 링크](https://github.com/hyungyu-choi/pokemon/archive/refs/heads/claude/pokemon-champions-battle-sim-wmjyya.zip)로
+  내려받거나, [GitHub 페이지](https://github.com/hyungyu-choi/pokemon/tree/claude/pokemon-champions-battle-sim-wmjyya)에서
+  **Code → Download ZIP**을 누릅니다. 받은 ZIP은 **반드시 압축을 모두 푸세요** (Windows: ZIP 파일 우클릭 →
+  "압축 풀기"/"모두 압축 풀기"). ZIP 창 안에서 바로 실행하면 동작하지 않습니다.
+* git: `git clone -b claude/pokemon-champions-battle-sim-wmjyya https://github.com/hyungyu-choi/pokemon.git`
+
+**2. Python 설치** (Python 3.10 이상이 이미 있으면 건너뛰세요)
+
+* <https://www.python.org/downloads/> 에서 **Python 3.13 (64비트)** 를 권장합니다 (3.10 ~ 3.14 사용 가능).
+  PyTorch가 아직 지원하지 않는 너무 새 버전(예: 3.15)은 피하세요.
+* Windows: 설치 첫 화면 아래의 **"Add python.exe to PATH"를 체크**한 뒤 "Install Now"를 누릅니다.
+* Linux: 배포판의 Python과 venv를 설치합니다 (예: `sudo apt install python3 python3-venv`).
+
+**3. 실행**
+
+* **Windows**: 압축을 푼 폴더에서 **`run_ui.bat`을 더블클릭**합니다. 인터넷에서 받은 파일이라 "Windows의 PC 보호"
+  창이 뜨면 "추가 정보" → "실행", "보안 경고" 창이면 "실행"을 누르세요.
+* **macOS**: 폴더의 `run_ui.command`를 더블클릭합니다. 확인되지 않은 개발자라서 열 수 없다고 나오면 우클릭 → 열기,
+  또는 시스템 설정 → 개인정보 보호 및 보안 → "그래도 열기"를 누르세요. 터미널에서 그 폴더로 이동해
+  `sh run_ui.sh`로 실행해도 됩니다.
+* **Linux**: 터미널에서 그 폴더로 이동해 `./run_ui.sh` (또는 `sh run_ui.sh`).
+
+처음 실행할 때만 파이썬 환경을 만들고 numpy와 PyTorch(CPU 버전)를 내려받아 설치합니다 (약 150~250MB
+다운로드, 디스크 약 1GB, 몇 분). 다음부터는 바로 켜집니다. 준비가 끝나면 검은 창(터미널)에
+"포켓몬 챔피언스 배틀 도우미가 실행 중입니다"와 주소가 나오고 브라우저가 `http://127.0.0.1:8765`를 엽니다
+(안 열리면 그 주소를 직접 여세요).
+
+* **도우미를 쓰는 동안 검은 창을 닫지 마세요.** 끝낼 때는 그 창을 닫거나 Ctrl+C를 누릅니다
+  (Windows에서 "일괄 작업을 끝내시겠습니까 (Y/N)?"가 나오면 Y).
+* 옵션은 그대로 전달됩니다: `run_ui.bat --port 8766`, `./run_ui.sh --host 0.0.0.0` 등.
+  (Windows에서 옵션을 붙이려면 폴더 창의 주소 표시줄에 `cmd`를 입력하고 Enter → 열린 창에 `run_ui.bat --port 8766`.)
+* 설치 위치: Windows는 `%LOCALAPPDATA%\pokechamp\venv` (짧은 경로라 긴 경로 오류가 없고, ZIP을 새로 받아도
+  다시 설치하지 않습니다. Microsoft Store판 Python이면 폴더 안 `.venv`), macOS/Linux는 폴더 안 `.venv`.
+  이 폴더를 지우면 다음 실행 때 다시 설치합니다.
+
+**직접 명령으로 실행하기** (실행 파일 없이, 프로젝트 폴더 = `README.md`가 있는 폴더에서)
+
+```bat
+:: Windows (명령 프롬프트 또는 PowerShell)
+py -m venv .venv
+.venv\Scripts\python -m pip install numpy torch
+.venv\Scripts\python -m pokechamp ui --open
+```
+
+```bash
+# macOS / Linux
+python3 -m venv .venv
+.venv/bin/python -m pip install numpy torch       # Linux: torch 는 --index-url https://download.pytorch.org/whl/cpu 를 붙여 CPU 버전으로
+.venv/bin/python -m pokechamp ui --open
+```
+
+`python -m pokechamp ...`는 **프로젝트 폴더에서** 실행해야 합니다(다른 폴더에서는 `No module named pokechamp`).
+PyTorch를 설치할 수 없으면 `--no-model`을 붙여 신경망 없이(더 약한 휴리스틱 AI로) 실행할 수 있습니다
+(`py -m pip install numpy` 후 `py -m pokechamp ui --no-model --open`).
+
+#### 휴대폰에서 쓰기
+
+1. PC에서 `run_ui.bat --host 0.0.0.0` (macOS/Linux: `./run_ui.sh --host 0.0.0.0`)으로 실행합니다.
+2. 검은 창에 나오는 **"휴대폰 (같은 Wi-Fi) 에서는: http://192.168.x.x:8765/"** 주소를, PC와 같은 Wi-Fi에
+   연결된 휴대폰 브라우저에서 엽니다.
+3. Windows 방화벽 창이 뜨면 "허용"을 누르세요. Wi-Fi가 "공용 네트워크"로 설정되어 있으면 휴대폰에서 접속이
+   막힐 수 있습니다(설정 → 네트워크에서 "개인"으로). 같은 네트워크의 누구나 접속할 수 있으니 집처럼 믿을 수 있는
+   네트워크에서만 쓰세요.
+
+#### 문제 해결
+
+| 증상 | 해결 |
+|---|---|
+| 브라우저에 "사이트에 연결할 수 없음" / `ERR_CONNECTION_REFUSED` | 도우미 검은 창이 켜져 있고 "실행 중입니다"가 나왔는지 확인하세요 (첫 실행은 설치 때문에 몇 분 걸립니다). 도우미와 브라우저는 **같은 컴퓨터**여야 합니다. 휴대폰은 `127.0.0.1`이 아니라 창에 나온 휴대폰 주소로 엽니다. `--port`를 바꿨다면 주소의 숫자도 바꾸세요. |
+| `[ERROR] Python 3.10 or newer was not found.` | 위 2단계대로 Python을 설치하고("Add python.exe to PATH" 체크) `run_ui.bat`을 다시 실행하세요. |
+| `[오류] 포트 8765번을 이미 다른 프로그램이 쓰고 있습니다` | 도우미가 이미 다른 창에서 켜져 있으면 그 창을 그대로 쓰고 브라우저에서 주소만 여세요. 아니면 `run_ui.bat --port 8766`으로 켜고 `http://127.0.0.1:8766`을 엽니다. |
+| `[ERROR] Installing numpy and PyTorch failed.` / `[오류] ... 파이썬 패키지를 불러오지 못했습니다` | 인터넷 연결을 확인하고 다시 실행하세요(실패한 설치는 처음부터 다시 합니다). PyTorch는 64비트 Python 3.10 ~ 3.14용만 나옵니다. 다른 버전이면 Python 3.13을 설치한 뒤 다시 실행하면 실행 파일이 그 버전을 골라 씁니다. Microsoft Store판 Python에서 문제가 나면 python.org 판을 설치하세요. `DLL` 오류는 [Visual C++ 재배포 패키지](https://aka.ms/vs/17/release/vc_redist.x64.exe) 설치 후 다시. 직접 실행하는 경우 오류 메시지에 나온 `pip install` 명령을 그대로 실행하세요. |
+| 설치 중 `No such file or directory` / 긴 경로(Long Path) 오류 | 폴더 경로가 너무 깁니다. 프로젝트 폴더를 `C:\pokemon`처럼 짧은 곳으로 옮겨 다시 실행하세요. |
+| `[ERROR] The pokechamp folder was not found next to this file.` | ZIP 압축을 모두 푼 폴더 안의 `run_ui.bat`을 실행하세요. |
+| 검은 창이 멈춘 것 같음 | 창 안을 마우스로 클릭하면 Windows가 출력을 멈춥니다(창 제목이 "선택"으로 시작). Esc를 누르세요. |
+| 첫 계산이 느림 | 첫 계산은 준비 때문에 몇 초 더 걸립니다. 계산 시간은 「도움말」 탭의 "계산 정밀도"를 보세요. |
+
+### 화면 구성
+
 텍스트를 직접 칠 필요 없이 **선택창만으로** 실전 배틀을 입력하면 AI가 할 행동을 계산해 줍니다.
 
 ```bash
 python -m pokechamp ui --open                 # 브라우저에서 http://127.0.0.1:8765
 python -m pokechamp ui --host 0.0.0.0         # 같은 Wi-Fi의 휴대폰에서 http://<PC의 IP>:8765 로 접속
+python -m pokechamp ui --port 8766            # 다른 포트
+python -m pokechamp ui --no-model             # 신경망 없이 (PyTorch 불필요, 더 약한 휴리스틱 AI)
 ```
 
 1. **추천 파티**: 팀 빌딩 AI가 진화시킨 추천 팀을 먼저 보여줍니다(포켓몬·도구·특성·성격·SP·기술,
@@ -206,6 +303,7 @@ tools/            Node.js 스크립트: Showdown 데이터 내보내기, 레퍼�
 tests/            pytest (Showdown 레퍼런스 배틀 재생 포함)
 examples/         어드바이저 입력 예시, 예시 팀
 models/           학습된 모델 / 진화한 팀 (있을 경우)
+run_ui.bat        배틀 도우미 실행 파일 (Windows, 더블클릭) / run_ui.sh (macOS·Linux) / run_ui.command (macOS 더블클릭)
 ```
 
 ### 데이터 갱신 / 엔진 재검증 (선택)

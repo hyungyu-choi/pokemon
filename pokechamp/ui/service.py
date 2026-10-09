@@ -15,6 +15,7 @@ import copy
 import json
 import os
 import random
+import sys
 import threading
 import time
 from functools import lru_cache
@@ -47,8 +48,18 @@ BOOST_KO = {'atk': '공격', 'def': '방어', 'spa': '특공', 'spd': '특방', 
 
 
 def _load_json(path):
-    with open(path, encoding='utf-8') as f:
+    with open(path, encoding='utf-8-sig') as f:  # -sig: also user files saved with a BOM (Windows Notepad)
         return json.load(f)
+
+
+def default_model_file(name: str) -> str | None:
+    """``models/<name>`` of the downloaded project folder (next to the ``pokechamp`` package), or of the current
+    directory (when the package was installed with ``pip install .`` and is run from the project folder)."""
+    for folder in (os.path.join(ROOT, 'models'), os.path.join(os.getcwd(), 'models')):
+        path = os.path.join(folder, name)
+        if os.path.isfile(path):
+            return path
+    return None
 
 
 @lru_cache(maxsize=1)
@@ -162,12 +173,13 @@ class AssistantService:
     def __init__(self, formatid: str = FORMAT, model_path: str | None = None, library_path: str | None = None,
                  seed: int = 0):
         self.formatid = formatid
-        self.model_path = model_path if model_path is not None else (MODEL_PATH if os.path.exists(MODEL_PATH)
-                                                                     else None)
-        self.library_path = library_path if library_path is not None else (
-            LIBRARY_PATH if os.path.exists(LIBRARY_PATH) else None)
+        # model_path '' = no neural network (heuristic AI); None = the default model if it is there
+        self.model_path = model_path if model_path is not None else default_model_file('battle_singles.pt')
+        self.library_path = library_path if library_path is not None else default_model_file('teams_singles.json')
+        self.model_error = None  # why the model could not be loaded (the heuristic AI is used then)
         self.seed = seed
         self._advisor = None
+        self._advisor_lock = threading.Lock()
         self._lock = threading.Lock()
         self._data = None
         # every AI request gets a generation number; a newer request (or /api/cancel) makes the running
@@ -179,17 +191,26 @@ class AssistantService:
     # ------------------------------------------------------------------
     @property
     def advisor(self):
-        if self._advisor is None:
-            from ..ai.advisor import Advisor
-            self._advisor = Advisor(model_path=self.model_path, library=self.library_path, seed=self.seed,
-                                    threads=self.torch_threads)
-        return self._advisor
+        with self._advisor_lock:
+            if self._advisor is None:
+                from ..ai.advisor import Advisor
+                try:
+                    self._advisor = Advisor(model_path=self.model_path, library=self.library_path, seed=self.seed,
+                                            threads=self.torch_threads)
+                except Exception as exc:  # torch missing / DLL load failure / damaged or incompatible checkpoint
+                    if not self.model_path:
+                        raise
+                    self.model_error = f'{type(exc).__name__}: {exc}'
+                    print(f'[주의] AI 모델({os.path.basename(self.model_path)})을 불러오지 못해 휴리스틱 AI로 '
+                          f'계산합니다: {self.model_error}', file=sys.stderr, flush=True)
+                    self.model_path = None
+                    self._advisor = Advisor(model_path=None, library=self.library_path, seed=self.seed)
+            return self._advisor
 
     def warmup(self):
         try:
             self.game_data()
-            if self.model_path:
-                _ = self.advisor.model
+            _ = self.advisor  # loads the network (or falls back to the heuristic AI)
             from ..ai.inference import _hypotheses
             _hypotheses()
         except Exception:  # warm-up is best effort
@@ -206,6 +227,7 @@ class AssistantService:
 
     def status(self) -> dict:
         return {'format': self.formatid, 'model': os.path.basename(self.model_path) if self.model_path else None,
+                'model_error': self.model_error,
                 'library': os.path.basename(self.library_path) if self.library_path else None,
                 'korean_names': bool(korean_names()['species'])}
 
@@ -280,7 +302,8 @@ class AssistantService:
     def recommended_teams(self, limit: int = 5) -> dict:
         """Teams recommended by the team-building AI (hall of fame first, then the best of the population)."""
         if not self.library_path:
-            return {'teams': [], 'note': 'no evolved team library (run: python -m pokechamp evolve)'}
+            return {'teams': [], 'note': '팀 라이브러리(models/teams_singles.json)를 찾지 못했습니다. 다운로드한 폴더에서 '
+                                         '실행하거나 --library 로 파일을 지정하세요 (직접 만들기: python -m pokechamp evolve).'}
         data = _load_json(self.library_path)
         out, seen = [], set()
         hof = list(reversed(data.get('hall_of_fame') or []))
@@ -375,10 +398,11 @@ class AssistantService:
         legal = session.legal('p1')
         heur = HeuristicAgent(0).preview_scores(view, legal)
         policy = [None] * len(legal)
-        if self.model_path:
+        model = self.advisor.model  # None: no network (or it could not be loaded) -> heuristic only
+        if model is not None:
             with self._lock:
                 from ..ai.nn_agent import NNAgent
-                probs, _v, _ = NNAgent(self.advisor.model).evaluate(view, req, legal)
+                probs, _v, _ = NNAgent(model).evaluate(view, req, legal)
             policy = [float(p) for p in probs]
         hmin, hmax = min(heur), max(heur)
         ranked = []
@@ -417,9 +441,10 @@ class AssistantService:
                 'cancelled': cancelled}
 
     def _battle_agent(self):
-        if self.model_path:
+        model = self.advisor.model
+        if model is not None:
             from ..ai.nn_agent import NNAgent
-            return NNAgent(self.advisor.model)
+            return NNAgent(model)
         from ..ai.heuristic import HeuristicAgent
         return HeuristicAgent(0)
 

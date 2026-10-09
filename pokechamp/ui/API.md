@@ -1,8 +1,11 @@
 # Battle assistant UI — API contract
 
 Server: `python -m pokechamp ui --port 8765` (standard library HTTP server, `pokechamp/ui/server.py`;
-logic in `pokechamp/ui/service.py`). The page is `pokechamp/ui/static/index.html`; other static files
-are served from `/static/<file>` (GET and HEAD). All JSON is UTF-8. POST bodies must be JSON objects (at most 2 MB).
+logic in `pokechamp/ui/service.py`; start-up checks and console messages in `pokechamp/ui/console.py`; launchers
+`run_ui.bat` / `run_ui.sh` at the project root). The page is `pokechamp/ui/static/index.html`; other static files
+are served from `/static/<file>` (GET and HEAD; only plain file names directly inside `static/`, with fixed
+Content-Types: `.html` text/html, `.js` text/javascript, `.css` text/css, `.json` application/json, all `charset=utf-8`).
+All JSON is UTF-8. POST bodies must be JSON objects (at most 2 MB).
 Errors: `{"error": "..."}` with HTTP 400 (malformed request, unknown name, impossible situation - the message says
 which), 413 (body too large) or 500. Format: singles only, `gen9championsbssregmc` (bring 6, pick 3, level 50).
 
@@ -19,7 +22,10 @@ answers, with what it has so far and `"cancelled": true`. The UI's "취소" butt
 `POST /api/cancel`, so the server stops computing right away; the next request does not wait for the cancelled one.
 
 ## GET /api/status
-`{"format": "gen9championsbssregmc", "model": "battle_singles.pt" | null, "library": "teams_singles.json" | null, "korean_names": bool}`
+`{"format": "gen9championsbssregmc", "model": "battle_singles.pt" | null, "model_error": null | "<why the model could not be loaded>", "library": "teams_singles.json" | null, "korean_names": bool}`
+
+`model` is null when the server runs without the neural network (`--no-model`, no `models/battle_singles.pt`, or the
+checkpoint could not be loaded - then `model_error` says why); the AI then uses the heuristic agent.
 
 ## GET /api/data  (~430 KB, cache it in the page)
 ```

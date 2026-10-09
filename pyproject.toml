@@ -10,6 +10,9 @@ requires-python = ">=3.10"
 dependencies = ["numpy"]
 
 [project.optional-dependencies]
+# The battle assistant UI (python -m pokechamp ui) and the neural-network AI need PyTorch (CPU is enough).
+# Install with: pip install -e ".[ui]"   (or just double-click run_ui.bat / run run_ui.sh, which installs it)
+ui = ["torch"]
 ai = ["torch"]
 test = ["pytest"]
 
@@ -17,7 +20,9 @@ test = ["pytest"]
 include = ["pokechamp*"]
 
 [tool.setuptools.package-data]
-pokechamp = ["data/*.json"]
+# ui/static: the battle assistant page. The trained models stay in models/ at the project root, so run the UI
+# from the downloaded folder (or pass --model / --library).
+pokechamp = ["data/*.json", "ui/static/*", "ui/*.md"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

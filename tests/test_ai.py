@@ -115,7 +115,7 @@ def test_network_forward_and_agent():
 
 def test_advisor_example():
     from pokechamp.ai.advisor import Advisor, parse_input
-    with open(os.path.join(ROOT, 'examples', 'advisor_state.json')) as f:
+    with open(os.path.join(ROOT, 'examples', 'advisor_state.json'), encoding='utf-8') as f:
         inp = parse_input(json.load(f))
     recs = Advisor(seed=0).recommend(inp, determinizations=2, depth=1)
     labels = [r.label for r in recs]

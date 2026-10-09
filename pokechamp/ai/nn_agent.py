@@ -8,16 +8,7 @@ from ..env.runner import AgentChoice
 from ..env.view import BattleView
 from .features import encode
 from .model import PolicyValueNet, collate_obs, joint_logits, pad_options, preview_logits
-
-
-def potential(view: BattleView) -> float:
-    """Material balance used for reward shaping: (our HP - their HP) / Pokemon brought, in [-1, 1]."""
-    def side_hp(side):
-        hp = sum(p.hp for p in side.pokemon if p.revealed and not p.fainted)
-        revealed = sum(1 for p in side.pokemon if p.revealed)
-        hp += max(0, side.team_size - revealed)  # unseen Pokemon are at full HP
-        return hp / max(1, side.team_size)
-    return side_hp(view.my_side) - side_hp(view.foe_side)
+from .shaping import potential  # noqa: F401  (re-exported: training imports it from here)
 
 
 class NNAgent:

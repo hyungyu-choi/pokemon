@@ -2704,7 +2704,7 @@ function renderHelp() {
     ['세부 수정', '「내 포켓몬」「상대 포켓몬」「필드」 카드에서 능력 변화, 상태이상, 메가진화, 구애 고정, 날씨/필드/벽 남은 턴 등을 언제든지 직접 고칠 수 있습니다. 상대의 도구·특성은 모르면 "모름"으로 두세요 — AI가 가능성을 추정합니다.'],
     ['스피드 관찰', '같은 우선도 기술끼리 상대가 먼저/늦게 행동했다는 정보는 상대 스피드(구애스카프 여부 등) 추정에 쓰입니다. 양쪽이 쓴 기술을 모두 골라야 기록되고, 메가진화·순풍·마비·스피드 랭크 변화·스피드 특성(쓱쓱 등)·구애스카프 상실이 끼면 AI가 잘못 추정하지 않도록 자동으로 기록하지 않습니다.'],
     ['저장', '입력한 내용은 이 브라우저에 자동 저장되어 새로고침해도 유지됩니다. 새 배틀을 시작할 때는 오른쪽 위 "새 배틀"을 누르세요 (팀은 유지). 실수로 초기화했다면 바로 뜨는 알림의 "되돌리기"를 누르세요.'],
-    ['휴대폰에서 쓰기', 'PC에서 "python -m pokechamp ui --host 0.0.0.0" 으로 실행한 뒤, 같은 Wi-Fi에 연결된 휴대폰 브라우저에서 http://<PC의 IP 주소>:8765 를 엽니다 (PC의 IP는 Windows "ipconfig", macOS/Linux "ip addr" 등으로 확인). 같은 네트워크의 누구나 접속할 수 있으니 집 등 믿을 수 있는 네트워크에서만 쓰세요.'],
+    ['휴대폰에서 쓰기', 'PC에서 "run_ui.bat --host 0.0.0.0" (macOS/Linux: "./run_ui.sh --host 0.0.0.0", 직접 실행: "python -m pokechamp ui --host 0.0.0.0") 으로 실행하면 검은 창에 휴대폰용 주소 (http://<PC의 IP 주소>:8765) 가 표시됩니다. 같은 Wi-Fi에 연결된 휴대폰 브라우저에서 그 주소를 여세요. Windows 방화벽 창이 뜨면 "허용"을 누르세요. 같은 네트워크의 누구나 접속할 수 있으니 집 등 믿을 수 있는 네트워크에서만 쓰세요.'],
   ];
   const local = /^(127\.|localhost|\[::1\])/.test(window.location.hostname);
   p.replaceChildren(
@@ -2719,7 +2719,7 @@ function renderHelp() {
     h('p', { class: 'muted small', id: 'help-value' }, '표 아래의 "현재 국면 승률 (신경망 즉석 추정)"은 신경망이 지금 국면만 보고 한 번에 낸 대략적인 값입니다. 시뮬레이션을 하지 않아 위의 행동별 승률과 다를 수 있으며, 행동을 고를 때는 행동별 시뮬레이션 승률을 보세요.')),
     card('상태', { id: 'status-card' }, st ? (st.error ? errBox(st.error) : h('dl', { class: 'kv' },
       h('dt', null, '포맷'), h('dd', null, st.format),
-      h('dt', null, '배틀 신경망'), h('dd', null, st.model || '없음 (휴리스틱 사용)'),
+      h('dt', null, '배틀 신경망'), h('dd', null, st.model || (st.model_error ? `불러오지 못함 (휴리스틱 사용): ${st.model_error}` : '없음 (휴리스틱 사용)')),
       h('dt', null, '팀 라이브러리'), h('dd', null, st.library || '없음'),
       h('dt', null, '한글 이름'), h('dd', null, st.korean_names ? '사용 가능' : '없음 (영어 이름 표시)'),
       h('dt', null, '데이터'), h('dd', null, `포켓몬 ${D.raw.species.length} · 기술 ${Object.keys(D.raw.moves).length} · 도구 ${D.raw.items.length}`),

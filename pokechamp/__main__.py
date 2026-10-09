@@ -38,7 +38,7 @@ def _agent_factory(spec: str):
 
 def _load_team(path: str):
     from .sim.teams import import_team
-    with open(path, encoding='utf-8') as f:
+    with open(path, encoding='utf-8-sig') as f:  # -sig: also files saved with a BOM (Windows Notepad)
         text = f.read()
     if text.lstrip().startswith('[') or text.lstrip().startswith('{'):
         data = json.loads(text)
@@ -118,7 +118,7 @@ def cmd_coevolve(args):
 
 def cmd_advise(args):
     from .ai.advisor import Advisor, format_recommendations, parse_input
-    with open(args.state, encoding='utf-8') as f:
+    with open(args.state, encoding='utf-8-sig') as f:
         inp = parse_input(json.load(f))
     model = args.model
     if model is None and os.path.exists(os.path.join('models', 'battle_singles.pt')) and inp.formatid.endswith('bssregmc'):
@@ -133,10 +133,37 @@ def cmd_advise(args):
 
 
 def cmd_ui(args):
-    from .ui.server import serve
+    from .ui import console
+    console.prepare_console()
+    print('배틀 도우미를 시작하는 중입니다...', flush=True)
+    from .ui.server import STATIC_DIR, serve
     from .ui.service import AssistantService
-    service = AssistantService(model_path=args.model, library_path=args.library)
-    serve(args.host, args.port, service, open_browser=args.open)
+    if not os.path.isfile(os.path.join(STATIC_DIR, 'index.html')):
+        print(f'\n[오류] 화면 파일이 없습니다: {os.path.join(STATIC_DIR, "index.html")}\n'
+              '  다운로드한 폴더(ZIP을 푼 폴더 전체)를 그대로 두고 그 폴더에서 run_ui.bat / run_ui.sh 를 실행하세요.\n',
+              file=sys.stderr, flush=True)
+        raise SystemExit(1)
+    for flag, path in (('--model', args.model), ('--library', args.library)):
+        if path and not os.path.isfile(path):
+            print(f'\n[오류] {flag} 로 지정한 파일을 찾을 수 없습니다: {path}\n', file=sys.stderr, flush=True)
+            raise SystemExit(1)
+    service = AssistantService(model_path='' if args.no_model else args.model, library_path=args.library)
+    # numpy is needed by every AI calculation, torch by the neural network: check before starting, so the
+    # problem is explained here instead of failing later in the browser
+    missing = console.missing_dependencies(need_torch=bool(service.model_path))
+    if missing:
+        print(console.dependency_message(missing), file=sys.stderr, flush=True)
+        raise SystemExit(1)
+    notes = []
+    if args.no_model:
+        notes.append('신경망 없이 (--no-model) 휴리스틱 AI로 계산합니다.')
+    elif not service.model_path:
+        notes += ['[주의] AI 모델 파일(models/battle_singles.pt)을 찾지 못해 더 약한 휴리스틱 AI로 계산합니다.',
+                  '   다운로드한 폴더에서 실행하거나 --model 로 파일을 지정하세요.']
+    if not service.library_path:
+        notes += ['[주의] 팀 라이브러리(models/teams_singles.json)를 찾지 못해 추천 파티가 비어 있습니다.',
+                  '   다운로드한 폴더에서 실행하거나 --library 로 파일을 지정하세요.']
+    serve(args.host, args.port, service, open_browser=args.open, notes=notes)
 
 
 def cmd_validate(args):
@@ -232,6 +259,8 @@ def main(argv=None):
     p.add_argument('--port', type=int, default=8765)
     p.add_argument('--model', help='policy/value checkpoint (default: models/battle_singles.pt)')
     p.add_argument('--library', help='evolved team library (default: models/teams_singles.json)')
+    p.add_argument('--no-model', action='store_true',
+                   help='do not use the neural network (weaker heuristic AI; PyTorch is not needed)')
     p.add_argument('--open', action='store_true', help='open the browser')
     p.set_defaults(func=cmd_ui)
 
@@ -258,4 +287,10 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
-    main()
+    if not __package__:
+        # started as a file ("python pokechamp/__main__.py ui"): import the package so its relative imports work
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        from pokechamp.__main__ import main as _package_main
+        _package_main()
+    else:
+        main()

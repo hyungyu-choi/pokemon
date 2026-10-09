@@ -1,0 +1,10 @@
+# Launchers: Windows cmd needs CRLF, sh needs LF (also in GitHub ZIP downloads and on Windows clones)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh text eol=lf
+*.command text eol=lf
+
+# Trained models and other binary files: never touch their bytes
+*.pt binary
+*.pth binary
+*.png binary
