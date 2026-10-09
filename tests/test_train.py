@@ -1,7 +1,6 @@
 """Tests of the training pipeline: value / critic targets, checkpoints, resume, time budget, signals, CLI."""
 import json
 import os
-import random
 import signal
 import time
 
@@ -11,10 +10,12 @@ import torch
 
 from pokechamp.ai import model as model_mod
 from pokechamp.ai import train as train_mod
+from pokechamp.ai.heuristic import HeuristicAgent
 from pokechamp.ai.model import PolicyValueNet, load_model, save_model
 from pokechamp.ai.nn_agent import NNAgent
-from pokechamp.ai.train import (StepBatch, TrainConfig, _forward_stats, _trajectories, compute_gae,
-                                compute_targets, pfsp_weight, ppo_update, predict_values, train)
+from pokechamp.ai.train import (RecordingAgent, StepBatch, TrainConfig, _forward_stats, _policy_eval, _trajectories,
+                                check_trajectory, compute_gae, compute_targets, pfsp_weight, ppo_update,
+                                predict_values, train)
 from pokechamp.env.runner import play_battle
 from pokechamp.teambuilder import RandomTeamGenerator, TeamValidator
 
@@ -187,8 +188,12 @@ def test_resume_round_trip(tmp_path):
     assert [s['path'] for s in st1['snapshots']] == ['iter0001.pt', 'iter0002.pt']
     assert st1['eval_history'] and st1['eval_history'][-1]['heuristic']['games'] == 2
 
+    # entries written after the last checkpoint (a crash) are dropped on resume: the iterations are redone
+    with open(out / 'log.jsonl', 'a') as f:
+        f.write(json.dumps({'iter': 3, 'seed': -1}) + '\n' + json.dumps({'eval': {'iter': 3}}) + '\n')
     lines2 = []
     train(_tiny_cfg(out, iters=3), log=lines2.append)
+    assert any('removed 2 log.jsonl entries' in line for line in lines2)
     assert any(line.startswith('[resume]') for line in lines2)
     st2 = torch.load(out / 'state.pt', map_location='cpu', weights_only=False)
     assert st2['it'] == 3 and st2['counters']['games'] == 12 and st2['counters']['sessions'] == 2
@@ -219,7 +224,7 @@ def test_resume_from_sync_dir_and_rolling_snapshots(tmp_path):
 def test_time_budget_stops_cleanly(tmp_path):
     out = tmp_path / 'run'
     lines = []
-    budget = 20.0
+    budget = 12.0
     t0 = time.time()
     train(_tiny_cfg(out, iters=1000, eval_every=1000, time_budget_h=budget / 3600), log=lines.append)
     took = time.time() - t0
@@ -307,3 +312,82 @@ def test_cli_presets_and_config(tmp_path):
         cfg_of('--config', '{"no_such_option": 1}')
     with pytest.raises(SystemExit):
         build_parser().parse_args(['train', '--workers', '0'])
+
+
+# ---------------------------------------------------------------------------
+# actor / learner contract, schedules, budget, validation, sync helpers
+
+def test_trajectory_contract():
+    """Records from the current actors (PPO self-play and behaviour cloning) follow the documented format;
+    malformed records are rejected with a readable message; collation and _policy_eval stay on the model's
+    device."""
+    model = _tiny(True)
+    trajs = _self_play_trajs(model, n_games=1)
+    for tr in trajs:
+        check_trajectory(tr)
+    gen = RandomTeamGenerator(4)
+    r = play_battle(gen.random_team(), gen.random_team(), RecordingAgent(HeuristicAgent(1, 0.05)),
+                    RecordingAgent(HeuristicAgent(2, 0.05)), seed=[4, 3, 2, 1], record=True, max_turns=30)
+    bc = _trajectories(r, ('p1', 'p2'))
+    for tr in bc:
+        check_trajectory(tr, need_logp=False)
+    with pytest.raises(ValueError, match='logp'):
+        check_trajectory(bc[0])
+    step = trajs[0]['steps'][1]
+    bad = [dict(step, obs=dict(step['obs'], mon=step['obs']['mon'].astype(np.float64))),
+           dict(step, idx=len(step['legal'])), dict(step, kind=2)]
+    for b in bad:
+        with pytest.raises(ValueError):
+            check_trajectory({'z': 1.0, 'steps': [b]})
+    with pytest.raises(ValueError, match='z'):
+        check_trajectory({'z': 0.5, 'steps': []})
+    sb = StepBatch(trajs, 'cpu')
+    assert all(t.device.type == 'cpu' for t in [sb.kind, sb.combos, sb.options, sb.z, *sb.obs.values()])
+    logp, ent, value, agree = _policy_eval(model, trajs[0]['steps'])
+    assert logp.device == next(model.parameters()).device and logp.shape == (len(trajs[0]['steps']),)
+
+
+def test_lr_and_shaping_schedules(tmp_path):
+    t = train_mod.Trainer(_tiny_cfg(tmp_path / 'r', iters=11, lr=1e-3, lr_final=1e-4, shaping=1.0,
+                                    shaping_final=0.0, shaping_anneal_iters=4), log=lambda m: None)
+    assert t.lr_at(1) == pytest.approx(1e-3) and t.lr_at(11) == pytest.approx(1e-4)
+    assert t.lr_at(6) == pytest.approx(5.5e-4)
+    assert [t.shaping_at(i) for i in (1, 3, 5, 50)] == pytest.approx([1.0, 0.5, 0.0, 0.0])
+    plain = train_mod.Trainer(_tiny_cfg(tmp_path / 'p'), log=lambda m: None)
+    assert plain.lr_at(7) == plain.cfg.lr and plain.shaping_at(7) == plain.cfg.shaping
+
+
+def test_budget_check_uses_measured_durations(tmp_path):
+    t = train_mod.Trainer(_tiny_cfg(tmp_path / 'r', time_budget_h=1.0), log=lambda m: None)
+    t.deadline = time.time() + 1000
+    t.iter_seconds, t.last_iter_seconds, t.eval_seconds = 300.0, 400.0, 400.0
+    assert t._budget_allows()          # 1.1 * (400 + 400) + 60 < 1000
+    t.last_iter_seconds = 600.0         # a slow last iteration counts
+    assert not t._budget_allows()
+    t.deadline = None
+    assert t._budget_allows()
+
+
+def test_config_validation():
+    with pytest.raises(ValueError, match='opponents'):
+        train_mod.build_config('default', {'opponents': {'self': 0.5, 'snapshots': 0.5}})
+    with pytest.raises(ValueError, match='team_mix'):
+        train_mod.build_config('default', {'team_mix': {'random': 1, 'evolved': 1}})
+    with pytest.raises(ValueError, match='resume'):
+        train_mod.build_config('default', {'resume': 'yes'})
+    with pytest.raises(ValueError, match='preset'):
+        train_mod.build_config('gpu')
+    cfg = train_mod.build_config('cloud', {'team_mix': {'random': 1.0, 'usage': 0.0}})
+    assert cfg.team_mix == {'random': 1.0, 'usage': 0.0}
+
+
+def test_copy_atomic_on_drives_without_copystat(tmp_path, monkeypatch):
+    src, dst = tmp_path / 'a.pt', tmp_path / 'drive' / 'a.pt'
+    src.write_bytes(b'x' * 100)
+
+    def refuse(*a, **k):
+        raise PermissionError('operation not permitted')
+    monkeypatch.setattr(train_mod.shutil, 'copystat', refuse)
+    assert train_mod.copy_atomic(str(src), str(dst))
+    assert dst.read_bytes() == src.read_bytes()
+    assert os.listdir(dst.parent) == ['a.pt']

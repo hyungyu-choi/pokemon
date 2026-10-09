@@ -32,30 +32,38 @@ actors only need the policy.
 Trajectory record format (what an actor must produce)
 -----------------------------------------------------
 A rollout job returns ``(trajectories, stats)``.  ``trajectories`` holds one entry per learner-controlled side
-per game (self-play games give two)::
+per game (self-play games give two; their order does not matter)::
 
     {'z': float,                 # final result from this side: +1 win, -1 loss, 0 tie / turn limit / error
-     'steps': [step, ...]}       # this side's decisions in battle order (team preview first)
+                                 #   (a truncated game is treated as terminal with z = 0, no bootstrapping)
+     'steps': [step, ...]}       # this side's decisions in battle order (team preview first); GAE runs
+                                 #   backwards over this list, so it must be complete and in order
 
     step = {
-      'obs':    dict,            # features.encode(view, request): numpy arrays ids [12,3] int64,
-                                 #   mon [12,MON_F] f32, move_ids [12,4] int64, move [12,4,MOVE_F] f32,
-                                 #   glob [GLOB_F] f32, active_idx [2] int64
+      'obs':    dict,            # features.encode(view, request), numpy arrays (see obs_spec()):
+                                 #   ids [12,3] int64, mon [12,MON_F] f32, move_ids [12,4] int64,
+                                 #   move [12,4,MOVE_F] f32, glob [GLOB_F] f32, active_idx [2] int64
       'legal':  list[tuple],     # the options the agent chose from, in order: move decisions = joint
-                                 #   slot actions (env.actions, -1 = pass); team preview = team indices
+                                 #   slot actions, tuples of 2 ints (env.actions, -1 = pass); team preview =
+                                 #   tuples of up to 4 team indices (brought Pokemon, leads first)
       'idx':    int,             # index of the chosen option in 'legal'
       'kind':   int,             # 0 move decision, 1 team preview
-      'n_lead': int,             # active slots (view.n_active), counts the leads of a preview option
-      'phi':    float,           # shaping potential of the observer at this decision
-      'logp':   float,           # log-probability of the chosen option under the acting policy (PPO only;
-                                 #   sampling at temperature 1 over 'legal')
-      'value':  float,           # optional, ignored by the learner
+      'n_lead': int,             # active slots (view.n_active): the first n_lead entries of a preview option
+                                 #   are the leads (required for team preview)
+      'phi':    float,           # shaping.potential(view) of this side at this decision (HP balance, -1..1)
+      'logp':   float,           # log-probability of the chosen option under the policy that acted, i.e. the
+                                 #   weights shipped for this iteration, sampling at temperature 1 over
+                                 #   'legal' (PPO only; behaviour-cloning records omit it)
+      'value':  float,           # optional, ignored: the learner recomputes critic values itself
     }
 
     stats = {'games': int, 'turns': int, 'errors': int,
              'by_opp':  {'heuristic' | 'snapshot': [score, games]},   # learner score: win 1, tie 0.5
              'by_snap': {snapshot path: [score, games]},               # results per snapshot (PFSP)
              'teams':   {source: count}}
+
+:func:`check_trajectory` validates one record against this contract (the learner checks a sample of every
+iteration); :class:`StepBatch` collates a list of records into device tensors once per iteration.
 
 Files in ``cfg.out``
 --------------------
@@ -102,6 +110,8 @@ from .nn_agent import NNAgent, potential
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 MODELS_DIR = os.path.join(REPO_ROOT, 'models')
 DEFAULT_TEAM_MIX = {'random': 0.5, 'pool': 0.25, 'usage': 0.25}
+TEAM_SOURCES = ('random', 'pool', 'usage')
+OPPONENT_KINDS = ('self', 'snapshot', 'heuristic')
 STATE_VERSION = 1
 
 
@@ -202,7 +212,39 @@ def build_config(preset: str = 'default', config=None, overrides: dict | None = 
     unknown = sorted(set(values) - names)
     if unknown:
         raise ValueError(f"unknown training option(s): {', '.join(unknown)}; valid: {', '.join(sorted(names))}")
-    return TrainConfig(**values)
+    cfg = TrainConfig(**values)
+    validate_config(cfg)
+    return cfg
+
+
+def _check_weights(name: str, weights, allowed):
+    if not isinstance(weights, dict) or not weights:
+        raise ValueError(f'{name} must be a non-empty JSON object of weights, e.g. {{"{allowed[0]}": 1.0}}')
+    unknown = sorted(set(weights) - set(allowed))
+    if unknown:
+        raise ValueError(f"{name}: unknown key(s) {', '.join(unknown)} (use {', '.join(allowed)})")
+    try:
+        values = [float(w) for w in weights.values()]
+    except (TypeError, ValueError):
+        raise ValueError(f'{name}: weights must be numbers') from None
+    if min(values) < 0 or sum(values) <= 0:
+        raise ValueError(f'{name}: weights must be >= 0 with a positive sum')
+
+
+def validate_config(cfg: TrainConfig):
+    """Reject settings that would otherwise fail late or silently do something else (e.g. a misspelt
+    opponent kind).  Raises ValueError with a readable message."""
+    _check_weights('opponents', cfg.opponents, OPPONENT_KINDS)
+    if cfg.team_mix is not None:
+        _check_weights('team_mix', cfg.team_mix, TEAM_SOURCES)
+    if cfg.resume not in ('auto', 'never'):
+        raise ValueError(f"resume must be 'auto' or 'never', not {cfg.resume!r}")
+    if str(cfg.device or 'auto').lower().split(':')[0] not in ('auto', 'cpu', 'cuda'):
+        raise ValueError(f"device must be 'auto', 'cpu' or 'cuda', not {cfg.device!r}")
+    if cfg.games_per_iter < 1 or cfg.iters < 0 or cfg.ppo_epochs < 1:
+        raise ValueError('games_per_iter and ppo_epochs must be >= 1, iters >= 0')
+    if cfg.time_budget_h is not None and cfg.time_budget_h <= 0:
+        raise ValueError('time_budget_h must be positive (or null for no limit)')
 
 
 def repo_path(path: str | None) -> str | None:
@@ -320,20 +362,24 @@ class TeamSampler:
         self.rng = random.Random(seed)
         self.gen = RandomTeamGenerator(self.rng.randrange(1 << 30), formatid=formatid)
         self.validator = TeamValidator(formatid)
+        if mix is None:
+            mix = {'pool': pool_prob, 'random': 1.0 - pool_prob}
+        unknown = set(mix) - set(TEAM_SOURCES)
+        if unknown:
+            raise ValueError(f"unknown team source(s) {sorted(unknown)} (use {', '.join(TEAM_SOURCES)})")
+        wanted = {k for k, w in mix.items() if float(w) > 0}
         self.pool = []
-        if pool_path and os.path.exists(pool_path):
+        if 'pool' in wanted and pool_path and os.path.exists(pool_path):
             with open(pool_path, encoding='utf-8-sig') as f:
                 data = json.load(f)
             teams = data['teams'] if isinstance(data, dict) else data
             self.pool = [t for t in teams if self.legal(t)]
         self.usage = None
-        if usage_path and os.path.exists(usage_path):
+        if 'usage' in wanted and usage_path and os.path.exists(usage_path):
             try:
                 self.usage = UsageTeamBuilder(formatid, usage_path, pool_path)
             except Exception as exc:  # optional source: train without it
                 print(f'[teams] usage statistics not used ({type(exc).__name__}: {exc})', file=sys.stderr)
-        if mix is None:
-            mix = {'pool': pool_prob, 'random': 1.0 - pool_prob}
         available = {'random': True, 'pool': bool(self.pool), 'usage': self.usage is not None}
         self.mix = {k: float(w) for k, w in mix.items() if available.get(k) and float(w) > 0}
         if not self.mix:
@@ -480,6 +526,47 @@ def _trajectories(result, learner_sides):
             z = 1.0 if result.winner == sid else -1.0
         out.append({'steps': [{'obs': d.obs, 'legal': d.legal, **d.info} for d in steps], 'z': z})
     return out
+
+
+def obs_spec() -> dict:
+    """Shape and dtype of every observation array (``features.encode``), as the learner expects them."""
+    from ..env.actions import N_MOVES
+    from .features import GLOB_F, MON_F, MOVE_F, N_MONS
+    return {'ids': ((N_MONS, 3), np.int64), 'mon': ((N_MONS, MON_F), np.float32),
+            'move_ids': ((N_MONS, N_MOVES), np.int64), 'move': ((N_MONS, N_MOVES, MOVE_F), np.float32),
+            'glob': ((GLOB_F,), np.float32), 'active_idx': ((2,), np.int64)}
+
+
+def check_trajectory(traj: dict, need_logp: bool = True):
+    """Raise ValueError when ``traj`` does not follow the trajectory record format of the module docstring
+    (the contract between actors and the learner; the learner checks a sample of every iteration)."""
+    if not isinstance(traj, dict) or 'steps' not in traj or 'z' not in traj:
+        raise ValueError("a trajectory is a dict {'z': float, 'steps': [...]}")
+    if float(traj['z']) not in (-1.0, 0.0, 1.0):
+        raise ValueError(f"trajectory z must be +1, -1 or 0, not {traj['z']!r}")
+    spec = obs_spec()
+    for t, s in enumerate(traj['steps']):
+        where = f'step {t}'
+        for key in ('obs', 'legal', 'idx', 'kind', 'phi') + (('logp',) if need_logp else ()):
+            if key not in s:
+                raise ValueError(f'{where}: missing {key!r}')
+        for key, (shape, dtype) in spec.items():
+            a = s['obs'].get(key)
+            if not isinstance(a, np.ndarray) or a.shape != shape or a.dtype != dtype:
+                got = (a.shape, a.dtype) if isinstance(a, np.ndarray) else type(a).__name__
+                raise ValueError(f"{where}: obs[{key!r}] must be a numpy {np.dtype(dtype).name} array of shape "
+                                 f"{shape}, got {got}")
+        if s['kind'] not in (0, 1):
+            raise ValueError(f"{where}: kind must be 0 (move) or 1 (team preview), not {s['kind']!r}")
+        if not s['legal'] or not 0 <= int(s['idx']) < len(s['legal']):
+            raise ValueError(f"{where}: idx {s['idx']!r} is not an index into its {len(s['legal'])} legal options")
+        width = 2 if s['kind'] == 0 else 4
+        if s['kind'] == 1 and int(s.get('n_lead', 0)) < 1:
+            raise ValueError(f'{where}: team-preview steps need n_lead (number of active slots, >= 1)')
+        if any(len(o) > width for o in s['legal']):
+            raise ValueError(f'{where}: options must be tuples of at most {width} ints')
+        if need_logp and not float(s['logp']) <= 1e-4:  # NaN fails too
+            raise ValueError(f"{where}: logp must be a log-probability (<= 0), not {s['logp']!r}")
 
 
 def _merge_stats(total: dict, s: dict):
@@ -723,9 +810,11 @@ def _forward_stats(model, b: StepBatch, rows: torch.Tensor, shaping: float):
     return logp, ent, value, critic, agree
 
 
-def _policy_eval(model, batch_steps, device='cpu'):
-    """-> (logp of the chosen options [B], entropy [B], value [B], greedy agreement [B]) for a list of steps."""
-    b = StepBatch([{'steps': batch_steps, 'z': 0.0}], device)
+def _policy_eval(model, batch_steps, device=None):
+    """-> (logp of the chosen options [B], entropy [B], value [B], greedy agreement [B]) for a list of steps.
+
+    The steps are collated on ``device`` (default: the model's device), so this works for a CUDA model too."""
+    b = StepBatch([{'steps': batch_steps, 'z': 0.0}], device if device is not None else _model_device(model))
     logp, ent, value, _critic, agree = _forward_stats(model, b, b.rows(0, b.n), 0.0)
     return logp, ent, value, agree
 
@@ -874,12 +963,28 @@ def copy_atomic(src: str, dst: str, only_if_changed: bool = True) -> bool:
     os.makedirs(os.path.dirname(os.path.abspath(dst)), exist_ok=True)
     tmp = f'{dst}.tmp{os.getpid()}'
     try:
-        shutil.copy2(src, tmp)
+        shutil.copyfile(src, tmp)
+        try:  # keep the modification time (network drives may refuse; the copy is still good)
+            shutil.copystat(src, tmp)
+        except OSError:
+            pass
         os.replace(tmp, dst)
     finally:
         if os.path.exists(tmp):
             os.remove(tmp)
     return True
+
+
+def write_text_atomic(path: str, text: str):
+    """Write a text file through a temporary file + rename (never half-written)."""
+    tmp = f'{path}.tmp{os.getpid()}'
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            f.write(text)
+        os.replace(tmp, path)
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
 
 
 def _fmt_s(seconds) -> str:
@@ -899,6 +1004,7 @@ class Trainer:
     """One training run: setup / resume, behaviour cloning, PPO iterations, evaluations, checkpoints."""
 
     def __init__(self, cfg: TrainConfig, log=print):
+        validate_config(cfg)
         self.cfg = cfg
         self._print = log
         self.out = cfg.out
@@ -926,7 +1032,8 @@ class Trainer:
         self.incumbent = None         # file name in out
         self.incumbent_source = None
         self._synced = {}             # name -> (size, mtime_ns) of the copy last mirrored to sync_dir
-        self.iter_seconds = None
+        self.iter_seconds = None      # moving average of the iteration duration (rollout + update)
+        self.last_iter_seconds = None
         self.eval_seconds = None
         self.games_per_s = None
         self.last_ckpt = time.time()
@@ -946,6 +1053,27 @@ class Trainer:
     def _jsonl(self, entry: dict):
         with open(self.log_path, 'a', encoding='utf-8') as f:
             f.write(json.dumps(entry) + '\n')
+
+    def _trim_jsonl(self, it: int) -> int:
+        """Drop log.jsonl entries of iterations after ``it`` (written after the checkpoint a resumed run starts
+        from; they are played again), so every iteration appears once.  Returns the number dropped."""
+        if not os.path.exists(self.log_path):
+            return 0
+        keep, dropped = [], 0
+        with open(self.log_path, encoding='utf-8') as f:
+            for line in f:
+                try:
+                    entry = json.loads(line)
+                    n = entry['eval']['iter'] if 'eval' in entry else entry.get('iter')
+                except (ValueError, KeyError, TypeError):
+                    n = None
+                if n is not None and n > it:
+                    dropped += 1
+                else:
+                    keep.append(line if line.endswith('\n') else line + '\n')
+        if dropped:
+            write_text_atomic(self.log_path, ''.join(keep))
+        return dropped
 
     def _path(self, name: str) -> str:
         return os.path.join(self.out, name)
@@ -1036,8 +1164,7 @@ class Trainer:
         self.wall_base = self.counters['wall_seconds']
         self._setup_incumbent()
         self._setup_eval_set()
-        with open(self._path('config.json'), 'w', encoding='utf-8') as f:
-            json.dump(asdict(cfg), f, indent=2)
+        write_text_atomic(self._path('config.json'), json.dumps(asdict(cfg), indent=2) + '\n')
         m = self.model.config
         dev = self.device.type
         if dev == 'cuda':
@@ -1061,7 +1188,7 @@ class Trainer:
             src = os.path.join(sync, name)
             if '.tmp' in name or not os.path.isfile(src):
                 continue
-            if name.endswith(('.pt', '.jsonl', '.json', '.log')):
+            if name.endswith(('.pt', '.jsonl', '.json', '.log')) or name == self.cfg.log_file:
                 copy_atomic(src, self._path(name))
                 n += 1
         self.log(f'[resume] {self.out} had no state.pt: restored {n} files from {sync}')
@@ -1093,6 +1220,9 @@ class Trainer:
             except (ValueError, KeyError) as exc:
                 self.log(f'[resume] optimizer state not restored ({exc})')
         self.it = int(st['it'])
+        dropped = self._trim_jsonl(self.it)
+        if dropped:
+            self.log(f'[resume] removed {dropped} log.jsonl entries written after the checkpoint (they are redone)')
         self.counters.update(st.get('counters', {}))
         self.best = st.get('best', self.best)
         self.snapshots = []
@@ -1216,12 +1346,12 @@ class Trainer:
         keep = self.cfg.snapshot_keep
         for s in (rolling[:-keep] if keep > 0 else []):
             self.snapshots.remove(s)
-            for folder in (self.out, self.cfg.sync_dir):
-                if folder:
-                    try:
-                        os.remove(os.path.join(folder, s['path']))
-                    except OSError:
-                        pass
+            try:
+                os.remove(self._path(s['path']))
+            except OSError:
+                pass
+        # the copies in sync_dir are removed by sync(), after the new state.pt (which no longer refers to
+        # them) has been mirrored: the mirror always holds every snapshot its state.pt lists
 
     # -- phases -----------------------------------------------------------------------------------------------
     def _generator(self, salt: int) -> torch.Generator:
@@ -1261,6 +1391,8 @@ class Trainer:
         upd, diag = {}, {}
         samples = sum(len(tr['steps']) for tr in trajs)
         if samples:
+            for tr in trajs[:1] + trajs[-1:]:  # cheap contract check of the actors' records
+                check_trajectory(tr)
             b = StepBatch(trajs, self.device)
             del trajs
             crit, val = predict_values(self.model, b, shaping, chunk=self.minibatch)
@@ -1281,6 +1413,7 @@ class Trainer:
         self.counters['samples'] += samples
         dt = t2 - t0
         self.iter_seconds = dt if self.iter_seconds is None else 0.7 * self.iter_seconds + 0.3 * dt
+        self.last_iter_seconds = dt
         elapsed = time.time() - self.session_start
         left = self.deadline - time.time() if self.deadline else None
         eta = left if left is not None else ((cfg.iters - it) * self.iter_seconds if cfg.iters < 100000 else None)
@@ -1298,6 +1431,8 @@ class Trainer:
                  f"elapsed {_fmt_s(elapsed)} {'left' if left is not None else 'eta'} {_fmt_s(eta)}")
         if gpu is not None:
             line += f' | gpu {gpu:.0f}MB'
+        if stats.get('errors'):
+            line += f" | {stats['errors']} games ended by an engine error"
         self.log(line)
         entry = {'iter': it, 'seed': seed, 'games': games, 'samples': samples, 'turns': stats.get('turns', 0),
                  'errors': stats.get('errors', 0), 'games_per_s': games / max(1e-6, dt),
@@ -1414,8 +1549,10 @@ class Trainer:
         the final save?  Uses the measured iteration / evaluation durations."""
         if not self.deadline:
             return True
-        margin = min(60.0, 0.05 * self.cfg.time_budget_h * 3600)
-        need = (self.iter_seconds or 0.0) + (self._eval_estimate() if self.cfg.eval_games > 0 else 0.0) + margin
+        margin = min(60.0, 0.05 * self.cfg.time_budget_h * 3600)  # final save, checkpoint and sync
+        it_s = max(self.iter_seconds or 0.0, self.last_iter_seconds or 0.0)
+        ev_s = self._eval_estimate() if self.cfg.eval_games > 0 else 0.0
+        need = 1.1 * (it_s + ev_s) + margin
         return time.time() + need <= self.deadline
 
     def run(self) -> str:
