@@ -299,9 +299,31 @@ python -m pokechamp train --out runs/singles2 --init runs/singles/best.pt \
 python -m pokechamp coevolve --out runs/coevolve --rounds 5 --generations 30 --iters 100
 ```
 
-* 행동 복제 → PPO: 상대는 현재 정책(자기대전), 과거 스냅샷, 휴리스틱 AI를 섞은 리그입니다.
+* 행동 복제 → PPO: 상대는 현재 정책(자기대전), 과거 스냅샷(지는 상대일수록 자주 고름), 휴리스틱 AI를
+  섞은 리그이고, 팀은 랜덤 팀·진화한 팀(`models/teams_singles.json`)·사용률 통계 기반 세트를 섞습니다.
   보상은 승패(+1/−1)에 HP 차이 기반 포텐셜 셰이핑을 더한 것(최적 정책은 바뀌지 않음)입니다.
-  `runs/<이름>/log.jsonl`에 반복마다 손실·상대별 승률이, 주기적으로 휴리스틱 상대 승률 평가가 기록됩니다.
+  가치 헤드는 셰이핑 없는 승패로만 학습되어 승률(`0.5 × (값 + 1)`)로 읽을 수 있고, PPO 기준선은
+  별도의 critic 헤드가 맡습니다. `runs/<이름>/log.jsonl`에 반복마다 처리량·손실·상대별 승률이,
+  주기적으로 고정된 평가 세트에서 휴리스틱 및 기존 모델(`models/battle_singles.pt`) 상대 승률이 기록됩니다.
+
+### 긴 학습 (GPU / 클라우드 / 내 PC): `--preset cloud`
+
+```bash
+# 배포된 모델에서 이어서 학습. 11.5시간 안에 마지막 평가·저장까지 끝내고 멈춤
+python -m pokechamp train --preset cloud --out runs/cloud --time-budget-h 11.5
+# 같은 명령을 다시 실행하면 멈춘 곳(runs/cloud/state.pt)부터 이어서 학습 (--resume auto)
+# Colab: 체크포인트를 Google Drive에도 복사 -> 런타임이 초기화돼도 Drive에서 이어서 학습
+python -m pokechamp train --preset cloud --out runs/cloud --sync-dir /content/drive/MyDrive/pokechamp_run
+```
+
+* GPU가 있으면 자동으로 사용합니다(`--device auto|cpu|cuda`). 배틀은 CPU 작업자 프로세스가 진행합니다
+  (`--workers auto` = CPU 스레드 수).
+* Ctrl-C(또는 SIGTERM): 진행 중인 반복을 마치고 저장한 뒤 종료합니다. 한 번 더 누르면 즉시 종료합니다.
+* 설정 우선순위: 기본값 < `--preset` < `--config` (JSON 파일 또는 `'{"lr": 2e-4}'` 같은 JSON) < 명령줄 옵션.
+* 결과 폴더: `best.pt`(평가 점수 = 휴리스틱 상대 승률과 기존 모델 상대 승률의 평균이 가장 높은 모델),
+  `latest.pt`, `final.pt`, `state.pt`(이어하기용), `iterNNNN.pt`(최근 스냅샷), `log.jsonl`, `train.log`.
+  `best.pt`를 `models/battle_singles.pt`로 바꾸기 전에 `python -m pokechamp battle --p1 runs/cloud/best.pt
+  --p2 models/battle_singles.pt -n 1000`으로 한 번 더 확인하세요.
 * 팀 진화: 개체군 팀들이 서로, 그리고 명예의 전당(역대 최고 팀)·새 랜덤 팀과 싸웁니다. 상위 팀은
   보존되고, 나머지는 돌연변이(기술·도구·특성·성격·SP 변경, 포켓몬 교체)와 교차로 채워집니다.
   이긴 팀에 있던 기술/도구/특성/포켓몬은 이후 더 자주 제안됩니다. 결과물:

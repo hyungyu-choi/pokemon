@@ -51,6 +51,11 @@ GLOB_F = (len(WEATHERS) + 1 + len(TERRAINS) + 1 + len(PSEUDO) + 1 + 2 * len(SIDE
 
 UNK = 1  # id 0 = padding / none, 1 = unknown
 
+# Version of the observation layout produced by :func:`encode`.  It is stored in every model checkpoint
+# (``config['feature_version']``; checkpoints without it are version 1) and checked when loading, so a model
+# is never fed features it was not trained on.  Bump it whenever the meaning or size of any array changes.
+FEATURE_VERSION = 1
+
 
 @lru_cache(maxsize=None)
 def vocab() -> dict:

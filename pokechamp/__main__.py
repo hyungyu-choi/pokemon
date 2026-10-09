@@ -2,7 +2,7 @@
 
 Commands
   battle     play battles between agents and report the results (optionally save logs)
-  train      train the battle AI (behaviour cloning + PPO self-play)
+  train      train the battle AI (behaviour cloning + PPO self-play; --preset cloud for long GPU runs)
   evolve     evolve teams starting from random teams
   coevolve   alternate team evolution and policy training (teams and battle AI improve together)
   advise     recommend the best action for a live battle situation (JSON state file)
@@ -78,13 +78,46 @@ def cmd_battle(args):
     print(f"{args.p1} vs {args.p2} ({args.format}): {r}")
 
 
+def _workers_arg(text: str):
+    """--workers: 'auto' (= number of CPU threads) or a positive number."""
+    if str(text).lower() == 'auto':
+        return 'auto'
+    try:
+        n = int(text)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"expected 'auto' or a number, got {text!r}") from None
+    if n < 1:
+        raise argparse.ArgumentTypeError('need at least 1 worker')
+    return n
+
+
+# train flag -> TrainConfig field (flags left out on the command line keep the preset / --config value)
+TRAIN_FLAGS = {'format': 'formatid', 'out': 'out', 'init': 'init', 'workers': 'workers', 'bc_games': 'bc_games',
+               'bc_epochs': 'bc_epochs', 'iters': 'iters', 'games_per_iter': 'games_per_iter', 'lr': 'lr',
+               'eval_every': 'eval_every', 'eval_games': 'eval_games', 'team_pool': 'team_pool', 'width': 'd',
+               'layers': 'layers', 'seed': 'seed', 'resume': 'resume', 'time_budget_h': 'time_budget_h',
+               'sync_dir': 'sync_dir', 'device': 'device'}
+
+
+def train_config_from_args(args):
+    """TrainConfig from parsed ``train`` arguments: defaults < --preset < --config < explicit flags."""
+    from .ai.train import build_config
+    overrides = {}
+    for flag, name in TRAIN_FLAGS.items():
+        value = getattr(args, flag, None)
+        if value is not None:
+            overrides[name] = value
+    if isinstance(overrides.get('init'), str) and overrides['init'].lower() in ('none', ''):
+        overrides['init'] = None
+    try:
+        return build_config(args.preset, args.config, overrides)
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f'train: {exc}') from None
+
+
 def cmd_train(args):
-    from .ai.train import TrainConfig, train
-    cfg = TrainConfig(formatid=args.format, out=args.out, workers=args.workers, bc_games=args.bc_games,
-                      bc_epochs=args.bc_epochs, iters=args.iters, games_per_iter=args.games_per_iter,
-                      lr=args.lr, eval_every=args.eval_every, eval_games=args.eval_games, team_pool=args.team_pool,
-                      d=args.width, layers=args.layers, seed=args.seed)
-    train(cfg, init=args.init)
+    from .ai.train import train
+    train(train_config_from_args(args))
 
 
 def cmd_evolve(args):
@@ -182,7 +215,21 @@ def cmd_randomteam(args):
     print(export_team(RandomTeamGenerator(args.seed, formatid=args.format).random_team()), end='')
 
 
-def main(argv=None):
+TRAIN_HELP = """Train the battle AI: behaviour cloning + PPO self-play (default preset) or a long resumable run
+that continues from the shipped model (--preset cloud).
+
+Settings are combined as: built-in defaults < --preset < --config JSON < the flags given here.
+Ctrl-C (or SIGTERM) finishes the current iteration, saves and exits; a second Ctrl-C exits at once.
+Running the same command again continues where it stopped (--resume auto).
+
+Examples
+  python -m pokechamp train --preset cloud --out runs/cloud --time-budget-h 11.5
+  python -m pokechamp train --preset cloud --out runs/cloud --sync-dir /content/drive/MyDrive/pokechamp_run
+  python -m pokechamp train --out runs/fresh --bc-games 3000 --iters 200 --workers 4
+"""
+
+
+def build_parser():
     ap = argparse.ArgumentParser(prog='python -m pokechamp', description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
@@ -200,22 +247,34 @@ def main(argv=None):
     p.add_argument('--seed', type=int, default=0)
     p.set_defaults(func=cmd_battle)
 
-    p = sub.add_parser('train', help='train the battle AI')
-    p.add_argument('--format', default='gen9championsbssregmc', help=fmt_help)
-    p.add_argument('--out', default='runs/battle')
-    p.add_argument('--init', help='continue from this checkpoint (skips behaviour cloning)')
-    p.add_argument('--workers', type=int, default=max(1, (os.cpu_count() or 2) - 1))
-    p.add_argument('--bc-games', type=int, default=3000)
-    p.add_argument('--bc-epochs', type=int, default=4)
-    p.add_argument('--iters', type=int, default=150)
-    p.add_argument('--games-per-iter', type=int, default=96)
-    p.add_argument('--lr', type=float, default=3e-4)
-    p.add_argument('--eval-every', type=int, default=10)
-    p.add_argument('--eval-games', type=int, default=200)
+    p = sub.add_parser('train', help='train the battle AI', formatter_class=argparse.RawDescriptionHelpFormatter,
+                       description=TRAIN_HELP)
+    p.add_argument('--preset', choices=('default', 'cloud'), default='default',
+                   help='default: fresh model (behaviour cloning, then PPO); cloud: long GPU/cloud run continuing '
+                        'from models/battle_singles.pt (no BC, 512 games per iteration, runs until the time budget)')
+    p.add_argument('--config', help='TrainConfig fields as a JSON file or inline JSON object, '
+                                    'e.g. \'{"games_per_iter": 256, "lr": 2e-4}\'')
+    p.add_argument('--format', help=fmt_help)
+    p.add_argument('--out', help='output folder (default runs/battle)')
+    p.add_argument('--init', help='warm start from this checkpoint, skipping behaviour cloning '
+                                  '(cloud preset: models/battle_singles.pt; "none" = fresh model)')
+    p.add_argument('--resume', choices=('auto', 'never'),
+                   help='auto (default): continue from OUT/state.pt, or from SYNC_DIR/state.pt when OUT has none')
+    p.add_argument('--time-budget-h', type=float, help='stop in time (final evaluation + save) after this many hours')
+    p.add_argument('--sync-dir', help='mirror checkpoints and logs here after every checkpoint (e.g. Google Drive)')
+    p.add_argument('--device', choices=('auto', 'cpu', 'cuda'), help='learner device (auto: GPU if available)')
+    p.add_argument('--workers', type=_workers_arg, help="rollout processes: 'auto' (= CPU threads) or a number")
+    p.add_argument('--bc-games', type=int)
+    p.add_argument('--bc-epochs', type=int)
+    p.add_argument('--iters', type=int)
+    p.add_argument('--games-per-iter', type=int)
+    p.add_argument('--lr', type=float)
+    p.add_argument('--eval-every', type=int)
+    p.add_argument('--eval-games', type=int, help='games per evaluation opponent (heuristic and incumbent)')
     p.add_argument('--team-pool', help='JSON of teams to train with (e.g. evolved population.json)')
-    p.add_argument('--width', type=int, default=128)
-    p.add_argument('--layers', type=int, default=2)
-    p.add_argument('--seed', type=int, default=0)
+    p.add_argument('--width', type=int)
+    p.add_argument('--layers', type=int)
+    p.add_argument('--seed', type=int)
     p.set_defaults(func=cmd_train)
 
     p = sub.add_parser('evolve', help='evolve teams from random teams')
@@ -276,7 +335,11 @@ def main(argv=None):
 
     p = sub.add_parser('difftest', help='compare the engine with Pokemon Showdown', add_help=False)
     p.set_defaults(func=None)
+    return ap
 
+
+def main(argv=None):
+    ap = build_parser()
     if argv is None:
         argv = sys.argv[1:]
     if argv and argv[0] == 'difftest':

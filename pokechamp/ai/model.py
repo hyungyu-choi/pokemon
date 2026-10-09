@@ -7,16 +7,28 @@ token is added and a small Transformer mixes them.  Heads:
 * per active slot: 38 action logits (4 moves x 4 targets x Mega on/off, 6 switches),
   combined over the legal joint actions (doubles: two slots),
 * team preview: per-Pokemon "bring" and "lead" scores summed over each option,
-* value: probability-like estimate of winning (tanh, -1..1).
+* value: estimate of winning from the observer's side, ``2 * P(win) - 1`` (tanh, -1..1).  This is what the
+  advisor and the battle assistant UI show (as ``0.5 * (value + 1)``); training fits it to the unshaped
+  final result only,
+* critic (optional, ``config['critic']``): unbounded estimate of the *shaped* return used as the PPO / GAE
+  baseline during training (outcome plus HP-balance shaping, roughly ``z - shaping * phi``).  Checkpoints
+  without it load as before; :meth:`PolicyValueNet.enable_critic` adds it for a warm start.
+
+Checkpoints are dicts ``{'config': {d, layers, heads, sizes, critic, feature_version}, 'state_dict', 'vocab',
+'extra'}``; they are always written atomically from CPU tensors and load on any device with
+:func:`load_model` (CPU by default).
 """
 from __future__ import annotations
+
+import copy
+import os
 
 import numpy as np
 import torch
 from torch import nn
 
 from ..env.actions import N_MOVES, SLOT_ACTIONS
-from .features import GLOB_F, MON_F, MOVE_F, N_MONS, vocab, vocab_sizes
+from .features import FEATURE_VERSION, GLOB_F, MON_F, MOVE_F, N_MONS, vocab, vocab_sizes
 
 PASS_COL = SLOT_ACTIONS  # extra logit column (always 0) used for 'pass'
 
@@ -32,10 +44,12 @@ def mlp(i, h, o, n=2):
 
 
 class PolicyValueNet(nn.Module):
-    def __init__(self, d: int = 128, layers: int = 2, heads: int = 4, sizes: dict | None = None):
+    def __init__(self, d: int = 128, layers: int = 2, heads: int = 4, sizes: dict | None = None,
+                 critic: bool = False, feature_version: int = FEATURE_VERSION):
         super().__init__()
         sizes = sizes or vocab_sizes()
-        self.config = {'d': d, 'layers': layers, 'heads': heads, 'sizes': dict(sizes)}
+        self.config = {'d': d, 'layers': layers, 'heads': heads, 'sizes': dict(sizes), 'critic': bool(critic),
+                       'feature_version': int(feature_version)}
         self.species_emb = nn.Embedding(sizes['species'], 48)
         self.item_emb = nn.Embedding(sizes['items'], 16)
         self.ability_emb = nn.Embedding(sizes['abilities'], 16)
@@ -53,8 +67,23 @@ class PolicyValueNet(nn.Module):
         self.value_head = mlp(2 * d, 128, 1)
         self.pick_head = mlp(2 * d, 64, 1)
         self.lead_head = mlp(2 * d, 64, 1)
+        # created last so that adding it does not change the initialisation of the other parameters
+        self.critic_head = mlp(2 * d, 128, 1) if critic else None
         self.register_buffer('_type_ids', torch.tensor([0] * 6 + [1] * 6 + [2], dtype=torch.long),
                              persistent=False)
+
+    @property
+    def has_critic(self) -> bool:
+        return self.critic_head is not None
+
+    def enable_critic(self) -> bool:
+        """Add the shaped critic head (warm start of an old checkpoint).  It starts as a copy of the value
+        head (before the tanh), so the first PPO baselines are sensible.  Returns False if it already exists."""
+        if self.critic_head is not None:
+            return False
+        self.critic_head = copy.deepcopy(self.value_head)
+        self.config['critic'] = True
+        return True
 
     # ------------------------------------------------------------------
     def encode(self, obs: dict):
@@ -95,9 +124,19 @@ class PolicyValueNet(nn.Module):
             pass_col = torch.zeros(B, 1, device=x.device)
             logits.append(torch.cat([move_logits, sw_logits, pass_col], dim=-1))
         slot_logits = torch.stack(logits, dim=1)                         # [B,2,39]
-        pooled = torch.cat([ctx, x[:, :N_MONS].mean(1)], dim=-1)
-        value = torch.tanh(self.value_head(pooled).squeeze(-1))
+        value = torch.tanh(self.value_head(self.pooled(x)).squeeze(-1))
         return slot_logits, value, x
+
+    @staticmethod
+    def pooled(x):
+        """Summary of the token outputs ``x`` [B,13,d] used by the value and critic heads -> [B,2d]."""
+        return torch.cat([x[:, N_MONS], x[:, :N_MONS].mean(1)], dim=-1)
+
+    def critic(self, x):
+        """Shaped-return estimate [B] (training baseline) from the token outputs of :meth:`forward`."""
+        if self.critic_head is None:
+            raise RuntimeError('this model has no critic head (see enable_critic)')
+        return self.critic_head(self.pooled(x)).squeeze(-1)
 
     def preview_scores(self, x):
         ctx = x[:, N_MONS].unsqueeze(1).expand(-1, 6, -1)
@@ -159,17 +198,56 @@ def pad_options(option_lists: list, width: int) -> tuple:
     return torch.from_numpy(arr), torch.from_numpy(mask)
 
 
+def cpu_state_dict(model: nn.Module) -> dict:
+    """State dict with every tensor on the CPU (checkpoints never contain CUDA tensors)."""
+    return {k: v.detach().to('cpu') for k, v in model.state_dict().items()}
+
+
+def atomic_save(obj, path: str):
+    """``torch.save`` to a temporary file next to ``path``, then rename it into place: a crash or a full disk
+    never leaves a half-written checkpoint (the previous file stays intact)."""
+    path = os.fspath(path)
+    folder = os.path.dirname(os.path.abspath(path))
+    os.makedirs(folder, exist_ok=True)
+    tmp = f'{path}.tmp{os.getpid()}'
+    try:
+        with open(tmp, 'wb') as f:
+            torch.save(obj, f)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+
+
+def checkpoint_dict(model: PolicyValueNet, extra: dict | None = None) -> dict:
+    return {'config': dict(model.config), 'state_dict': cpu_state_dict(model), 'vocab': vocab(),
+            'extra': extra or {}}
+
+
 def save_model(model: PolicyValueNet, path: str, extra: dict | None = None):
-    torch.save({'config': model.config, 'state_dict': model.state_dict(), 'vocab': vocab(),
-                'extra': extra or {}}, path)
+    atomic_save(checkpoint_dict(model, extra), path)
+
+
+def model_from_checkpoint(ckpt: dict) -> PolicyValueNet:
+    """Build the network described by a checkpoint dict and load its weights strictly (CPU, eval mode)."""
+    if 'config' not in ckpt and isinstance(ckpt.get('model'), dict):
+        ckpt = ckpt['model']  # a training state (state.pt) holds the model under 'model'
+    cfg = ckpt['config']
+    version = int(cfg.get('feature_version', 1))
+    if version != FEATURE_VERSION:
+        raise ValueError(f'checkpoint was trained on feature version {version}, this code encodes version '
+                         f'{FEATURE_VERSION}')
+    if ckpt.get('vocab') and ckpt['vocab'] != vocab():
+        raise ValueError('checkpoint vocabulary differs from the current data export')
+    model = PolicyValueNet(d=cfg['d'], layers=cfg['layers'], heads=cfg['heads'], sizes=cfg['sizes'],
+                           critic=bool(cfg.get('critic', False)), feature_version=version)
+    model.load_state_dict(ckpt['state_dict'])
+    model.eval()
+    return model
 
 
 def load_model(path: str, map_location='cpu') -> PolicyValueNet:
     ckpt = torch.load(path, map_location=map_location, weights_only=False)
-    cfg = ckpt['config']
-    model = PolicyValueNet(d=cfg['d'], layers=cfg['layers'], heads=cfg['heads'], sizes=cfg['sizes'])
-    if ckpt.get('vocab') and ckpt['vocab'] != vocab():
-        raise ValueError('checkpoint vocabulary differs from the current data export')
-    model.load_state_dict(ckpt['state_dict'])
-    model.eval()
-    return model
+    return model_from_checkpoint(ckpt)
